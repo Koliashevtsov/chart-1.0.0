@@ -1,17 +1,17 @@
 import { Point, Color } from '../types';
 
-type CanvasPartConstructor = {
+type ShapeConstructor = {
     context: CanvasRenderingContext2D
 }
 
-class CanvasPart {
+class Shape {
     ctx: CanvasRenderingContext2D;
     baseViewportPoint: Point;
     baseChartAreaPoint: Point;
     cursorPoint: Point;
     drawing: boolean;
 
-    constructor({context}: CanvasPartConstructor){
+    constructor({context}: ShapeConstructor){
         this.ctx = context;
         this.baseViewportPoint = {pointX: 0, pointY: 0};
         this.baseChartAreaPoint = {pointX: 0, pointY: 0};
@@ -82,4 +82,4 @@ class CanvasPart {
 
 }
 
-export default CanvasPart
+export default Shape

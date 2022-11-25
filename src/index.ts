@@ -28,7 +28,7 @@
 // canvas.addEventListener('mousedown', mouseDown);
 // canvas.addEventListener('mousemove', (e) => mouseMove(e, context));
 
-import Chart from './chart'
+import Chart from './chart/chart'
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const context = canvas.getContext('2d');
