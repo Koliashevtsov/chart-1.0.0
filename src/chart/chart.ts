@@ -45,6 +45,11 @@ class Chart {
             this.shapesPosition.baseChartAreaPoint.pointX, 
             this.shapesPosition.baseChartAreaPoint.pointY
         );
+        this.shape.renderVerticalAxes();
+        this.shape.renderHorizontalAxes(
+            this.shapesPosition.baseChartAreaPoint.pointX,
+            this.shapesPosition.baseChartAreaPoint.pointY 
+        );
         this.shape.renderViewport(
             this.shapesPosition.baseViewportPoint.pointX, 
             this.shapesPosition.baseViewportPoint.pointY

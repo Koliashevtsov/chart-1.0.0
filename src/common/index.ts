@@ -1,1 +1,1 @@
-export { defaultChartOptions } from './constants';
+export { defaultChartOptions, defaultSizes } from './constants';
