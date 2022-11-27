@@ -10,7 +10,13 @@ const defaultSizes = {
     horizontalAxisHeight: 40
 }
 
+const basePoint = {
+    pointX: 0,
+    pointY: 0
+}
+
 export {
     defaultChartOptions,
-    defaultSizes
+    defaultSizes,
+    basePoint
 }

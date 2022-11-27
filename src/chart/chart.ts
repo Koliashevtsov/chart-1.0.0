@@ -41,19 +41,20 @@ class Chart {
         this._clear();
         // render all parts of canvas
         console.log('render');
-        this.shape.renderChartArea(
-            this.shapesPosition.baseChartAreaPoint.pointX, 
-            this.shapesPosition.baseChartAreaPoint.pointY
-        );
-        this.shape.renderVerticalAxes();
-        this.shape.renderHorizontalAxes(
-            this.shapesPosition.baseChartAreaPoint.pointX,
-            this.shapesPosition.baseChartAreaPoint.pointY 
-        );
-        this.shape.renderViewport(
-            this.shapesPosition.baseViewportPoint.pointX, 
-            this.shapesPosition.baseViewportPoint.pointY
-        );
+
+        // this.shape.renderChartArea(
+        //     this.shapesPosition.baseChartAreaPoint.pointX, 
+        //     this.shapesPosition.baseChartAreaPoint.pointY
+        // );
+        // this.shape.renderVerticalAxes();
+        // this.shape.renderHorizontalAxes(
+        //     this.shapesPosition.baseChartAreaPoint.pointX,
+        //     this.shapesPosition.baseChartAreaPoint.pointY 
+        // );
+        // this.shape.renderViewport(
+        //     this.shapesPosition.baseViewportPoint.pointX, 
+        //     this.shapesPosition.baseViewportPoint.pointY
+        // );
     }
 
     private _clear(){
@@ -112,7 +113,14 @@ class Chart {
         const { data, options } = settings;
 
         this.shape = new Shape({context: this.ctx, data, options});
-        this._render();
+        // this._render();
+
+
+        // testing
+        this.shape.renderChartArea()
+        this.shape.renderVerticalAxes()
+        this.shape.renderHorizontalAxes()
+        this.shape.renderViewport()
     }
 }
 
