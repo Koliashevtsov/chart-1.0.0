@@ -6,11 +6,9 @@ type ChartConstructor = {
     context: CanvasRenderingContext2D
 }
 
-type State = {
+type Position = {
     baseViewportPoint: Point;
     baseChartAreaPoint: Point;
-    cursorPoint: Point;
-    drawing: boolean;
 }
 
 type AssignerProp = {
@@ -21,17 +19,21 @@ type AssignerProp = {
 class Chart {
     ctx: CanvasRenderingContext2D;
     shape: Shape | null;
-    state: State;
+    cursorPoint: Point;
+    drawing: boolean;
+    shapesPosition: Position;
 
     constructor({ context }: ChartConstructor){
         this.ctx = context;
-        this.shape = null
-        this.state = {
+        this.shape = null;
+        this.cursorPoint = {pointX: 0, pointY: 0};
+        this.drawing = false
+        this.shapesPosition = {
             baseViewportPoint: {pointX: 0, pointY: 0},
-            baseChartAreaPoint: {pointX: 0, pointY: 0},
-            cursorPoint: {pointX: 0, pointY: 0},
-            drawing: false
+            baseChartAreaPoint: {pointX: 0, pointY: 0}
         }
+
+        this._addEventListeners()
     }
 
     private _render(){
@@ -39,16 +41,15 @@ class Chart {
         this._clear();
         // render all parts of canvas
         console.log('render');
-        this.shape.renderChartArea();
-        this.shape.renderViewport();
+        this.shape.renderChartArea(
+            this.shapesPosition.baseChartAreaPoint.pointX, 
+            this.shapesPosition.baseChartAreaPoint.pointY
+        );
+        this.shape.renderViewport(
+            this.shapesPosition.baseViewportPoint.pointX, 
+            this.shapesPosition.baseViewportPoint.pointY
+        );
     }
-
-    // private _update(){
-    //     // first step - delete whole canvas
-    //     this._clear();
-    //     // second step - re-render whole canvas
-    //     this._render();
-    // }
 
     private _clear(){
         // clear all canvas
@@ -56,21 +57,55 @@ class Chart {
         this.ctx.clearRect(0, 0, width, height);
     }
 
-    private _updateState(changedProperty: AssignerProp){
-        Object.assign(this.state, changedProperty)
+    private _updateShapesPosition(changedProperty: AssignerProp){
+        Object.assign(this.shapesPosition, changedProperty);
+        // redraw canvas
+        this._render();
+    }
+
+    private _mouseDown(event: MouseEvent){
+        // reset cursor point and start to draw
+        this.cursorPoint.pointX = event.offsetX;
+        this.cursorPoint.pointY = event.offsetY;
+        this.drawing = true;
+    }
+
+    private _mouseUp(){
+        this.drawing = false;
+    }
+
+    private _mouseMove(event: MouseEvent){
+        // in _mouseMove method i want to move chartArea 
+        if(this.drawing){
+            // calculate diff cursor way between events, diff wont be equal and depends on speed move
+            // diff can be positive or negative
+            const diffX = event.offsetX - this.cursorPoint.pointX;
+            const diffY = event.offsetY - this.cursorPoint.pointY;
+            // calculate new points
+            const newPointX = this.shapesPosition.baseChartAreaPoint.pointX + diffX;
+            const newPointY = this.shapesPosition.baseChartAreaPoint.pointY + diffY;
+            // update baseChartAreaPoint
+            this._updateShapesPosition({
+                baseChartAreaPoint: {pointX: newPointX, pointY: newPointY}
+            });
+            console.log(this.shapesPosition);
+            
+            // update cursor point
+            this.cursorPoint.pointX = event.offsetX;
+            this.cursorPoint.pointY = event.offsetY;
+        }
+    }
+
+    private _addEventListeners(){
+        this.ctx.canvas.addEventListener('mousedown', this._mouseDown.bind(this));
+        this.ctx.canvas.addEventListener('mouseup', this._mouseUp.bind(this));
+        this.ctx.canvas.addEventListener('mousemove', this._mouseMove.bind(this))
     }
     
 
     init(){
         this.shape = new Shape({context: this.ctx});
-        this.loop();
-    }
-
-    loop(){
-        // this._render()
-        this._updateState({drawing: true})
-        console.log(this.state.drawing);
-        
+        this._render();
     }
 }
 
