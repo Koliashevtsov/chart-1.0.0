@@ -1,10 +1,9 @@
-import { Point } from '../../types';
+import { DefOptions, Color } from '../../types';
 
-const baseCanvasPoint: Point = {
-    pointX: 0,
-    pointY: 0
+const defaultChartOptions: DefOptions = {
+    backgroundColor: Color.Orange,
+    color: 'blue'
 }
-
 export {
-    baseCanvasPoint
+    defaultChartOptions
 }

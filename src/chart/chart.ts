@@ -1,6 +1,6 @@
 import Shape from '../shape/shape';
 
-import { Point, Color } from '../types';
+import { InitSettings, Point, Color } from '../types';
 
 type ChartConstructor = {
     context: CanvasRenderingContext2D
@@ -84,7 +84,7 @@ class Chart {
             // calculate new points
             const newPointX = this.shapesPosition.baseChartAreaPoint.pointX + diffX;
             const newPointY = this.shapesPosition.baseChartAreaPoint.pointY + diffY;
-            // update baseChartAreaPoint
+            // update baseChartAreaPoint it is MAIN what _mouseMove doing
             this._updateShapesPosition({
                 baseChartAreaPoint: {pointX: newPointX, pointY: newPointY}
             });
@@ -103,8 +103,10 @@ class Chart {
     }
     
 
-    init(){
-        this.shape = new Shape({context: this.ctx});
+    init(settings: InitSettings){
+        const { data, options } = settings;
+
+        this.shape = new Shape({context: this.ctx, data, options});
         this._render();
     }
 }

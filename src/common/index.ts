@@ -1,1 +1,1 @@
-export { baseCanvasPoint } from './constants';
+export { defaultChartOptions } from './constants';
