@@ -28,6 +28,11 @@ type Point = {
     pointY: number
 }
 
+type Couples = {
+    from: Point;
+    to: Point;
+}
+
 // enums
 enum Color {
     Grey = '#34495e',
@@ -40,5 +45,6 @@ export {
     Options,
     InitSettings,
     Point,
+    Couples,
     Color
 }

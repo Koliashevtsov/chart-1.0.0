@@ -120,7 +120,7 @@ class Chart {
         this.shape.renderChartArea()
         this.shape.renderVerticalAxes()
         this.shape.renderHorizontalAxes()
-        this.shape.renderViewport()
+        // this.shape.renderViewport()
     }
 }
 

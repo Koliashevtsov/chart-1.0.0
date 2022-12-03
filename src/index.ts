@@ -13,8 +13,8 @@ type Data = {
 }
 
 const data: Data = {
-    datasets: [],
-    labels: []
+    datasets: [{data: ['20', '15', '18', '25']}],
+    labels: ['January', 'Fabruary', 'March', 'April']
 };
 
 const options = {

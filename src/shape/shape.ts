@@ -1,9 +1,11 @@
-import { Data, Options, Point, Color } from '../types';
+import { Data, Options, Point, Color, Couples } from '../types';
 import { 
     defaultChartOptions as defOptions, 
     defaultSizes,
     basePoint 
 } from '../common/';
+
+import { verticalCouplesPoint, horizontalCouplesPoint } from '../helpers';
 
 type ShapeConstructor = {
     context: CanvasRenderingContext2D;
@@ -23,12 +25,20 @@ type ClientRectType = {
     height: number;
 }
 
+type Grid = {
+    verticalLinesCount: number;
+    horizontalLinesCount: number;
+    verticalStep: number;
+    horizontalStep: number;
+}
+
 class Shape {
     ctx: CanvasRenderingContext2D;
     data: Data;
     options: Options;
     basePoint: Point;
     clientRect: ClientRectType;
+    grid: Grid 
 
     constructor({ context, data, options }: ShapeConstructor){
         this.ctx = context;
@@ -36,6 +46,7 @@ class Shape {
         this.options = this._getOptions(options);
         this.basePoint = Object.freeze(basePoint);
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
+        this.grid = null
     } 
 
     private _getOptions(options?: Options): Options {
@@ -43,9 +54,19 @@ class Shape {
         return opts;
     }
 
-    private _getGrid(distX: number, distY: number){
-        const xItems = 'each datasets must be equal'
-        const yItems = ''
+    private _getGrid(verticalsDistanse: number, horizontalsDistanse: number){
+        const horizontalLinesCount = this.data.datasets.length > 0 ? this.data.datasets[0].data.length : 0; // if dataset contain data get first
+        const verticalLinesCount = this.data.labels.length;
+
+        const horizontalStep = horizontalsDistanse / (horizontalLinesCount - 1);
+        const verticalStep = verticalsDistanse / (verticalLinesCount - 1);
+
+        this.grid =  {
+            verticalLinesCount: verticalLinesCount,
+            horizontalLinesCount: horizontalLinesCount,
+            verticalStep: verticalStep,
+            horizontalStep: horizontalStep
+        }
     }
 
     renderViewport () {
@@ -64,7 +85,9 @@ class Shape {
         // height exclude default horizontal axes area height
         const rectWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
         const rectHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+        
         // draw rectangle
+        
         chartArea.rect(
             this.basePoint.pointX, 
             this.basePoint.pointY, 
@@ -73,8 +96,45 @@ class Shape {
         );
         this.ctx.fillStyle = this.options.backgroundColor;
         this.ctx.fill(chartArea);
+        this.ctx.save();
+        
         // calculate grid
         this._getGrid(rectWidth, rectHeight);
+            console.log(this.grid);
+            
+        // draw grid
+        // vertical lines
+        const vertCouples = verticalCouplesPoint(
+            this.basePoint, 
+            {pointX: this.basePoint.pointX, pointY: rectHeight}, 
+            this.grid.verticalStep,
+            this.grid.verticalLinesCount
+        )
+        if(vertCouples.length > 0) {
+            vertCouples.forEach((couple: Couples) => {
+                this.ctx.beginPath();
+                this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
+                this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
+                this.ctx.strokeStyle = 'green';
+                this.ctx.stroke();
+            })
+        }
+        // horizontal lines
+        const horCouples = horizontalCouplesPoint(
+            this.basePoint,
+            {pointX: rectWidth, pointY: this.basePoint.pointY},
+            this.grid.horizontalStep,
+            this.grid.horizontalLinesCount
+        );
+        if(horCouples.length > 0) {
+            horCouples.forEach((couple: Couples) => {
+                this.ctx.beginPath();
+                this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
+                this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
+                this.ctx.strokeStyle = 'green';
+                this.ctx.stroke();
+            })
+        }
     }
 
     renderVerticalAxes () {
@@ -95,14 +155,6 @@ class Shape {
         this.ctx.fillStyle = this.options.backgroundColor;
         this.ctx.fill(vertAxesArea);
         this.ctx.save();
-
-        // add vertical line as axes
-        this.ctx.beginPath();
-        this.ctx.moveTo(pointX, pointY);
-        this.ctx.lineTo(pointX, panelHeight - defaultSizes.horizontalAxisHeight);
-        this.ctx.strokeStyle = this.options.color;
-        this.ctx.stroke();
-        this.ctx.save();
     }
 
     renderHorizontalAxes () {
@@ -112,7 +164,7 @@ class Shape {
         const panelHeight = defaultSizes.horizontalAxisHeight;
         const pointX = this.basePoint.pointX;
         const pointY = this.clientRect.height - defaultSizes.horizontalAxisHeight;
-
+        // draw area
         const horizAxesArea = new Path2D();
         horizAxesArea.rect(
             pointX,
@@ -123,14 +175,29 @@ class Shape {
         this.ctx.fillStyle = this.options.backgroundColor;
         this.ctx.fill(horizAxesArea);
         this.ctx.save();
+        // drawing horizontal marks for labels
+        // get couples of points
+        const pointCouples = verticalCouplesPoint(
+            {pointX: pointX, pointY: pointY},
+            {pointX: pointX, pointY: pointY + 5},
+            this.grid.verticalStep,
+            this.grid.verticalLinesCount);
+        // draw lines by points
+        if(pointCouples.length > 0) {
+            pointCouples.forEach((couple: Couples) => {
+                this.ctx.beginPath();
+                this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
+                this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
+                this.ctx.strokeStyle = 'green';
+                this.ctx.stroke();
+            })
+        }
+        // drawing labels
 
-        // add horizontal line as axes
-        this.ctx.beginPath();
-        this.ctx.moveTo(pointX, pointY);
-        this.ctx.lineTo(panelWidth, pointY);
-        this.ctx.strokeStyle = this.options.color;
-        this.ctx.stroke();
-        this.ctx.save();
+    }
+
+    private _drawLabels(){
+        
     }
 
 }
