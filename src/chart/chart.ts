@@ -118,8 +118,8 @@ class Chart {
 
         // testing
         this.shape.renderChartArea()
-        this.shape.renderVerticalAxes()
-        this.shape.renderHorizontalAxes()
+        this.shape.renderLabelsArea()
+        this.shape.renderValuesArea()
         // this.shape.renderViewport()
     }
 }
