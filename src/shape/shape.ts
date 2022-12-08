@@ -2,10 +2,12 @@ import { Data, Options, Point, Color, Couples, GridOpt } from '../types';
 import { 
     defaultChartOptions as defOptions, 
     defaultSizes,
-    basePoint 
+    basePoint,
+    defaultGridOpt 
 } from '../common/';
 
 import { ChartArea, LabelsArea, ValuesArea } from '../areas';
+import { absValues } from '../helpers';
 
 type ShapeConstructor = {
     context: CanvasRenderingContext2D;
@@ -45,9 +47,9 @@ class Shape {
         this.basePoint = Object.freeze(basePoint);
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
         this.gridOpt = null;
-        this.chartArea = new ChartArea(this.ctx, this.options);
-        this.labelsArea = new LabelsArea(this.ctx, this.options);
-        this.valuesArea = new ValuesArea(this.ctx, this.options);
+        this.chartArea = new ChartArea(this.ctx, this.data, this.options);
+        this.labelsArea = new LabelsArea(this.ctx, this.data, this.options);
+        this.valuesArea = new ValuesArea(this.ctx, this.data, this.options);
     } 
 
     private _getOptions(options?: Options): Options {
@@ -55,18 +57,23 @@ class Shape {
         return opts;
     }
 
-    private _getGrid(height: number, width: number){   
-        const horizontalLinesCount = this.data.datasets.length > 0 ? this.data.datasets[0].data.length : 0; // if dataset contain data get first
-        const verticalLinesCount = this.data.labels.length;
-
+    private _getGridOpt(height: number, width: number){   
+        const absoluteValues = absValues(this.data, defaultGridOpt.yScale);
+        const absOffsetY = absoluteValues[absoluteValues.length - 1];
+        const absValueInOnePixel = height / (absoluteValues[0] - absOffsetY); 
+        const horizontalLinesCount = absoluteValues.length;
         const horizontalStep = height / (horizontalLinesCount - 1);
+        const verticalLinesCount = this.data.labels.length;
         const verticalStep = width / (verticalLinesCount - 1);
-
+        
         this.gridOpt =  {
-            verticalLinesCount: verticalLinesCount,
-            horizontalLinesCount: horizontalLinesCount,
-            verticalStep: verticalStep,
-            horizontalStep: horizontalStep
+            absoluteValues,
+            absValueInOnePixel,
+            absOffsetY,
+            verticalLinesCount,
+            horizontalLinesCount,
+            verticalStep,
+            horizontalStep
         }
     }
 
@@ -86,7 +93,7 @@ class Shape {
         const areaWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
         const areaHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
         // compute grid sizes
-        this._getGrid(areaHeight, areaWidth);
+        this._getGridOpt(areaHeight, areaWidth);
         // draw area
         this.chartArea.draw({
             basePoint: this.basePoint,
@@ -106,7 +113,6 @@ class Shape {
             width: areaWidth,
             height: areaHeight,
             gridOpt: this.gridOpt,
-            labels: this.data.labels
         })
     }
 
@@ -120,69 +126,8 @@ class Shape {
             width: areaWidth,
             height: areaHeight,
             gridOpt: this.gridOpt,
-            datasets: this.data.datasets
         })
     }
-
-    // renderVerticalAxes () {
-    //     // calculate panel sizes
-    //     // it all depends on canvas and default sizes
-    //     const panelWidth = defaultSizes.verticalAxisWidth;
-    //     const panelHeight = this.clientRect.height;
-    //     const pointX = this.clientRect.width - panelWidth;
-    //     const pointY = 0
-
-    //     const vertAxesArea = new Path2D();
-    //     vertAxesArea.rect(
-    //         pointX,
-    //         pointY,
-    //         panelWidth,
-    //         panelHeight
-    //     );
-    //     this.ctx.fillStyle = this.options.backgroundColor;
-    //     this.ctx.fill(vertAxesArea);
-    //     this.ctx.save();
-    // }
-
-    // renderHorizontalAxes () {
-    //     // calculate panel sizes
-    //     // it all depends on canvas and default sizes
-    //     const panelWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
-    //     const panelHeight = defaultSizes.horizontalAxisHeight;
-    //     const pointX = this.basePoint.pointX;
-    //     const pointY = this.clientRect.height - defaultSizes.horizontalAxisHeight;
-    //     // draw area
-    //     const horizAxesArea = new Path2D();
-    //     horizAxesArea.rect(
-    //         pointX,
-    //         pointY,
-    //         panelWidth,
-    //         panelHeight
-    //     )
-    //     this.ctx.fillStyle = this.options.backgroundColor;
-    //     this.ctx.fill(horizAxesArea);
-    //     this.ctx.save();
-    //     // drawing horizontal marks for labels
-    //     // get couples of points
-    //     const pointCouples = verticalCouplesPoint(
-    //         {pointX: pointX, pointY: pointY},
-    //         {pointX: pointX, pointY: pointY + 5},
-    //         this.gridOpt.verticalStep,
-    //         this.gridOpt.verticalLinesCount);
-    //     // draw lines by points
-    //     if(pointCouples.length > 0) {
-    //         pointCouples.forEach((couple: Couples) => {
-    //             this.ctx.beginPath();
-    //             this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
-    //             this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
-    //             this.ctx.strokeStyle = 'green';
-    //             this.ctx.stroke();
-    //         })
-    //     }
-    //     // drawing labels
-
-    // }
-
 }
 
 export default Shape

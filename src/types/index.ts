@@ -29,31 +29,21 @@ type Point = {
 }
 // areas types
 type GridOpt = {
+    absoluteValues: number[];
+    absValueInOnePixel: number;
+    absOffsetY: number;
     verticalLinesCount: number;
     horizontalLinesCount: number;
     verticalStep: number;
     horizontalStep: number;
 }
-type ChartAreaDrawProps = {
-    basePoint: Point;
-    width: number;
-    height: number;
-    gridOpt: GridOpt
-}
-type LabelsAreaDrawProps = {
+type AreaDrawProps = {
     basePoint: Point;
     width: number;
     height: number;
     gridOpt: GridOpt;
-    labels: Array<string>;
 }
-type ValuesAreaDrawProps = {
-    basePoint: Point;
-    width: number;
-    height: number;
-    gridOpt: GridOpt;
-    datasets: Array<Dataset>
-}
+
 type Couples = {
     from: Point;
     to: Point;
@@ -72,9 +62,7 @@ export {
     InitSettings,
     Point,
     GridOpt,
-    ChartAreaDrawProps,
-    LabelsAreaDrawProps,
-    ValuesAreaDrawProps,
+    AreaDrawProps,
     Couples,
     Color
 }

@@ -5,6 +5,10 @@ const defaultChartOptions: DefOptions = {
     color: 'blue'
 }
 
+const defaultGridOpt = {
+    yScale: 10 // how many values consist between two horizontal lines
+}
+
 const defaultSizes = {
     verticalAxisWidth: 80,
     horizontalAxisHeight: 40
@@ -18,5 +22,6 @@ const basePoint = {
 export {
     defaultChartOptions,
     defaultSizes,
+    defaultGridOpt,
     basePoint
 }

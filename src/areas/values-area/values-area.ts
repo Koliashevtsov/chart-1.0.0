@@ -1,20 +1,16 @@
 import { Area } from '../../area';
-import { Options, ValuesAreaDrawProps } from '../../types';
+import { Data, Options, AreaDrawProps } from '../../types';
 
 export class ValuesArea extends Area {
-    constructor(ctx: CanvasRenderingContext2D, options: Options){
-        super(ctx, options)
+    constructor(ctx: CanvasRenderingContext2D, data: Data, options: Options){
+        super(ctx, data, options)
     }
 
-    draw({ basePoint, width, height, gridOpt, datasets }: ValuesAreaDrawProps) {
+    draw({ basePoint, width, height, gridOpt }: AreaDrawProps) {
         this.basePoint = basePoint;
         this.width = width;
         this.height = height;
         this.gridOpt = gridOpt;
-        
-        const valuesSet: Set<string> = new Set();
-        datasets.forEach(dataset  => dataset.data.forEach(value => valuesSet.add(value)))
-        const values = Array.from(valuesSet).sort();
         
         const valuesArea = new Path2D();
         valuesArea.rect(
@@ -28,6 +24,6 @@ export class ValuesArea extends Area {
         this.ctx.save();
         //drawing horizontal marks for values
         this.drawValueMarks();
-        this.drawValueTexts(values)
+        this.drawValueTexts(this.gridOpt.absoluteValues)
     }
 }

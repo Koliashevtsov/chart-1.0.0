@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples } from '../types';
+import { GridOpt, Options, Point, Couples, Data } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -6,19 +6,22 @@ import {
     pointsForLabels,
     pointsForValues,
     labelTextAlign,
-    valueTextBaseline
+    valueTextBaseline,
+    pointsForChart
 } from '../helpers';
 
 export class Area {
     ctx: CanvasRenderingContext2D;
+    data: Data;
     options: Options
     basePoint: Point;
     width: number;
     height: number;
     gridOpt: GridOpt;
 
-    constructor(ctx: CanvasRenderingContext2D, options: Options){
+    constructor(ctx: CanvasRenderingContext2D, data: Data, options: Options){
         this.ctx = ctx;
+        this.data = data;
         this.options = options;
         this.basePoint = null;
         this.width = 0;
@@ -63,7 +66,6 @@ export class Area {
 
     drawLabelMarks(){
         const MARK_HEIGHT = 5;
-
         const pointCouples = verticalCouplesPoint(
             this.basePoint,
             {pointX: this.basePoint.pointX, pointY: this.basePoint.pointY + MARK_HEIGHT},
@@ -81,7 +83,8 @@ export class Area {
         }
     }
 
-    drawLabelTexts(labels: Array<string>){
+    drawLabelTexts(){
+        const labels = this.data.labels;
         const offsetText = 20;
         const bPoint = {pointX: this.basePoint.pointX, pointY: this.basePoint.pointY + offsetText}
         const points = pointsForLabels(bPoint, this.gridOpt);
@@ -117,7 +120,7 @@ export class Area {
         }
     }
 
-    drawValueTexts(values: Array<string>){
+    drawValueTexts(values: Array<number>){
         const offsetText = 20;
         const bPoint = {pointX: this.basePoint.pointX + offsetText, pointY: this.basePoint.pointY};
         const points = pointsForValues(bPoint, this.gridOpt);
@@ -127,8 +130,31 @@ export class Area {
                 this.ctx.fillStyle = 'red';
                 this.ctx.textAlign = 'center';
                 this.ctx.textBaseline = valueTextBaseline(points, index);
-                this.ctx.fillText(values[index], point.pointX, point.pointY);
+                this.ctx.fillText(String(values[index]), point.pointX, point.pointY);
             })
         }
+    }
+
+    drawChart(){
+        this.data.datasets.forEach(dataset => {
+            // get points for each dataset
+            const points = pointsForChart(
+                dataset.data, 
+                this.basePoint, 
+                this.height, 
+                this.gridOpt.verticalStep, 
+                this.gridOpt.absValueInOnePixel,
+                this.gridOpt.absOffsetY
+            );
+            
+            const [startingPoint, ...otherPoints] = points;
+            // draw lines
+            this.ctx.beginPath();
+            this.ctx.moveTo(startingPoint.pointX, startingPoint.pointY);
+            otherPoints.forEach(point => this.ctx.lineTo(point.pointX, point.pointY));
+            this.ctx.fillStyle = 'grey';
+            this.ctx.stroke();
+        })
+        
     }
 }

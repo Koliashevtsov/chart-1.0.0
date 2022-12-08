@@ -1,13 +1,13 @@
-import { Options, LabelsAreaDrawProps } from '../../types';
+import { Options, AreaDrawProps, Data } from '../../types';
 
 import { Area } from '../../area/area';
 
 export class LabelsArea extends Area {
-    constructor(ctx: CanvasRenderingContext2D, options: Options){
-        super(ctx, options)
+    constructor(ctx: CanvasRenderingContext2D, data: Data, options: Options){
+        super(ctx, data, options)
     }
 
-    draw({ basePoint, width, height, gridOpt, labels }: LabelsAreaDrawProps ){
+    draw({ basePoint, width, height, gridOpt }: AreaDrawProps ){
         this.basePoint = basePoint;
         this.width = width;
         this.height = height;
@@ -25,6 +25,6 @@ export class LabelsArea extends Area {
         this.ctx.save();
         // drawing vertical marks for labels
         this.drawLabelMarks()
-        this.drawLabelTexts(labels)
+        this.drawLabelTexts()
     }
 }
