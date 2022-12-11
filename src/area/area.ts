@@ -49,7 +49,7 @@ export class Area {
         // horizontal lines
         const horCouples = horizontalCouplesPoint(
             this.basePoint,
-            {pointX: this.width, pointY: this.basePoint.pointY},
+            {pointX: this.basePoint.pointX + this.width, pointY: this.basePoint.pointY},
             this.gridOpt.horizontalStep,
             this.gridOpt.horizontalLinesCount
         );
@@ -86,7 +86,8 @@ export class Area {
     drawLabelTexts(){
         const labels = this.data.labels;
         const offsetText = 20;
-        const bPoint = {pointX: this.basePoint.pointX, pointY: this.basePoint.pointY + offsetText}
+        const bPoint = {pointX: this.basePoint.pointX, pointY: this.basePoint.pointY + offsetText};
+        
         const points = pointsForLabels(bPoint, this.gridOpt);
         
         if(points.length > 0){

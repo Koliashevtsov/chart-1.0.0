@@ -27,6 +27,10 @@ type Point = {
     pointX: number;
     pointY: number;
 }
+type Offset = {
+    distanceX: number;
+    distanceY: number;
+}
 // areas types
 type GridOpt = {
     absoluteValues: number[];
@@ -61,6 +65,7 @@ export {
     Options,
     InitSettings,
     Point,
+    Offset,
     GridOpt,
     AreaDrawProps,
     Couples,

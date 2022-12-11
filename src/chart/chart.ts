@@ -1,36 +1,26 @@
 import Shape from '../shape/shape';
 
-import { InitSettings, Point, Color } from '../types';
+import { InitSettings, Point, Offset } from '../types';
 
 type ChartConstructor = {
     context: CanvasRenderingContext2D
 }
-
-type Position = {
-    baseViewportPoint: Point;
-    baseChartAreaPoint: Point;
-}
-
-type AssignerProp = {
-    
-}
-
 
 class Chart {
     ctx: CanvasRenderingContext2D;
     shape: Shape | null;
     cursorPoint: Point;
     drawing: boolean;
-    shapesPosition: Position;
+    offset: Offset;
 
     constructor({ context }: ChartConstructor){
         this.ctx = context;
         this.shape = null;
         this.cursorPoint = {pointX: 0, pointY: 0};
         this.drawing = false
-        this.shapesPosition = {
-            baseViewportPoint: {pointX: 0, pointY: 0},
-            baseChartAreaPoint: {pointX: 0, pointY: 0}
+        this.offset = {
+            distanceX: 0,
+            distanceY: 0
         }
 
         this._addEventListeners()
@@ -41,20 +31,10 @@ class Chart {
         this._clear();
         // render all parts of canvas
         console.log('render');
-
-        // this.shape.renderChartArea(
-        //     this.shapesPosition.baseChartAreaPoint.pointX, 
-        //     this.shapesPosition.baseChartAreaPoint.pointY
-        // );
-        // this.shape.renderVerticalAxes();
-        // this.shape.renderHorizontalAxes(
-        //     this.shapesPosition.baseChartAreaPoint.pointX,
-        //     this.shapesPosition.baseChartAreaPoint.pointY 
-        // );
-        // this.shape.renderViewport(
-        //     this.shapesPosition.baseViewportPoint.pointX, 
-        //     this.shapesPosition.baseViewportPoint.pointY
-        // );
+        this.shape.renderChartArea(this.offset);
+        this.shape.renderLabelsArea(this.offset);
+        this.shape.renderValuesArea();
+        this.shape.renderViewport();
     }
 
     private _clear(){
@@ -63,8 +43,8 @@ class Chart {
         this.ctx.clearRect(0, 0, width, height);
     }
 
-    private _updateShapesPosition(changedProperty: AssignerProp){
-        Object.assign(this.shapesPosition, changedProperty);
+    private _updateOffset(changedObj: {}){
+        Object.assign(this.offset, changedObj);
         // redraw canvas
         this._render();
     }
@@ -85,16 +65,13 @@ class Chart {
         if(this.drawing){
             // calculate diff cursor way between events, diff wont be equal and depends on speed move
             // diff can be positive or negative
+            // update offset distance it is MAIN what _mouseMove doing
             const diffX = event.offsetX - this.cursorPoint.pointX;
-            const diffY = event.offsetY - this.cursorPoint.pointY;
-            // calculate new points
-            const newPointX = this.shapesPosition.baseChartAreaPoint.pointX + diffX;
-            const newPointY = this.shapesPosition.baseChartAreaPoint.pointY + diffY;
-            // update baseChartAreaPoint it is MAIN what _mouseMove doing
-            this._updateShapesPosition({
-                baseChartAreaPoint: {pointX: newPointX, pointY: newPointY}
+            const areaOffsetX = this.offset.distanceX + diffX;
+
+            this._updateOffset({
+                distanceX: areaOffsetX,
             });
-            console.log(this.shapesPosition);
             
             // update cursor point
             this.cursorPoint.pointX = event.offsetX;
@@ -113,13 +90,13 @@ class Chart {
         const { data, options } = settings;
 
         this.shape = new Shape({context: this.ctx, data, options});
-        // this._render();
+        this._render();
 
 
         // testing
-        this.shape.renderChartArea()
-        this.shape.renderLabelsArea()
-        this.shape.renderValuesArea()
+        // this.shape.renderChartArea()
+        // this.shape.renderLabelsArea()
+        // this.shape.renderValuesArea()
         // this.shape.renderViewport()
     }
 }

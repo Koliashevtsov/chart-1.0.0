@@ -1,4 +1,4 @@
-import { Data, Options, Point, Color, Couples, GridOpt } from '../types';
+import { Data, Options, Point, Color, GridOpt, Offset } from '../types';
 import { 
     defaultChartOptions as defOptions, 
     defaultSizes,
@@ -87,27 +87,33 @@ class Shape {
         );
     }
  
-    renderChartArea () {
+    renderChartArea (offset: Offset) {
         // width exclude default vertical axes area width
         // height exclude default horizontal axes area height
         const areaWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
         const areaHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+        const pointX = this.basePoint.pointX + offset.distanceX;
+        const pointY = this.basePoint.pointY + offset.distanceY;
+        console.log('chartArea pointX', pointX);
+        console.log('chartArea pointY', pointY);
+        
+        
         // compute grid sizes
         this._getGridOpt(areaHeight, areaWidth);
         // draw area
         this.chartArea.draw({
-            basePoint: this.basePoint,
+            basePoint: {pointX, pointY},
             width: areaWidth,
             height: areaHeight,
             gridOpt: this.gridOpt
         })
     }
 
-    renderLabelsArea(){
+    renderLabelsArea(offset: Offset){
         const areaWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
         const areaHeight = defaultSizes.horizontalAxisHeight;
-        const pointX = this.basePoint.pointX;
-        const pointY = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+        const pointX = this.basePoint.pointX + offset.distanceX;
+        const pointY = this.clientRect.height - defaultSizes.horizontalAxisHeight + offset.distanceY;
         this.labelsArea.draw({
             basePoint: {pointX, pointY},
             width: areaWidth,
