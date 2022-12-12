@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples, Data } from '../types';
+import { GridOpt, Options, Point, Couples, Data, AreaInitProps } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -19,14 +19,14 @@ export class Area {
     height: number;
     gridOpt: GridOpt;
 
-    constructor(ctx: CanvasRenderingContext2D, data: Data, options: Options){
+    constructor({ctx, data, height, width, gridOpt, options}: AreaInitProps){
         this.ctx = ctx;
         this.data = data;
         this.options = options;
+        this.width = width;
+        this.height = height;
+        this.gridOpt = gridOpt;
         this.basePoint = null;
-        this.width = 0;
-        this.height = 0;
-        this.gridOpt = null;
     }
 
     drawGrid(){

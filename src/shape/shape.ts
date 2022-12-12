@@ -35,10 +35,31 @@ class Shape {
         this.basePoint = Object.freeze(basePoint);
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
         this.areasSizes = this._getAreasSizes();
-        this.gridOpt = null;
-        this.chartArea = new ChartArea(this.ctx, this.data, this.options);
-        this.labelsArea = new LabelsArea(this.ctx, this.data, this.options);
-        this.valuesArea = new ValuesArea(this.ctx, this.data, this.options);
+        this.gridOpt = this._getGridOpt(this.areasSizes.chart.height, this.areasSizes.chart.width);
+        this.chartArea = new ChartArea({
+            ctx: this.ctx,
+            data: this.data,
+            height: this.areasSizes.chart.height,
+            width: this.areasSizes.chart.width,
+            gridOpt: this.gridOpt,
+            options: this.options
+        });
+        this.labelsArea = new LabelsArea({
+            ctx: this.ctx,
+            data: this.data,
+            height: this.areasSizes.labels.height,
+            width: this.areasSizes.labels.width,
+            gridOpt: this.gridOpt,
+            options: this.options
+        });
+        this.valuesArea = new ValuesArea({
+            ctx: this.ctx,
+            data: this.data,
+            height: this.areasSizes.values.height,
+            width: this.areasSizes.values.width,
+            gridOpt: this.gridOpt,
+            options: this.options
+        });
     } 
 
     private _getOptions(options?: InputOptions): Options {
@@ -94,7 +115,7 @@ class Shape {
         const verticalStep = width / (verticalLinesCount - 1);
         console.log('step', verticalStep);
         
-        this.gridOpt =  {
+        return {
             absoluteValues,
             absValueInOnePixel,
             absOffsetY,
@@ -118,44 +139,27 @@ class Shape {
     renderChartArea (offset: Offset) {
         const pointX = this.basePoint.pointX + offset.distanceX;
         const pointY = this.basePoint.pointY + offset.distanceY;
-        const height = this.areasSizes.chart.height;
-        const width = this.areasSizes.chart.width;
         
-        // compute grid sizes
-        this._getGridOpt(height, width);
-        // draw area
         this.chartArea.draw({
-            basePoint: {pointX, pointY},
-            width: width,
-            height: height,
-            gridOpt: this.gridOpt
+            basePoint: {pointX, pointY}
         })
     }
 
     renderLabelsArea(offset: Offset){
         const pointX = this.basePoint.pointX + offset.distanceX;
         const pointY = this.clientRect.height - defaultSizes.horizontalAxisHeight + offset.distanceY;
-        const height = this.areasSizes.labels.height;
-        const width = this.areasSizes.labels.width;
 
         this.labelsArea.draw({
-            basePoint: {pointX, pointY},
-            width: width,
-            height: height,
-            gridOpt: this.gridOpt,
+            basePoint: {pointX, pointY}
         })
     }
 
     renderValuesArea(){
-        const height = this.areasSizes.values.height;
-        const width = this.areasSizes.values.width;
-        const pointX = this.clientRect.width - width;
+        const pointX = this.clientRect.width - this.areasSizes.values.width;
         const pointY = this.basePoint.pointY;
+        
         this.valuesArea.draw({
-            basePoint: {pointX, pointY},
-            width: width,
-            height: height,
-            gridOpt: this.gridOpt,
+            basePoint: {pointX, pointY}
         })
     }
 }

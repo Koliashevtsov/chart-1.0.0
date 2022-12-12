@@ -1,17 +1,14 @@
 import { Area } from '../../area/';
 
-import { AreaDrawProps, Data, Options } from '../../types';
+import { AreaDrawProps, AreaInitProps } from '../../types';
 
 export class ChartArea extends Area {
-    constructor(ctx: CanvasRenderingContext2D, data: Data, options: Options){
-        super(ctx, data, options)
+    constructor({ctx, data, height, width, gridOpt, options}: AreaInitProps){
+        super({ctx, data, height, width, gridOpt, options})
     }
 
-    draw({ basePoint, width, height, gridOpt }: AreaDrawProps){
+    draw({ basePoint }: AreaDrawProps){
         this.basePoint = basePoint;
-        this.width = width;
-        this.height = height;
-        this.gridOpt = gridOpt;
 
         const chartArea = new Path2D();
         

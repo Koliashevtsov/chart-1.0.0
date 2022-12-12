@@ -63,11 +63,16 @@ type GridOpt = {
     verticalStep: number;
     horizontalStep: number;
 }
+type AreaInitProps = {
+    ctx: CanvasRenderingContext2D;
+    data: Data;
+    height: number;
+    width: number;
+    gridOpt: GridOpt;
+    options: Options
+}
 type AreaDrawProps = {
     basePoint: Point;
-    width: number;
-    height: number;
-    gridOpt: GridOpt;
 }
 
 type Couples = {
@@ -91,6 +96,7 @@ export {
     ASizes,
     Offset,
     GridOpt,
+    AreaInitProps,
     AreaDrawProps,
     ClientRectType,
     Couples,

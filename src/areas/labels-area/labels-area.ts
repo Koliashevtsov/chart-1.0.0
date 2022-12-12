@@ -1,24 +1,21 @@
-import { Options, AreaDrawProps, Data } from '../../types';
+import { AreaDrawProps, AreaInitProps } from '../../types';
 
 import { Area } from '../../area/area';
 
 export class LabelsArea extends Area {
-    constructor(ctx: CanvasRenderingContext2D, data: Data, options: Options){
-        super(ctx, data, options)
+    constructor({ctx, data, height, width, gridOpt, options}: AreaInitProps){
+        super({ctx, data, height, width, gridOpt, options})
     }
 
-    draw({ basePoint, width, height, gridOpt }: AreaDrawProps ){
+    draw({ basePoint }: AreaDrawProps ){
         this.basePoint = basePoint;
-        this.width = width;
-        this.height = height;
-        this.gridOpt = gridOpt;
 
         const labelsArea = new Path2D();
         labelsArea.rect(
             this.basePoint.pointX,
             this.basePoint.pointY,
-            width,
-            height
+            this.width,
+            this.height
         )
         this.ctx.fillStyle = this.options.backgroundColor;
         this.ctx.fill(labelsArea);
