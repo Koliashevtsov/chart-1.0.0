@@ -2,7 +2,8 @@ import { DefOptions, Color } from '../../types';
 
 const defaultChartOptions: DefOptions = {
     backgroundColor: Color.Orange,
-    color: 'blue'
+    color: 'blue',
+    horizontalScrolling: false
 }
 
 const defaultGridOpt = {

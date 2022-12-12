@@ -11,16 +11,23 @@ type Data = {
 type DefOptions = {
     backgroundColor: string;
     color: string;
+    horizontalScrolling: false;
 }
 
 type Options = {
+    backgroundColor: string;
+    color: string;
+    horizontalScrolling: {labelsStep: number} | false;
+}
+type InputOptions = {
     backgroundColor?: string;
     color?: string;
+    horizontalScrolling?: {labelsStep: number};
 }
 
 type InitSettings = {
     data: Data,
-    options?: Options
+    options?: InputOptions
 }
 
 type Point = {
@@ -32,6 +39,21 @@ type Offset = {
     distanceY: number;
 }
 // areas types
+type AreaDimentions = {
+    width: number;
+    height: number;
+}
+type ASizes = {
+    chart: AreaDimentions;
+    labels: AreaDimentions;
+    values: AreaDimentions;
+}
+type ClientRectType = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
 type GridOpt = {
     absoluteValues: number[];
     absValueInOnePixel: number;
@@ -63,11 +85,14 @@ export {
     Data,
     DefOptions,
     Options,
+    InputOptions,
     InitSettings,
     Point,
+    ASizes,
     Offset,
     GridOpt,
     AreaDrawProps,
+    ClientRectType,
     Couples,
     Color
 }

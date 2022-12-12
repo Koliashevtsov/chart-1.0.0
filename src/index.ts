@@ -1,4 +1,5 @@
 import Chart from './chart/chart'
+import { InputOptions } from './types';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const context = canvas.getContext('2d');
@@ -13,12 +14,15 @@ type Data = {
 }
 
 const data: Data = {
-    datasets: [{data: ['20', '13', '18', '26', '20', '25', '92', '30', '45']}],
-    labels: ['January', 'Fabruary', 'March', 'April', 'May', 'June', 'July', 'August', 'September']
+    datasets: [
+        {data: ['20', '13', '18', '26', '20', '25', '92', '30', '45', '55', '60', '20']},
+        {data: ['22', '15', '20', '28', '22', '27', '94', '32', '47', '60', '44', '30']}
+    ],
+    labels: ['Jan', 'Fab', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 };
 
-const options = {
-    
+const options: InputOptions = {
+    horizontalScrolling: { labelsStep: 80 }
 }
 
 

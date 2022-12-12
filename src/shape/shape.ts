@@ -1,4 +1,4 @@
-import { Data, Options, Point, Color, GridOpt, Offset } from '../types';
+import { Data, Options, InputOptions, Point, Color, GridOpt, Offset, ClientRectType, ASizes } from '../types';
 import { 
     defaultChartOptions as defOptions, 
     defaultSizes,
@@ -12,21 +12,8 @@ import { absValues } from '../helpers';
 type ShapeConstructor = {
     context: CanvasRenderingContext2D;
     data: Data;
-    options: Options;
+    options: InputOptions;
 }
-
-type Position = {
-    baseViewportPoint: Point;
-    baseChartAreaPoint: Point;
-}
-
-type ClientRectType = {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}
-
 
 
 class Shape {
@@ -36,6 +23,7 @@ class Shape {
     basePoint: Point;
     clientRect: ClientRectType;
     gridOpt: GridOpt;
+    areasSizes: ASizes;
     chartArea: ChartArea;
     labelsArea: LabelsArea;
     valuesArea: ValuesArea; 
@@ -46,15 +34,54 @@ class Shape {
         this.options = this._getOptions(options);
         this.basePoint = Object.freeze(basePoint);
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
+        this.areasSizes = this._getAreasSizes();
         this.gridOpt = null;
         this.chartArea = new ChartArea(this.ctx, this.data, this.options);
         this.labelsArea = new LabelsArea(this.ctx, this.data, this.options);
         this.valuesArea = new ValuesArea(this.ctx, this.data, this.options);
     } 
 
-    private _getOptions(options?: Options): Options {
+    private _getOptions(options?: InputOptions): Options {
         const opts = Boolean(options) ? Object.assign(defOptions, options) : defOptions;
         return opts;
+    }
+
+    private _getAreasSizes() {
+        let chartWidth;
+        let chartHeight;
+        let labelsWidth;
+        let labelsHeight = defaultSizes.horizontalAxisHeight;
+        let valuesWidth = defaultSizes.verticalAxisWidth;
+        let valuesHeight = this.clientRect.height;
+
+        if(!this.options.horizontalScrolling){
+            // chart area
+            chartWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
+            chartHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+            // labels area
+            labelsWidth = chartWidth;
+        } else {
+            // chart area
+            chartHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+            chartWidth = this.options.horizontalScrolling.labelsStep * (this.data.labels.length - 1);
+            // labels area
+            labelsWidth = chartWidth;
+        }
+
+        return {
+            chart: {
+                width: chartWidth,
+                height: chartHeight
+            },
+            labels: {
+                width: labelsWidth,
+                height: labelsHeight
+            },
+            values: {
+                width: valuesWidth,
+                height: valuesHeight
+            }
+        }
     }
 
     private _getGridOpt(height: number, width: number){   
@@ -65,6 +92,7 @@ class Shape {
         const horizontalStep = height / (horizontalLinesCount - 1);
         const verticalLinesCount = this.data.labels.length;
         const verticalStep = width / (verticalLinesCount - 1);
+        console.log('step', verticalStep);
         
         this.gridOpt =  {
             absoluteValues,
@@ -88,49 +116,45 @@ class Shape {
     }
  
     renderChartArea (offset: Offset) {
-        // width exclude default vertical axes area width
-        // height exclude default horizontal axes area height
-        const areaWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
-        const areaHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
         const pointX = this.basePoint.pointX + offset.distanceX;
         const pointY = this.basePoint.pointY + offset.distanceY;
-        console.log('chartArea pointX', pointX);
-        console.log('chartArea pointY', pointY);
-        
+        const height = this.areasSizes.chart.height;
+        const width = this.areasSizes.chart.width;
         
         // compute grid sizes
-        this._getGridOpt(areaHeight, areaWidth);
+        this._getGridOpt(height, width);
         // draw area
         this.chartArea.draw({
             basePoint: {pointX, pointY},
-            width: areaWidth,
-            height: areaHeight,
+            width: width,
+            height: height,
             gridOpt: this.gridOpt
         })
     }
 
     renderLabelsArea(offset: Offset){
-        const areaWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
-        const areaHeight = defaultSizes.horizontalAxisHeight;
         const pointX = this.basePoint.pointX + offset.distanceX;
         const pointY = this.clientRect.height - defaultSizes.horizontalAxisHeight + offset.distanceY;
+        const height = this.areasSizes.labels.height;
+        const width = this.areasSizes.labels.width;
+
         this.labelsArea.draw({
             basePoint: {pointX, pointY},
-            width: areaWidth,
-            height: areaHeight,
+            width: width,
+            height: height,
             gridOpt: this.gridOpt,
         })
     }
 
     renderValuesArea(){
-        const areaWidth = defaultSizes.verticalAxisWidth;
-        const areaHeight = this.clientRect.height;
-        const pointX = this.clientRect.width - areaWidth;
+        const height = this.areasSizes.values.height;
+        const width = this.areasSizes.values.width;
+        const pointX = this.clientRect.width - width;
         const pointY = this.basePoint.pointY;
         this.valuesArea.draw({
             basePoint: {pointX, pointY},
-            width: areaWidth,
-            height: areaHeight,
+            width: width,
+            height: height,
             gridOpt: this.gridOpt,
         })
     }
