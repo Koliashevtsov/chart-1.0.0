@@ -69,9 +69,12 @@ class Chart {
             const diffX = event.offsetX - this.cursorPoint.pointX;
             const areaOffsetX = this.offset.distanceX + diffX;
 
+            
+
             this._updateOffset({
                 distanceX: areaOffsetX,
             });
+            console.log('offset', areaOffsetX);
             
             // update cursor point
             this.cursorPoint.pointX = event.offsetX;
