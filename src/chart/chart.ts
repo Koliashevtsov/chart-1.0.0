@@ -2,6 +2,8 @@ import Shape from '../shape/shape';
 
 import { InitSettings, Point, Offset } from '../types';
 
+import Core from '../core';
+
 type ChartConstructor = {
     context: CanvasRenderingContext2D
 }
@@ -92,8 +94,8 @@ class Chart {
     init(settings: InitSettings){
         const { data, options } = settings;
 
-        this.shape = new Shape({context: this.ctx, data, options});
-        this._render();
+        // this.shape = new Shape({context: this.ctx, data, options});
+        // this._render();
 
 
         // testing
@@ -101,6 +103,37 @@ class Chart {
         // this.shape.renderLabelsArea()
         // this.shape.renderValuesArea()
         // this.shape.renderViewport()
+
+        // testing
+        type Shape = {
+            id: string;
+            update: () => void,
+            render: () => void,
+            draw: () => void
+        }
+
+        const area1: Shape = {
+            id: '0',
+            draw: function(){console.log('draw1');
+            },
+            update: function(){console.log('update1'), area1.draw();
+            },
+            render: function(){console.log('render1'), area1.draw()}
+        }
+        const area2: Shape = {
+            id: '1',
+            draw: function(){console.log('draw2');
+            },
+            update: function(){console.log('update2'), area2.draw();
+            },
+            render: function(){console.log('render2'), area2.draw()}
+        }
+
+        const core = new Core();
+        core.register(area1);
+        core.register(area2);
+        core.run();
+        
     }
 }
 
