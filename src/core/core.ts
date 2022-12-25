@@ -1,6 +1,6 @@
 import Controller from '../controller';
 
-import { TShape} from '../types';
+import { TObserver} from '../types';
 
 
 class Core {
@@ -10,8 +10,8 @@ class Core {
         this.controller = new Controller()
     }
 
-    register(shape: TShape){
-        this.controller.add(shape);
+    register(area: TObserver){
+        this.controller.add(area);
     }
 
     private _initialize(){

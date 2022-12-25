@@ -1,4 +1,4 @@
-import { TShape } from '../types';
+import { TObserver } from '../types';
 
 enum Message {
     INITIALIZE = 'INITIALIZE',
@@ -9,11 +9,10 @@ enum Message {
 
 type SwitcherP = {
     message: Message,
-    data?: object,
-    observers: Array<TShape>
+    observers: Array<TObserver>
 }
 
-export const switcher = ({message, data, observers}: SwitcherP) => {
+export const switcher = ({message, observers}: SwitcherP) => {
     switch(message){
         case 'INITIALIZE':
             observers.forEach(observer => observer.initialize());

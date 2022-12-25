@@ -1,9 +1,8 @@
-import Shape from '../shape/shape';
-
-import { InitSettings, Point, Offset, Data, Options, DefOptions, InputOptions, TShape } from '../types';
+import { InitSettings, Point, Offset, Data, Options, DefOptions, InputOptions, TObserver } from '../types';
 
 import Core from '../core';
 import Config from '../config';
+import { ChartArea, LabelsArea, ValuesArea } from '../areas';
 
 type ChartConstructor = {
     context: CanvasRenderingContext2D
@@ -11,14 +10,12 @@ type ChartConstructor = {
 
 class Chart {
     ctx: CanvasRenderingContext2D;
-    shape: Shape | null;
     cursorPoint: Point;
     drawing: boolean;
     offset: Offset;
 
     constructor({ context }: ChartConstructor){
         this.ctx = context;
-        this.shape = null;
         this.cursorPoint = {pointX: 0, pointY: 0};
         this.drawing = false
         this.offset = {
@@ -29,16 +26,6 @@ class Chart {
         this._addEventListeners()
     }
 
-    private _render(){
-        // clear canvas
-        this._clear();
-        // render all parts of canvas
-        console.log('render');
-        this.shape.renderChartArea(this.offset);
-        this.shape.renderLabelsArea(this.offset);
-        this.shape.renderValuesArea();
-        this.shape.renderViewport();
-    }
 
     private _clear(){
         // clear all canvas
@@ -49,7 +36,7 @@ class Chart {
     private _updateOffset(changedObj: {}){
         Object.assign(this.offset, changedObj);
         // redraw canvas
-        this._render();
+        // this._render();
     }
 
     private _mouseDown(event: MouseEvent){
@@ -106,38 +93,16 @@ class Chart {
         // this.shape.renderViewport()
 
         // testing
-        
 
-        const area1: TShape = {
-            id: '0',
-            ctx: this.ctx,
-            data,
-            options,
-            initialize: function(){console.log('initializing1');
-            },
-            draw: function(){console.log('draw1');
-            },
-            update: function(){console.log('update1'), area1.draw();
-            },
-            render: function(){console.log('render1'), area1.draw()}
-        }
-        const area2: TShape = {
-            id: '1',
-            ctx: this.ctx,
-            data,
-            options,
-            initialize: function(){console.log('initializing2');
-            },
-            draw: function(){console.log('draw2');
-            },
-            update: function(){console.log('update2'), area2.draw();
-            },
-            render: function(){console.log('render2'), area2.draw()}
-        }
+        const config = new Config({ctx: this.ctx, data, inputOptions: options});
+        const chartArea = new ChartArea(config);
+        const labelsArea = new LabelsArea(config);
+        const valuesArea = new ValuesArea(config);
 
         const core = new Core();
-        core.register(area1);
-        core.register(area2);
+        core.register(chartArea);
+        core.register(labelsArea);
+        core.register(valuesArea);
         core.run();
         
     }

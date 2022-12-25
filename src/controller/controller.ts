@@ -1,6 +1,6 @@
 import { Observable } from '../utils';
 
-import { TShape } from '../types';
+import { TObserver } from '../types';
 
 enum Message {
     INITIALIZE = 'INITIALIZE',
@@ -15,8 +15,8 @@ class Controller {
         this.observable = new Observable();
     }
 
-    add(shape: TShape){
-        this.observable.subscribe(shape);
+    add(area: TObserver){
+        this.observable.subscribe(area);
     }
 
     initialize(){

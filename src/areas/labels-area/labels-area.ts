@@ -1,27 +1,40 @@
-import { AreaDrawProps, AreaInitProps } from '../../types';
+import { Drawing } from '../../drawing/drawing';
 
-import { Area } from '../../area/area';
+import { TObserver, TConfig } from '../../types';
 
-export class LabelsArea extends Area {
-    constructor({ctx, data, height, width, gridOpt, options}: AreaInitProps){
-        super({ctx, data, height, width, gridOpt, options})
+export class LabelsArea implements TObserver{
+    id: string;
+    drawing: Drawing;
+
+    constructor(config: TConfig){
+        this.id = '1';
+        this.drawing = new Drawing({
+            ctx: config.ctx, 
+            data: config.data, 
+            height: config.areasSizes.labels.height, 
+            width: config.areasSizes.labels.width,
+            basePoint: config.areasPoints.labels, 
+            gridOpt: config.gridOpt, 
+            options: config.options
+        })
     }
 
-    draw({ basePoint }: AreaDrawProps ){
-        this.basePoint = basePoint;
+    draw(){
+        this.drawing.drawBackground();
+        this.drawing.drawLabelMarks()
+        this.drawing.drawLabelTexts()
+    
+    }
 
-        const labelsArea = new Path2D();
-        labelsArea.rect(
-            this.basePoint.pointX,
-            this.basePoint.pointY,
-            this.width,
-            this.height
-        )
-        this.ctx.fillStyle = this.options.backgroundColor;
-        this.ctx.fill(labelsArea);
-        this.ctx.save();
-        // drawing vertical marks for labels
-        this.drawLabelMarks()
-        this.drawLabelTexts()
+    initialize(){
+
+    }
+
+    render(){
+        this.draw()
+    }
+
+    update(){
+        this.render()
     }
 }

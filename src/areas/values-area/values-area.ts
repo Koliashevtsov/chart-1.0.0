@@ -1,26 +1,40 @@
-import { Area } from '../../area';
-import { AreaInitProps, AreaDrawProps } from '../../types';
+import { Drawing } from '../../drawing';
 
-export class ValuesArea extends Area {
-    constructor({ctx, data, height, width, gridOpt, options}: AreaInitProps){
-        super({ctx, data, height, width, gridOpt, options})
+import { TObserver, TConfig } from '../../types';
+
+export class ValuesArea implements TObserver {
+    id: string;
+    drawing: Drawing;
+
+    constructor(config: TConfig){
+        this.id = '2';
+        this.drawing = new Drawing({
+            ctx: config.ctx, 
+            data: config.data, 
+            height: config.areasSizes.values.height, 
+            width: config.areasSizes.values.width,
+            basePoint: config.areasPoints.values, 
+            gridOpt: config.gridOpt, 
+            options: config.options
+        })
     }
 
-    draw({ basePoint }: AreaDrawProps) {
-        this.basePoint = basePoint;
-        
-        const valuesArea = new Path2D();
-        valuesArea.rect(
-            this.basePoint.pointX,
-            this.basePoint.pointY,
-            this.width,
-            this.height
-        );
-        this.ctx.fillStyle = this.options.backgroundColor;
-        this.ctx.fill(valuesArea);
-        this.ctx.save();
+    draw() {
+        this.drawing.drawBackground()
         //drawing horizontal marks for values
-        this.drawValueMarks();
-        this.drawValueTexts(this.gridOpt.absoluteValues)
+        this.drawing.drawValueMarks();
+        this.drawing.drawValueTexts()
+    }
+
+    initialize(){
+
+    }
+
+    render(){
+        this.draw()
+    }
+
+    update(){
+        this.render()
     }
 }

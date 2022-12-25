@@ -29,11 +29,8 @@ type InitSettings = {
     data: Data,
     options?: InputOptions
 }
-type TShape = {
+type TObserver = {
     id: string;
-    ctx: CanvasRenderingContext2D;
-    data: Data;
-    options: Options | InputOptions;
     initialize: () => void;
     update: () => void;
     render: () => void;
@@ -88,11 +85,12 @@ type GridOpt = {
     verticalStep: number;
     horizontalStep: number;
 }
-type AreaInitProps = {
+type DrawingInitProps = {
     ctx: CanvasRenderingContext2D;
     data: Data;
     height: number;
     width: number;
+    basePoint: Point;
     gridOpt: GridOpt;
     options: Options
 }
@@ -117,14 +115,14 @@ export {
     Options,
     InputOptions,
     InitSettings,
-    TShape,
+    TObserver,
     TConfig,
     Point,
     ASizes,
     APoints,
     Offset,
     GridOpt,
-    AreaInitProps,
+    DrawingInitProps,
     AreaDrawProps,
     ClientRectType,
     Couples,

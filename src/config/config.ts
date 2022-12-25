@@ -32,11 +32,11 @@ class Config implements TConfig{
         this.data = data;
         this.options = this._getOptions(inputOptions);
         this.basePoint = Object.freeze(basePoint);
+        this.offset = baseOffset;
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
         this.areasSizes = this._getAreasSizes();
         this.areasPoints = this._getAreasPoints();
         this.gridOpt = this._getGridOpt(this.areasSizes.chart.height, this.areasSizes.chart.width);
-        this.offset = baseOffset;
     }
 
     private _getOptions(options?: InputOptions): Options {

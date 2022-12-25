@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples, Data, AreaInitProps } from '../types';
+import { GridOpt, Options, Point, Couples, Data, DrawingInitProps } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -10,7 +10,7 @@ import {
     pointsForChart
 } from '../helpers';
 
-export class Area {
+export class Drawing {
     ctx: CanvasRenderingContext2D;
     data: Data;
     options: Options
@@ -19,14 +19,27 @@ export class Area {
     height: number;
     gridOpt: GridOpt;
 
-    constructor({ctx, data, height, width, gridOpt, options}: AreaInitProps){
+    constructor({ctx, data, height, width, basePoint, gridOpt, options}: DrawingInitProps){
         this.ctx = ctx;
         this.data = data;
         this.options = options;
         this.width = width;
         this.height = height;
         this.gridOpt = gridOpt;
-        this.basePoint = null;
+        this.basePoint = basePoint;
+    }
+
+    drawBackground(){
+        const background = new Path2D();
+        background.rect(
+            this.basePoint.pointX,
+            this.basePoint.pointY,
+            this.width,
+            this.height
+        )
+        this.ctx.fillStyle = this.options.backgroundColor;
+        this.ctx.fill(background);
+        this.ctx.save();
     }
 
     drawGrid(){
@@ -121,7 +134,8 @@ export class Area {
         }
     }
 
-    drawValueTexts(values: Array<number>){
+    drawValueTexts(){
+        const values = this.gridOpt.absoluteValues;
         const offsetText = 20;
         const bPoint = {pointX: this.basePoint.pointX + offsetText, pointY: this.basePoint.pointY};
         const points = pointsForValues(bPoint, this.gridOpt);

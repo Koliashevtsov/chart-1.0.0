@@ -1,6 +1,6 @@
 import { switcher } from './switcher';
 
-import { TShape } from '../types';
+import { TObserver } from '../types';
 
 enum Message {
     INITIALIZE = 'INITIALIZE',
@@ -10,18 +10,16 @@ enum Message {
 
 type NotifyD = {
     message: Message,
-    data?: object
 }
-type ShapeObserver = TShape;
 
 export class Observable {
-    observers: Array<ShapeObserver>
+    observers: Array<TObserver>
 
     constructor(){
         this.observers = []
     }
 
-    subscribe(observer: ShapeObserver){
+    subscribe(observer: TObserver){
         this.observers.push(observer)
     }
 
@@ -29,7 +27,7 @@ export class Observable {
         this.observers.find(observer => observer.id === id)
     }
 
-    notify({message, data}: NotifyD){
-        switcher({message, data, observers: this.observers})
+    notify({message}: NotifyD){
+        switcher({message, observers: this.observers})
     }
 }

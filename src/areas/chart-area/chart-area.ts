@@ -1,39 +1,41 @@
-import { Area } from '../../area/';
+import { Drawing } from '../../drawing';
 
-import { AreaDrawProps, AreaInitProps } from '../../types';
+import { TObserver, TConfig} from '../../types';
 
-export class ChartArea extends Area {
-    constructor({ctx, data, height, width, gridOpt, options}: AreaInitProps){
-        super({ctx, data, height, width, gridOpt, options})
+export class ChartArea implements TObserver {
+    id: string;
+    drawing: Drawing;
+
+    constructor(config: TConfig){
+        this.id = '0'
+        this.drawing = new Drawing({
+            ctx: config.ctx, 
+            data: config.data, 
+            height: config.areasSizes.chart.height, 
+            width: config.areasSizes.chart.width,
+            basePoint: config.areasPoints.chart, 
+            gridOpt: config.gridOpt, 
+            options: config.options
+        })
     }
 
-    draw({ basePoint }: AreaDrawProps){
-        this.basePoint = basePoint;
-
-        const chartArea = new Path2D();
-        
-        // draw rectangle
-        chartArea.rect(
-            this.basePoint.pointX, 
-            this.basePoint.pointY, 
-            this.width, 
-            this.height
-        );
-        this.ctx.fillStyle = this.options.backgroundColor;
-        this.ctx.fill(chartArea);
-        this.ctx.save();
-            
+    draw(){
+        this.drawing.drawBackground()
         // draw grid
-        this.drawGrid();
+        this.drawing.drawGrid();
         // draw chart
-        this.drawChart();
+        this.drawing.drawChart();
+    }
+
+    initialize(){
+
     }
 
     render(){
-        // this.draw();
+        this.draw()
     }
 
     update(){
-        this.render();
+        this.render()
     }
 }
