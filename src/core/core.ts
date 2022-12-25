@@ -1,11 +1,7 @@
 import Controller from '../controller';
 
-type Shape = {
-    id: string;
-    update: () => void,
-    render: () => void,
-    draw: () => void
-}
+import { TShape} from '../types';
+
 
 class Core {
     controller: Controller;
@@ -13,9 +9,8 @@ class Core {
     constructor(){
         this.controller = new Controller()
     }
-    
 
-    register(shape: Shape){
+    register(shape: TShape){
         this.controller.add(shape);
     }
 

@@ -1,17 +1,18 @@
+import { switcher } from './switcher';
+
+import { TShape } from '../types';
+
 enum Message {
     INITIALIZE = 'INITIALIZE',
     RENDER = 'RENDER',
     UPDATE = 'UPDATE'
 };
 
-type Shape = {
-    id: string;
-    update: () => void,
-    render: () => void,
-    draw: () => void
+type NotifyD = {
+    message: Message,
+    data?: object
 }
-
-type ShapeObserver = Shape
+type ShapeObserver = TShape;
 
 export class Observable {
     observers: Array<ShapeObserver>
@@ -28,16 +29,7 @@ export class Observable {
         this.observers.find(observer => observer.id === id)
     }
 
-    notify(message: Message){
-        switch(message){
-            case 'UPDATE':
-                this.observers.forEach(observer => observer.update());
-                break;
-            case 'RENDER':
-                this.observers.forEach(observer => observer.render());
-                break;
-            default: 
-                return
-        }
+    notify({message, data}: NotifyD){
+        switcher({message, data, observers: this.observers})
     }
 }

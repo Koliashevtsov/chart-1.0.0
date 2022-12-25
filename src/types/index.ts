@@ -29,7 +29,16 @@ type InitSettings = {
     data: Data,
     options?: InputOptions
 }
-
+type TShape = {
+    id: string;
+    ctx: CanvasRenderingContext2D;
+    data: Data;
+    options: Options | InputOptions;
+    initialize: () => void;
+    update: () => void;
+    render: () => void;
+    draw: () => void;
+}
 type Point = {
     pointX: number;
     pointY: number;
@@ -92,6 +101,7 @@ export {
     Options,
     InputOptions,
     InitSettings,
+    TShape,
     Point,
     ASizes,
     Offset,

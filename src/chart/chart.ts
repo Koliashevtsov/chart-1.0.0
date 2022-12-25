@@ -1,6 +1,6 @@
 import Shape from '../shape/shape';
 
-import { InitSettings, Point, Offset } from '../types';
+import { InitSettings, Point, Offset, Data, Options, DefOptions, InputOptions, TShape } from '../types';
 
 import Core from '../core';
 
@@ -105,23 +105,28 @@ class Chart {
         // this.shape.renderViewport()
 
         // testing
-        type Shape = {
-            id: string;
-            update: () => void,
-            render: () => void,
-            draw: () => void
-        }
+        
 
-        const area1: Shape = {
+        const area1: TShape = {
             id: '0',
+            ctx: this.ctx,
+            data,
+            options,
+            initialize: function(){console.log('initializing1');
+            },
             draw: function(){console.log('draw1');
             },
             update: function(){console.log('update1'), area1.draw();
             },
             render: function(){console.log('render1'), area1.draw()}
         }
-        const area2: Shape = {
+        const area2: TShape = {
             id: '1',
+            ctx: this.ctx,
+            data,
+            options,
+            initialize: function(){console.log('initializing2');
+            },
             draw: function(){console.log('draw2');
             },
             update: function(){console.log('update2'), area2.draw();

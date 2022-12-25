@@ -1,17 +1,12 @@
 import { Observable } from '../utils';
 
+import { TShape } from '../types';
+
 enum Message {
     INITIALIZE = 'INITIALIZE',
     RENDER = 'RENDER',
     UPDATE = 'UPDATE'
 };
-
-type Shape = {
-    id: string;
-    update: () => void,
-    render: () => void,
-    draw: () => void
-}
 
 class Controller {
     observable: Observable
@@ -20,16 +15,20 @@ class Controller {
         this.observable = new Observable();
     }
 
-    add(shape: Shape){
+    add(shape: TShape){
         this.observable.subscribe(shape);
     }
 
     initialize(){
-        this.observable.notify(Message.INITIALIZE);
+        this.observable.notify({message: Message.INITIALIZE});
     }
 
     render(){
-        this.observable.notify(Message.RENDER);
+        this.observable.notify({message: Message.RENDER});
+    }
+
+    update(){
+        this.observable.notify({message: Message.UPDATE});
     }
 }
 
