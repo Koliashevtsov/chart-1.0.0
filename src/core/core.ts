@@ -14,11 +14,11 @@ class Core {
         this.controller.add(shape);
     }
 
-    _initialize(){
+    private _initialize(){
         this.controller.initialize();
     }
 
-    _render(){
+    private _render(){
         this.controller.render();
     }
 

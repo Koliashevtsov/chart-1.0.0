@@ -1,66 +1,43 @@
-import { Data, Options, InputOptions, Point, Color, GridOpt, Offset, ClientRectType, ASizes } from '../types';
 import { 
     defaultChartOptions as defOptions, 
     defaultSizes,
     basePoint,
+    baseOffset,
     defaultGridOpt 
 } from '../common/';
 
-import { ChartArea, LabelsArea, ValuesArea } from '../areas';
 import { absValues } from '../helpers';
 
-type ShapeConstructor = {
-    context: CanvasRenderingContext2D;
+import { APoints, ASizes, ClientRectType, Data, GridOpt, InputOptions, Offset, Options, Point, TConfig } from '../types';
+
+type ConfigProps = {
+    ctx: CanvasRenderingContext2D;
     data: Data;
-    options: InputOptions;
+    inputOptions: InputOptions;
 }
 
-
-class Shape {
+class Config implements TConfig{
     ctx: CanvasRenderingContext2D;
     data: Data;
     options: Options;
     basePoint: Point;
     clientRect: ClientRectType;
-    gridOpt: GridOpt;
     areasSizes: ASizes;
-    chartArea: ChartArea;
-    labelsArea: LabelsArea;
-    valuesArea: ValuesArea; 
+    areasPoints: APoints;
+    gridOpt: GridOpt;
+    offset: Offset;
 
-    constructor({ context, data, options }: ShapeConstructor){
-        this.ctx = context;
+    constructor({ctx, data, inputOptions}: ConfigProps){
+        this.ctx = ctx;
         this.data = data;
-        this.options = this._getOptions(options);
+        this.options = this._getOptions(inputOptions);
         this.basePoint = Object.freeze(basePoint);
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
         this.areasSizes = this._getAreasSizes();
+        this.areasPoints = this._getAreasPoints();
         this.gridOpt = this._getGridOpt(this.areasSizes.chart.height, this.areasSizes.chart.width);
-        this.chartArea = new ChartArea({
-            ctx: this.ctx,
-            data: this.data,
-            height: this.areasSizes.chart.height,
-            width: this.areasSizes.chart.width,
-            gridOpt: this.gridOpt,
-            options: this.options
-        });
-        this.labelsArea = new LabelsArea({
-            ctx: this.ctx,
-            data: this.data,
-            height: this.areasSizes.labels.height,
-            width: this.areasSizes.labels.width,
-            gridOpt: this.gridOpt,
-            options: this.options
-        });
-        this.valuesArea = new ValuesArea({
-            ctx: this.ctx,
-            data: this.data,
-            height: this.areasSizes.values.height,
-            width: this.areasSizes.values.width,
-            gridOpt: this.gridOpt,
-            options: this.options
-        });
-    } 
+        this.offset = baseOffset;
+    }
 
     private _getOptions(options?: InputOptions): Options {
         const opts = Boolean(options) ? Object.assign(defOptions, options) : defOptions;
@@ -105,6 +82,23 @@ class Shape {
         }
     }
 
+    private _getAreasPoints(){
+        return {
+            chart: {
+                pointX: this.basePoint.pointX + this.offset.distanceX,
+                pointY: this.basePoint.pointY + this.offset.distanceY
+            },
+            labels: {
+                pointX: this.basePoint.pointX + this.offset.distanceX,
+                pointY: this.clientRect.height - defaultSizes.horizontalAxisHeight + this.offset.distanceY
+            },
+            values: {
+                pointX: this.clientRect.width - this.areasSizes.values.width,
+                pointY: this.basePoint.pointY
+            }
+        }
+    }
+
     private _getGridOpt(height: number, width: number){   
         const absoluteValues = absValues(this.data, defaultGridOpt.yScale);
         const absOffsetY = absoluteValues[absoluteValues.length - 1];
@@ -124,43 +118,6 @@ class Shape {
             horizontalStep
         }
     }
-
-    renderViewport () {
-        this.ctx.fillStyle = Color.Grey;
-        this.ctx.strokeRect(
-            this.basePoint.pointX, 
-            this.basePoint.pointY, 
-            this.clientRect.width, 
-            this.clientRect.height
-        );
-    }
- 
-    renderChartArea (offset: Offset) {
-        const pointX = this.basePoint.pointX + offset.distanceX;
-        const pointY = this.basePoint.pointY + offset.distanceY;
-        
-        this.chartArea.draw({
-            basePoint: {pointX, pointY}
-        })
-    }
-
-    renderLabelsArea(offset: Offset){
-        const pointX = this.basePoint.pointX + offset.distanceX;
-        const pointY = this.clientRect.height - defaultSizes.horizontalAxisHeight + offset.distanceY;
-
-        this.labelsArea.draw({
-            basePoint: {pointX, pointY}
-        })
-    }
-
-    renderValuesArea(){
-        const pointX = this.clientRect.width - this.areasSizes.values.width;
-        const pointY = this.basePoint.pointY;
-        
-        this.valuesArea.draw({
-            basePoint: {pointX, pointY}
-        })
-    }
 }
 
-export default Shape
+export default Config;

@@ -28,4 +28,12 @@ export class ChartArea extends Area {
         // draw chart
         this.drawChart();
     }
+
+    render(){
+        // this.draw();
+    }
+
+    update(){
+        this.render();
+    }
 }

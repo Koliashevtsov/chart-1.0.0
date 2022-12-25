@@ -3,6 +3,7 @@ import Shape from '../shape/shape';
 import { InitSettings, Point, Offset, Data, Options, DefOptions, InputOptions, TShape } from '../types';
 
 import Core from '../core';
+import Config from '../config';
 
 type ChartConstructor = {
     context: CanvasRenderingContext2D

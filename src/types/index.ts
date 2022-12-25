@@ -39,6 +39,17 @@ type TShape = {
     render: () => void;
     draw: () => void;
 }
+type TConfig = {
+    ctx: CanvasRenderingContext2D;
+    data: Data;
+    options: Options;
+    basePoint: Point;
+    clientRect: ClientRectType;
+    areasSizes: ASizes;
+    areasPoints: APoints;
+    gridOpt: GridOpt;
+    offset: Offset;
+}
 type Point = {
     pointX: number;
     pointY: number;
@@ -56,6 +67,11 @@ type ASizes = {
     chart: AreaDimentions;
     labels: AreaDimentions;
     values: AreaDimentions;
+}
+type APoints = {
+    chart: Point;
+    labels: Point;
+    values: Point;
 }
 type ClientRectType = {
     x: number;
@@ -102,8 +118,10 @@ export {
     InputOptions,
     InitSettings,
     TShape,
+    TConfig,
     Point,
     ASizes,
+    APoints,
     Offset,
     GridOpt,
     AreaInitProps,

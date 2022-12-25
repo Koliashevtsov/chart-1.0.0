@@ -1,1 +1,1 @@
-export { defaultChartOptions, defaultSizes, basePoint, defaultGridOpt } from './constants';
+export { defaultChartOptions, defaultSizes, basePoint, baseOffset, defaultGridOpt } from './constants';

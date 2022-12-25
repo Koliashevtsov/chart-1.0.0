@@ -19,10 +19,15 @@ const basePoint = {
     pointX: 0,
     pointY: 0
 }
+const baseOffset = {
+    distanceX: 0,
+    distanceY: 0
+}
 
 export {
     defaultChartOptions,
     defaultSizes,
     defaultGridOpt,
-    basePoint
+    basePoint,
+    baseOffset
 }
