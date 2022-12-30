@@ -1,12 +1,6 @@
 import { Observable } from '../utils';
 
-import { TObserver } from '../types';
-
-enum Message {
-    INITIALIZE = 'INITIALIZE',
-    RENDER = 'RENDER',
-    UPDATE = 'UPDATE'
-};
+import { TObserver, Message, TConfig } from '../types';
 
 class Controller {
     observable: Observable
@@ -19,16 +13,16 @@ class Controller {
         this.observable.subscribe(area);
     }
 
-    initialize(){
-        this.observable.notify({message: Message.INITIALIZE});
+    initialize(config: TConfig){
+        this.observable.notify({message: Message.INITIALIZE, config});
     }
 
     render(){
-        this.observable.notify({message: Message.RENDER});
+        this.observable.notify({message: Message.RENDER, config: null});
     }
 
-    update(){
-        this.observable.notify({message: Message.UPDATE});
+    update(config: TConfig){
+        this.observable.notify({message: Message.UPDATE, config});
     }
 }
 

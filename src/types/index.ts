@@ -31,11 +31,20 @@ type InitSettings = {
 }
 type TObserver = {
     id: string;
-    initialize: () => void;
-    update: () => void;
+    initialize: (config: TConfig) => void;
+    update: (config: TConfig) => void;
     render: () => void;
     draw: () => void;
 }
+type NotifyFull = {
+    message: Message;
+    config: TConfig;
+}
+type ConfigProps = {
+    ctx: CanvasRenderingContext2D;
+    data: Data;
+    inputOptions: InputOptions;
+};
 type TConfig = {
     ctx: CanvasRenderingContext2D;
     data: Data;
@@ -104,6 +113,11 @@ type Couples = {
 }
 
 // enums
+enum Message {
+    INITIALIZE = 'INITIALIZE',
+    RENDER = 'RENDER',
+    UPDATE = 'UPDATE'
+};
 enum Color {
     Grey = '#34495e',
     Orange = '#edbb99'
@@ -116,6 +130,7 @@ export {
     InputOptions,
     InitSettings,
     TObserver,
+    ConfigProps,
     TConfig,
     Point,
     ASizes,
@@ -126,5 +141,7 @@ export {
     AreaDrawProps,
     ClientRectType,
     Couples,
-    Color
+    Message,
+    Color,
+    NotifyFull
 }

@@ -14,6 +14,8 @@ class Chart {
     drawing: boolean;
     offset: Offset;
 
+    core: Core;
+
     constructor({ context }: ChartConstructor){
         this.ctx = context;
         this.cursorPoint = {pointX: 0, pointY: 0};
@@ -24,6 +26,8 @@ class Chart {
         }
 
         this._addEventListeners()
+
+        this.core = null;
     }
 
 
@@ -93,17 +97,19 @@ class Chart {
         // this.shape.renderViewport()
 
         // testing
+        this.core = new Core({ctx: this.ctx, data, inputOptions: options})
+        
+        const chartArea = new ChartArea();
+        const labelsArea = new LabelsArea();
+        const valuesArea = new ValuesArea();
 
-        const config = new Config({ctx: this.ctx, data, inputOptions: options});
-        const chartArea = new ChartArea(config);
-        const labelsArea = new LabelsArea(config);
-        const valuesArea = new ValuesArea(config);
+       
+        this.core.register(chartArea);
+        this.core.register(labelsArea);
+        this.core.register(valuesArea);
+        this.core.run();
 
-        const core = new Core();
-        core.register(chartArea);
-        core.register(labelsArea);
-        core.register(valuesArea);
-        core.run();
+        // and add functionality to change config
         
     }
 }

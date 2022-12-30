@@ -1,4 +1,4 @@
-import { TObserver } from '../types';
+import { NotifyFull, TConfig, TObserver } from '../types';
 
 enum Message {
     INITIALIZE = 'INITIALIZE',
@@ -6,22 +6,16 @@ enum Message {
     UPDATE = 'UPDATE'
 };
 
-
-type SwitcherP = {
-    message: Message,
-    observers: Array<TObserver>
-}
-
-export const switcher = ({message, observers}: SwitcherP) => {
+export const switcher = ({ message, config }: NotifyFull, observers: Array<TObserver>) => {
     switch(message){
         case 'INITIALIZE':
-            observers.forEach(observer => observer.initialize());
+            observers.forEach(observer => observer.initialize(config));
             break;
         case 'RENDER':
             observers.forEach(observer => observer.render());
             break;
         case 'UPDATE':
-            observers.forEach(observer => observer.update());
+            observers.forEach(observer => observer.update(config));
             break;
         default: 
             return

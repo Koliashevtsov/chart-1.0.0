@@ -1,16 +1,7 @@
 import { switcher } from './switcher';
 
-import { TObserver } from '../types';
+import { NotifyFull, TConfig, TObserver, } from '../types';
 
-enum Message {
-    INITIALIZE = 'INITIALIZE',
-    RENDER = 'RENDER',
-    UPDATE = 'UPDATE'
-};
-
-type NotifyD = {
-    message: Message,
-}
 
 export class Observable {
     observers: Array<TObserver>
@@ -27,7 +18,7 @@ export class Observable {
         this.observers.find(observer => observer.id === id)
     }
 
-    notify({message}: NotifyD){
-        switcher({message, observers: this.observers})
+    notify(data: NotifyFull){
+        switcher(data, this.observers)
     }
 }

@@ -6,17 +6,9 @@ export class ValuesArea implements TObserver {
     id: string;
     drawing: Drawing;
 
-    constructor(config: TConfig){
+    constructor(){
         this.id = '2';
-        this.drawing = new Drawing({
-            ctx: config.ctx, 
-            data: config.data, 
-            height: config.areasSizes.values.height, 
-            width: config.areasSizes.values.width,
-            basePoint: config.areasPoints.values, 
-            gridOpt: config.gridOpt, 
-            options: config.options
-        })
+        this.drawing = null;
     }
 
     draw() {
@@ -26,8 +18,16 @@ export class ValuesArea implements TObserver {
         this.drawing.drawValueTexts()
     }
 
-    initialize(){
-
+    initialize(config: TConfig){
+        this.drawing = new Drawing({
+            ctx: config.ctx, 
+            data: config.data, 
+            height: config.areasSizes.values.height, 
+            width: config.areasSizes.values.width,
+            basePoint: config.areasPoints.values, 
+            gridOpt: config.gridOpt, 
+            options: config.options
+        })
     }
 
     render(){

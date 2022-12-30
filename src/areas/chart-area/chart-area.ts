@@ -6,17 +6,9 @@ export class ChartArea implements TObserver {
     id: string;
     drawing: Drawing;
 
-    constructor(config: TConfig){
+    constructor(){
         this.id = '0'
-        this.drawing = new Drawing({
-            ctx: config.ctx, 
-            data: config.data, 
-            height: config.areasSizes.chart.height, 
-            width: config.areasSizes.chart.width,
-            basePoint: config.areasPoints.chart, 
-            gridOpt: config.gridOpt, 
-            options: config.options
-        })
+        this.drawing = null;
     }
 
     draw(){
@@ -27,8 +19,16 @@ export class ChartArea implements TObserver {
         this.drawing.drawChart();
     }
 
-    initialize(){
-
+    initialize(config: TConfig){
+        this.drawing = new Drawing({
+            ctx: config.ctx, 
+            data: config.data, 
+            height: config.areasSizes.chart.height, 
+            width: config.areasSizes.chart.width,
+            basePoint: config.areasPoints.chart, 
+            gridOpt: config.gridOpt, 
+            options: config.options
+        })
     }
 
     render(){

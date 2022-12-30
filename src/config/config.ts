@@ -8,13 +8,21 @@ import {
 
 import { absValues } from '../helpers';
 
-import { APoints, ASizes, ClientRectType, Data, GridOpt, InputOptions, Offset, Options, Point, TConfig } from '../types';
+import { 
+    APoints, 
+    ASizes, 
+    ClientRectType, 
+    Data, 
+    GridOpt, 
+    InputOptions, 
+    Offset, 
+    Options, 
+    Point, 
+    TConfig, 
+    ConfigProps 
+} from '../types';
 
-type ConfigProps = {
-    ctx: CanvasRenderingContext2D;
-    data: Data;
-    inputOptions: InputOptions;
-}
+
 
 class Config implements TConfig{
     ctx: CanvasRenderingContext2D;

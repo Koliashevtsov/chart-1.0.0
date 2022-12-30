@@ -1,13 +1,16 @@
+import Config from '../config';
 import Controller from '../controller';
 
-import { TObserver} from '../types';
+import { TObserver, ConfigProps } from '../types';
 
 
 class Core {
     controller: Controller;
+    config: Config;
 
-    constructor(){
+    constructor({ctx, data, inputOptions}: ConfigProps){
         this.controller = new Controller()
+        this.config = new Config({ctx, data, inputOptions})
     }
 
     register(area: TObserver){
@@ -15,7 +18,7 @@ class Core {
     }
 
     private _initialize(){
-        this.controller.initialize();
+        this.controller.initialize(this.config);
     }
 
     private _render(){
