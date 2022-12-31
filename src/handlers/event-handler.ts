@@ -78,7 +78,7 @@ class EventHandler {
         }
 
         const config = { ...this.config, areasPoints: updatedPoints}
-        
+        this.controller.clear();
         this.controller.update(config);
     }
 

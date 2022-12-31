@@ -34,6 +34,7 @@ type TObserver = {
     initialize: (config: TConfig) => void;
     update: (config: TConfig) => void;
     render: () => void;
+    clear: () => void;
 }
 type NotifyFull = {
     message: Message;
@@ -114,7 +115,8 @@ type Couples = {
 enum Message {
     INITIALIZE = 'INITIALIZE',
     RENDER = 'RENDER',
-    UPDATE = 'UPDATE'
+    UPDATE = 'UPDATE',
+    CLEAR = 'CLEAR'
 };
 enum Color {
     Grey = '#34495e',

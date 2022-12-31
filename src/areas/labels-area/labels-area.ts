@@ -17,7 +17,7 @@ export class LabelsArea implements TObserver{
         this.drawing.drawLabelTexts()
     }
 
-    private _clear(){
+    clear(){
         this.drawing.clear()
     }
 
@@ -31,7 +31,6 @@ export class LabelsArea implements TObserver{
 
     update(config: TConfig){
         this._createDrawing(config);
-        this._clear();
         this.render()
     }
 

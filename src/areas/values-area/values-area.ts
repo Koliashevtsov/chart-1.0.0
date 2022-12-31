@@ -18,7 +18,7 @@ export class ValuesArea implements TObserver {
         this.drawing.drawValueTexts()
     }
 
-    private _clear(){
+    clear(){
         this.drawing.clear()
     }
 
@@ -32,7 +32,6 @@ export class ValuesArea implements TObserver {
 
     update(config: TConfig){
         this._createDrawing(config);
-        this._clear();
         this.render();
     }
 

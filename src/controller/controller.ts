@@ -24,6 +24,10 @@ class Controller {
     update(config: TConfig){
         this.observable.notify({message: Message.UPDATE, config});
     }
+
+    clear(){
+        this.observable.notify({message: Message.CLEAR, config: null});
+    }
 }
 
 export default Controller;

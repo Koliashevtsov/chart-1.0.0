@@ -17,6 +17,9 @@ export const switcher = ({ message, config }: NotifyFull, observers: Array<TObse
         case 'UPDATE':
             observers.forEach(observer => observer.update(config));
             break;
+        case 'CLEAR':
+            observers.forEach(observers => observers.clear());
+            break;
         default: 
             return
     }

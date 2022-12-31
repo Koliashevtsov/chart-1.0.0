@@ -19,7 +19,7 @@ export class ChartArea implements TObserver {
         this.drawing.drawChart();
     }
 
-    private _clear(){
+    clear(){
         this.drawing.clear()
     }
 
@@ -33,7 +33,6 @@ export class ChartArea implements TObserver {
 
     update(config: TConfig){
         this._createDrawing(config);
-        this._clear();
         this.render()
     }
 
