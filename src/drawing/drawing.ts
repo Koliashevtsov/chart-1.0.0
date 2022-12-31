@@ -176,8 +176,6 @@ export class Drawing {
     }
 
     clear(){
-        console.log('before clear');
-        this.ctx.clearRect(0, 0, 300, 300)
-        // this.ctx.clearRect(this.basePoint.pointX, this.basePoint.pointY, this.width, this.height);
+        this.ctx.clearRect(this.basePoint.pointX, this.basePoint.pointY, this.width, this.height);
     }
 }

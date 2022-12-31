@@ -1,6 +1,6 @@
 import Controller from '../controller';
 
-import { TConfig, Point, Offset } from '../types';
+import { TConfig, Point, Offset, APoints } from '../types';
 
 type Props = {
     ctx: CanvasRenderingContext2D;
@@ -14,12 +14,14 @@ class EventHandler {
     config: TConfig;
     cursorPoint: Point;
     drawing: boolean;
+    offset: Offset;
 
     constructor({ ctx, controller, config }: Props){
         this.ctx = ctx;
         this.controller = controller;
         this.config = config;
         this.cursorPoint = {pointX: 0, pointY: 0};
+        this.offset = {distanceX: 0, distanceY: 0};
         this.drawing = false;
     }
 
@@ -41,14 +43,15 @@ class EventHandler {
             // diff can be positive or negative
             // update offset distance it is MAIN what _mouseMove doing
             const diffX = event.offsetX - this.cursorPoint.pointX;
-            // const areaOffsetX = this.config.offset.distanceX + diffX;
+            const areaOffsetX = this.offset.distanceX + diffX;
 
-            // const newOffset: Offset = {
-            //     distanceX: areaOffsetX,
-            //     distanceY: this.config.offset.distanceY
-            // }
+            const newOffset: Offset = {
+                distanceX: areaOffsetX,
+                distanceY: this.offset.distanceY
+            }
+            this.offset = newOffset;
             
-            // this._updateConfig(newOffset);
+            this._updateConfig(this.offset);
             
             // update cursor point
             this.cursorPoint.pointX = event.offsetX;
@@ -57,10 +60,26 @@ class EventHandler {
     }
 
     private _updateConfig(offset: Offset){
-        // const config = {...this.config, offset}
-        // console.log(config);
+        const areasPoints = this.config.areasPoints;
+        // overload areas points with offset
+        const updatedPoints: APoints = {
+            chart: {
+                pointX: areasPoints.chart.pointX + offset.distanceX,
+                pointY: areasPoints.chart.pointY + offset.distanceY
+            },
+            labels: {
+                pointX: areasPoints.labels.pointX + offset.distanceX,
+                pointY: areasPoints.labels.pointY + offset.distanceY
+            },
+            values: {
+                pointX: areasPoints.values.pointX,
+                pointY: areasPoints.values.pointY
+            }
+        }
+
+        const config = { ...this.config, areasPoints: updatedPoints}
         
-        // this.controller.update(config);
+        this.controller.update(config);
     }
 
     private _addEventListeners(){
