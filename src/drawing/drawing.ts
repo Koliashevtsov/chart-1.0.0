@@ -30,6 +30,8 @@ export class Drawing {
     }
 
     drawBackground(){
+        console.log('pointX', this.basePoint.pointX);
+        
         const background = new Path2D();
         background.rect(
             this.basePoint.pointX,
@@ -171,5 +173,11 @@ export class Drawing {
             this.ctx.stroke();
         })
         
+    }
+
+    clear(){
+        console.log('before clear');
+        this.ctx.clearRect(0, 0, 300, 300)
+        // this.ctx.clearRect(this.basePoint.pointX, this.basePoint.pointY, this.width, this.height);
     }
 }

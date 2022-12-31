@@ -11,7 +11,7 @@ export class ChartArea implements TObserver {
         this.drawing = null;
     }
 
-    draw(){
+    private _draw(){
         this.drawing.drawBackground()
         // draw grid
         this.drawing.drawGrid();
@@ -19,7 +19,25 @@ export class ChartArea implements TObserver {
         this.drawing.drawChart();
     }
 
+    private _clear(){
+        this.drawing.clear()
+    }
+
     initialize(config: TConfig){
+        this._createDrawing(config);
+    }
+
+    render(){
+        this._draw()
+    }
+
+    update(config: TConfig){
+        this._createDrawing(config);
+        this._clear();
+        this.render()
+    }
+
+    private _createDrawing(config: TConfig){
         this.drawing = new Drawing({
             ctx: config.ctx, 
             data: config.data, 
@@ -29,13 +47,5 @@ export class ChartArea implements TObserver {
             gridOpt: config.gridOpt, 
             options: config.options
         })
-    }
-
-    render(){
-        this.draw()
-    }
-
-    update(){
-        this.render()
     }
 }

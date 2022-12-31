@@ -17,22 +17,6 @@ class Chart {
         this.core = null;
     }
 
-
-    private _clear(){
-        // clear all canvas
-        const { width, height } = this.ctx.canvas.getBoundingClientRect();
-        this.ctx.clearRect(0, 0, width, height);
-    }
-
-    // private _updateOffset(changedObj: {}){
-    //     Object.assign(this.offset, changedObj);
-    //     // redraw canvas
-    //     // this._render();
-    // }
-
-
-    
-
     init(settings: InitSettings){
         const { data, options } = settings;
 

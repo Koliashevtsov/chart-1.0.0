@@ -34,7 +34,6 @@ type TObserver = {
     initialize: (config: TConfig) => void;
     update: (config: TConfig) => void;
     render: () => void;
-    draw: () => void;
 }
 type NotifyFull = {
     message: Message;
@@ -54,7 +53,6 @@ type TConfig = {
     areasSizes: ASizes;
     areasPoints: APoints;
     gridOpt: GridOpt;
-    offset: Offset;
 }
 type Point = {
     pointX: number;

@@ -126,6 +126,15 @@ class Config implements TConfig{
             horizontalStep
         }
     }
+
+    updatePositions(offset: Offset){
+        this.offset = offset;
+        // overload points
+        this.areasPoints = this._getAreasPoints()
+        console.log('this', this);
+        return this
+    }
+
 }
 
 export default Config;

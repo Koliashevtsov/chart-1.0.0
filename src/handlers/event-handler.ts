@@ -14,12 +14,13 @@ class EventHandler {
     config: TConfig;
     cursorPoint: Point;
     drawing: boolean;
-    offset: Offset;
 
     constructor({ ctx, controller, config }: Props){
         this.ctx = ctx;
         this.controller = controller;
         this.config = config;
+        this.cursorPoint = {pointX: 0, pointY: 0};
+        this.drawing = false;
     }
 
     private _mouseDown(event: MouseEvent){
@@ -40,19 +41,26 @@ class EventHandler {
             // diff can be positive or negative
             // update offset distance it is MAIN what _mouseMove doing
             const diffX = event.offsetX - this.cursorPoint.pointX;
-            const areaOffsetX = this.offset.distanceX + diffX;
+            // const areaOffsetX = this.config.offset.distanceX + diffX;
 
-            
-            // TODO create changeOffset method in config class and call instead _updateOffset
-            // this._updateOffset({
+            // const newOffset: Offset = {
             //     distanceX: areaOffsetX,
-            // });
-            console.log('offset', areaOffsetX);
+            //     distanceY: this.config.offset.distanceY
+            // }
+            
+            // this._updateConfig(newOffset);
             
             // update cursor point
             this.cursorPoint.pointX = event.offsetX;
             this.cursorPoint.pointY = event.offsetY;
         }
+    }
+
+    private _updateConfig(offset: Offset){
+        // const config = {...this.config, offset}
+        // console.log(config);
+        
+        // this.controller.update(config);
     }
 
     private _addEventListeners(){

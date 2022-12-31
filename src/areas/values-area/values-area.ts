@@ -11,14 +11,32 @@ export class ValuesArea implements TObserver {
         this.drawing = null;
     }
 
-    draw() {
+    private _draw() {
         this.drawing.drawBackground()
         //drawing horizontal marks for values
         this.drawing.drawValueMarks();
         this.drawing.drawValueTexts()
     }
 
+    private _clear(){
+        this.drawing.clear()
+    }
+
     initialize(config: TConfig){
+        this._createDrawing(config);
+    }
+
+    render(){
+        this._draw()
+    }
+
+    update(config: TConfig){
+        this._createDrawing(config);
+        this._clear();
+        this.render();
+    }
+
+    private _createDrawing(config: TConfig){
         this.drawing = new Drawing({
             ctx: config.ctx, 
             data: config.data, 
@@ -28,13 +46,5 @@ export class ValuesArea implements TObserver {
             gridOpt: config.gridOpt, 
             options: config.options
         })
-    }
-
-    render(){
-        this.draw()
-    }
-
-    update(){
-        this.render()
     }
 }
