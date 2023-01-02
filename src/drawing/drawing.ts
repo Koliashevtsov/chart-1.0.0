@@ -30,8 +30,6 @@ export class Drawing {
     }
 
     drawBackground(){
-        console.log('pointX', this.basePoint.pointX);
-        
         const background = new Path2D();
         background.rect(
             this.basePoint.pointX,
@@ -173,6 +171,11 @@ export class Drawing {
             this.ctx.stroke();
         })
         
+    }
+
+    drawVisibleChartBoundaries(){
+        this.ctx.strokeStyle = 'blue';
+        this.ctx.strokeRect(this.basePoint.pointX, this.basePoint.pointY, this.width, this.height)
     }
 
     clear(){

@@ -72,11 +72,13 @@ type ASizes = {
     chart: AreaDimentions;
     labels: AreaDimentions;
     values: AreaDimentions;
+    white: AreaDimentions;
 }
 type APoints = {
     chart: Point;
     labels: Point;
     values: Point;
+    white: Point;
 }
 type ClientRectType = {
     x: number;

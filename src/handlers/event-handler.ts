@@ -43,13 +43,18 @@ class EventHandler {
             // diff can be positive or negative
             // update offset distance it is MAIN what _mouseMove doing
             const diffX = event.offsetX - this.cursorPoint.pointX;
-            const areaOffsetX = this.offset.distanceX + diffX;
-
+            let areaOffsetX = this.offset.distanceX + diffX;
+            // adjust offset if beyond range
+            if(areaOffsetX > 0){
+                areaOffsetX = 0
+            }
             const newOffset: Offset = {
                 distanceX: areaOffsetX,
                 distanceY: this.offset.distanceY
             }
+            
             this.offset = newOffset;
+            console.log(this.offset);
             
             this._updateConfig(this.offset);
             
@@ -74,6 +79,10 @@ class EventHandler {
             values: {
                 pointX: areasPoints.values.pointX,
                 pointY: areasPoints.values.pointY
+            },
+            white: {
+                pointX: areasPoints.white.pointX,
+                pointY: areasPoints.white.pointY
             }
         }
 

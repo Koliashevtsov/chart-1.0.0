@@ -2,7 +2,6 @@ import {
     defaultChartOptions as defOptions, 
     defaultSizes,
     basePoint,
-    baseOffset,
     defaultGridOpt 
 } from '../common/';
 
@@ -33,14 +32,12 @@ class Config implements TConfig{
     areasSizes: ASizes;
     areasPoints: APoints;
     gridOpt: GridOpt;
-    offset: Offset;
 
     constructor({ctx, data, inputOptions}: ConfigProps){
         this.ctx = ctx;
         this.data = data;
         this.options = this._getOptions(inputOptions);
         this.basePoint = Object.freeze(basePoint);
-        this.offset = baseOffset;
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
         this.areasSizes = this._getAreasSizes();
         this.areasPoints = this._getAreasPoints();
@@ -59,6 +56,8 @@ class Config implements TConfig{
         let labelsHeight = defaultSizes.horizontalAxisHeight;
         let valuesWidth = defaultSizes.verticalAxisWidth;
         let valuesHeight = this.clientRect.height;
+        const whiteWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
+        const whiteHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
 
         if(!this.options.horizontalScrolling){
             // chart area
@@ -86,6 +85,10 @@ class Config implements TConfig{
             values: {
                 width: valuesWidth,
                 height: valuesHeight
+            },
+            white: {
+                width: whiteWidth,
+                height: whiteHeight
             }
         }
     }
@@ -93,15 +96,19 @@ class Config implements TConfig{
     private _getAreasPoints(){
         return {
             chart: {
-                pointX: this.basePoint.pointX + this.offset.distanceX,
-                pointY: this.basePoint.pointY + this.offset.distanceY
+                pointX: this.basePoint.pointX,
+                pointY: this.basePoint.pointY
             },
             labels: {
-                pointX: this.basePoint.pointX + this.offset.distanceX,
-                pointY: this.clientRect.height - defaultSizes.horizontalAxisHeight + this.offset.distanceY
+                pointX: this.basePoint.pointX,
+                pointY: this.clientRect.height - defaultSizes.horizontalAxisHeight
             },
             values: {
                 pointX: this.clientRect.width - this.areasSizes.values.width,
+                pointY: this.basePoint.pointY
+            },
+            white: {
+                pointX: this.basePoint.pointX,
                 pointY: this.basePoint.pointY
             }
         }
@@ -125,14 +132,6 @@ class Config implements TConfig{
             verticalStep,
             horizontalStep
         }
-    }
-
-    updatePositions(offset: Offset){
-        this.offset = offset;
-        // overload points
-        this.areasPoints = this._getAreasPoints()
-        console.log('this', this);
-        return this
     }
 
 }

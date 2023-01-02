@@ -2,7 +2,7 @@ import { InitSettings, Point, Offset, Data, Options, DefOptions, InputOptions, T
 
 import Core from '../core';
 import Config from '../config';
-import { ChartArea, LabelsArea, ValuesArea } from '../areas';
+import { ChartArea, LabelsArea, ValuesArea, WhiteArea } from '../areas';
 
 type ChartConstructor = {
     context: CanvasRenderingContext2D
@@ -36,11 +36,13 @@ class Chart {
         const chartArea = new ChartArea();
         const labelsArea = new LabelsArea();
         const valuesArea = new ValuesArea();
+        const whiteArea = new WhiteArea();
 
        
         this.core.register(chartArea);
         this.core.register(labelsArea);
         this.core.register(valuesArea);
+        this.core.register(whiteArea);
         this.core.run();
 
         // and add functionality to change config
