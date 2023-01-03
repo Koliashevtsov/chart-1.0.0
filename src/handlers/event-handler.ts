@@ -21,7 +21,7 @@ class EventHandler {
         this.controller = controller;
         this.config = config;
         this.cursorPoint = {pointX: 0, pointY: 0};
-        this.offset = {distanceX: 0, distanceY: 0};
+        this.offset = this.config.offset;
         this.drawing = false;
     }
 
@@ -45,8 +45,13 @@ class EventHandler {
             const diffX = event.offsetX - this.cursorPoint.pointX;
             let areaOffsetX = this.offset.distanceX + diffX;
             // adjust offset if beyond range
-            if(areaOffsetX > 0){
-                areaOffsetX = 0
+            const LEFT_PAN_RANGE = 0;
+            const RIGHT_PAN_RANGE = this.config.areasSizes.white.width - this.config.areasSizes.chart.width;
+            if(areaOffsetX > LEFT_PAN_RANGE){
+                areaOffsetX = LEFT_PAN_RANGE
+            }
+            if(areaOffsetX < RIGHT_PAN_RANGE){
+                areaOffsetX = RIGHT_PAN_RANGE
             }
             const newOffset: Offset = {
                 distanceX: areaOffsetX,
@@ -54,8 +59,6 @@ class EventHandler {
             }
             
             this.offset = newOffset;
-            console.log(this.offset);
-            
             this._updateConfig(this.offset);
             
             // update cursor point
@@ -69,12 +72,12 @@ class EventHandler {
         // overload areas points with offset
         const updatedPoints: APoints = {
             chart: {
-                pointX: areasPoints.chart.pointX + offset.distanceX,
-                pointY: areasPoints.chart.pointY + offset.distanceY
+                pointX: offset.distanceX,
+                pointY: areasPoints.chart.pointY
             },
             labels: {
-                pointX: areasPoints.labels.pointX + offset.distanceX,
-                pointY: areasPoints.labels.pointY + offset.distanceY
+                pointX: offset.distanceX,
+                pointY: areasPoints.labels.pointY
             },
             values: {
                 pointX: areasPoints.values.pointX,
@@ -86,7 +89,7 @@ class EventHandler {
             }
         }
 
-        const config = { ...this.config, areasPoints: updatedPoints}
+        const config = { ...this.config, offset, areasPoints: updatedPoints}
         this.controller.clear();
         this.controller.update(config);
     }

@@ -52,6 +52,7 @@ type TConfig = {
     basePoint: Point;
     clientRect: ClientRectType;
     areasSizes: ASizes;
+    offset: Offset;
     areasPoints: APoints;
     gridOpt: GridOpt;
 }

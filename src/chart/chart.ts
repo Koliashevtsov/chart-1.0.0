@@ -20,17 +20,6 @@ class Chart {
     init(settings: InitSettings){
         const { data, options } = settings;
 
-        // this.shape = new Shape({context: this.ctx, data, options});
-        // this._render();
-
-
-        // testing
-        // this.shape.renderChartArea()
-        // this.shape.renderLabelsArea()
-        // this.shape.renderValuesArea()
-        // this.shape.renderViewport()
-
-        // testing
         this.core = new Core({ctx: this.ctx, data, inputOptions: options})
 
         const chartArea = new ChartArea();
@@ -44,9 +33,6 @@ class Chart {
         this.core.register(valuesArea);
         this.core.register(whiteArea);
         this.core.run();
-
-        // and add functionality to change config
-        
     }
 }
 

@@ -2,7 +2,8 @@ import {
     defaultChartOptions as defOptions, 
     defaultSizes,
     basePoint,
-    defaultGridOpt 
+    defaultGridOpt,
+    baseOffset
 } from '../common/';
 
 import { absValues } from '../helpers';
@@ -30,6 +31,7 @@ class Config implements TConfig{
     basePoint: Point;
     clientRect: ClientRectType;
     areasSizes: ASizes;
+    offset: Offset;
     areasPoints: APoints;
     gridOpt: GridOpt;
 
@@ -40,6 +42,7 @@ class Config implements TConfig{
         this.basePoint = Object.freeze(basePoint);
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
         this.areasSizes = this._getAreasSizes();
+        this.offset = this._scrollToFinishOffset()
         this.areasPoints = this._getAreasPoints();
         this.gridOpt = this._getGridOpt(this.areasSizes.chart.height, this.areasSizes.chart.width);
     }
@@ -96,12 +99,12 @@ class Config implements TConfig{
     private _getAreasPoints(){
         return {
             chart: {
-                pointX: this.basePoint.pointX,
-                pointY: this.basePoint.pointY
+                pointX: this.basePoint.pointX + this.offset.distanceX,
+                pointY: this.basePoint.pointY + this.offset.distanceY
             },
             labels: {
-                pointX: this.basePoint.pointX,
-                pointY: this.clientRect.height - defaultSizes.horizontalAxisHeight
+                pointX: this.basePoint.pointX + this.offset.distanceX,
+                pointY: this.clientRect.height - defaultSizes.horizontalAxisHeight + this.offset.distanceY
             },
             values: {
                 pointX: this.clientRect.width - this.areasSizes.values.width,
@@ -132,6 +135,14 @@ class Config implements TConfig{
             verticalStep,
             horizontalStep
         }
+    }
+
+    private _scrollToFinishOffset(){
+        const offset: Offset = {
+            distanceX: this.areasSizes.white.width - this.areasSizes.chart.width,
+            distanceY: baseOffset.distanceY
+        }
+        return offset;
     }
 
 }
