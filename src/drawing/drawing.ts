@@ -180,6 +180,37 @@ export class Drawing {
         this.ctx.strokeRect(this.basePoint.pointX, this.basePoint.pointY, this.width, this.height)
     }
 
+    drawIntersection(){
+        const top: Point = {
+            pointX: this.cursorPoint.pointX,
+            pointY: this.basePoint.pointY
+        }
+        const bottom: Point = {
+            pointX: this.cursorPoint.pointX,
+            pointY: this.height
+        }
+        const left: Point = {
+            pointX: this.basePoint.pointX,
+            pointY: this.cursorPoint.pointY
+        }
+        const right: Point = {
+            pointX: this.width,
+            pointY: this.cursorPoint.pointY
+        }
+
+        this.ctx.save();
+        this.ctx.strokeStyle = 'purple';
+        this.ctx.beginPath();
+        this.ctx.setLineDash([10, 12]);
+        // vertical line
+        this.ctx.moveTo(top.pointX, top.pointY);
+        this.ctx.lineTo(bottom.pointX, bottom.pointY);
+        // horizontal line
+        this.ctx.moveTo(left.pointX, left.pointY);
+        this.ctx.lineTo(right.pointX, right.pointY);
+        this.ctx.stroke();
+    }
+
     clear(){
         this.ctx.clearRect(this.basePoint.pointX, this.basePoint.pointY, this.width, this.height);
     }
