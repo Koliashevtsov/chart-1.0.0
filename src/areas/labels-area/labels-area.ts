@@ -42,7 +42,8 @@ export class LabelsArea implements TObserver{
             width: config.areasSizes.labels.width,
             basePoint: config.areasPoints.labels, 
             gridOpt: config.gridOpt, 
-            options: config.options
+            options: config.options,
+            cursorPoint: config.cursorPoint
         })
     }
 }

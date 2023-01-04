@@ -23,11 +23,16 @@ const baseOffset = {
     distanceX: 0,
     distanceY: 0
 }
+const baseCursorPoint = {
+    pointX: 0,
+    pointY: 0
+}
 
 export {
     defaultChartOptions,
     defaultSizes,
     defaultGridOpt,
     basePoint,
-    baseOffset
+    baseOffset,
+    baseCursorPoint
 }

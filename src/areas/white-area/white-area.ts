@@ -41,7 +41,8 @@ export class WhiteArea implements TObserver{
             width: config.areasSizes.white.width,
             basePoint: config.areasPoints.white, 
             gridOpt: config.gridOpt, 
-            options: config.options
+            options: config.options,
+            cursorPoint: config.cursorPoint
         })
     }
 }

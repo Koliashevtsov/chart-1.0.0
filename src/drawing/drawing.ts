@@ -18,8 +18,9 @@ export class Drawing {
     width: number;
     height: number;
     gridOpt: GridOpt;
+    cursorPoint: Point;
 
-    constructor({ctx, data, height, width, basePoint, gridOpt, options}: DrawingInitProps){
+    constructor({ctx, data, height, width, basePoint, gridOpt, options, cursorPoint}: DrawingInitProps){
         this.ctx = ctx;
         this.data = data;
         this.options = options;
@@ -27,6 +28,7 @@ export class Drawing {
         this.height = height;
         this.gridOpt = gridOpt;
         this.basePoint = basePoint;
+        this.cursorPoint = cursorPoint;
     }
 
     drawBackground(){

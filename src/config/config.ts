@@ -3,7 +3,8 @@ import {
     defaultSizes,
     basePoint,
     defaultGridOpt,
-    baseOffset
+    baseOffset,
+    baseCursorPoint
 } from '../common/';
 
 import { absValues } from '../helpers';
@@ -34,6 +35,7 @@ class Config implements TConfig{
     offset: Offset;
     areasPoints: APoints;
     gridOpt: GridOpt;
+    cursorPoint: Point;
 
     constructor({ctx, data, inputOptions}: ConfigProps){
         this.ctx = ctx;
@@ -42,9 +44,10 @@ class Config implements TConfig{
         this.basePoint = Object.freeze(basePoint);
         this.clientRect = this.ctx.canvas.getBoundingClientRect();
         this.areasSizes = this._getAreasSizes();
-        this.offset = this._scrollToFinishOffset()
+        this.offset = this._scrollToFinishOffset();
         this.areasPoints = this._getAreasPoints();
         this.gridOpt = this._getGridOpt(this.areasSizes.chart.height, this.areasSizes.chart.width);
+        this.cursorPoint = baseCursorPoint;
     }
 
     private _getOptions(options?: InputOptions): Options {
@@ -61,6 +64,8 @@ class Config implements TConfig{
         let valuesHeight = this.clientRect.height;
         const whiteWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
         const whiteHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+        const cursorAreaWidth = whiteWidth;
+        const cursorAreaHeight = whiteHeight;
 
         if(!this.options.horizontalScrolling){
             // chart area
@@ -92,6 +97,10 @@ class Config implements TConfig{
             white: {
                 width: whiteWidth,
                 height: whiteHeight
+            },
+            cursor: {
+                width: cursorAreaWidth,
+                height: cursorAreaHeight
             }
         }
     }
@@ -111,6 +120,10 @@ class Config implements TConfig{
                 pointY: this.basePoint.pointY
             },
             white: {
+                pointX: this.basePoint.pointX,
+                pointY: this.basePoint.pointY
+            },
+            cursor: {
                 pointX: this.basePoint.pointX,
                 pointY: this.basePoint.pointY
             }

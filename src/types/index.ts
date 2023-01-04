@@ -55,6 +55,7 @@ type TConfig = {
     offset: Offset;
     areasPoints: APoints;
     gridOpt: GridOpt;
+    cursorPoint: Point;
 }
 type Point = {
     pointX: number;
@@ -74,12 +75,14 @@ type ASizes = {
     labels: AreaDimentions;
     values: AreaDimentions;
     white: AreaDimentions;
+    cursor: AreaDimentions;
 }
 type APoints = {
     chart: Point;
     labels: Point;
     values: Point;
     white: Point;
+    cursor: Point;
 }
 type ClientRectType = {
     x: number;
@@ -103,7 +106,8 @@ type DrawingInitProps = {
     width: number;
     basePoint: Point;
     gridOpt: GridOpt;
-    options: Options
+    options: Options;
+    cursorPoint: Point;
 }
 type AreaDrawProps = {
     basePoint: Point;

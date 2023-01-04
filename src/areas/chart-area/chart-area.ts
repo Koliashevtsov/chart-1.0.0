@@ -44,7 +44,8 @@ export class ChartArea implements TObserver {
             width: config.areasSizes.chart.width,
             basePoint: config.areasPoints.chart, 
             gridOpt: config.gridOpt, 
-            options: config.options
+            options: config.options,
+            cursorPoint: config.cursorPoint
         })
     }
 }

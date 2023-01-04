@@ -37,6 +37,7 @@ class EventHandler {
     }
 
     private _mouseMove(event: MouseEvent){
+        
         // in _mouseMove method i want to move chartArea 
         if(this.drawing){
             // calculate diff cursor way between events, diff wont be equal and depends on speed move
@@ -71,6 +72,7 @@ class EventHandler {
         const areasPoints = this.config.areasPoints;
         // overload areas points with offset
         const updatedPoints: APoints = {
+            ...areasPoints,
             chart: {
                 pointX: offset.distanceX,
                 pointY: areasPoints.chart.pointY
@@ -78,14 +80,6 @@ class EventHandler {
             labels: {
                 pointX: offset.distanceX,
                 pointY: areasPoints.labels.pointY
-            },
-            values: {
-                pointX: areasPoints.values.pointX,
-                pointY: areasPoints.values.pointY
-            },
-            white: {
-                pointX: areasPoints.white.pointX,
-                pointY: areasPoints.white.pointY
             }
         }
 

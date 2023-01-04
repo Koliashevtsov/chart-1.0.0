@@ -2,20 +2,17 @@ import { Drawing } from '../../drawing';
 
 import { TObserver, TConfig } from '../../types';
 
-export class ValuesArea implements TObserver {
+export class CursorArea implements TObserver {
     id: string;
     drawing: Drawing;
 
     constructor(){
-        this.id = '2';
+        this.id = '4'
         this.drawing = null;
     }
 
-    private _draw() {
-        this.drawing.drawBackground()
-        //drawing horizontal marks for values
-        this.drawing.drawValueMarks();
-        this.drawing.drawValueTexts()
+    private _draw(){
+        
     }
 
     clear(){
@@ -32,16 +29,16 @@ export class ValuesArea implements TObserver {
 
     update(config: TConfig){
         this._createDrawing(config);
-        this.render();
+        this.render()
     }
 
     private _createDrawing(config: TConfig){
         this.drawing = new Drawing({
             ctx: config.ctx, 
             data: config.data, 
-            height: config.areasSizes.values.height, 
-            width: config.areasSizes.values.width,
-            basePoint: config.areasPoints.values, 
+            height: config.areasSizes.cursor.height, 
+            width: config.areasSizes.cursor.width,
+            basePoint: config.areasPoints.cursor, 
             gridOpt: config.gridOpt, 
             options: config.options,
             cursorPoint: config.cursorPoint
