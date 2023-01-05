@@ -3,11 +3,11 @@ import Controller from '../controller';
 
 import  EventHandler  from '../handlers';
 
-import { TObserver, ConfigProps } from '../types';
+import { TObserver, ConfigProps, TController } from '../types';
 
 
 class Core {
-    controller: Controller;
+    controller: TController;
     config: Config;
     eventHandler: EventHandler;
 

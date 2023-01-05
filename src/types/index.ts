@@ -1,3 +1,5 @@
+import { Observable } from '../utils';
+
 // types
 type Dataset = {
     data: Array<string> | [];
@@ -34,6 +36,14 @@ type TObserver = {
     initialize: (config: TConfig) => void;
     update: (config: TConfig) => void;
     render: () => void;
+    clear: () => void;
+}
+type TController = {
+    observable: Observable;
+    add: (area: TObserver) => void;
+    initialize: (config: TConfig) => void;
+    render: () => void;
+    update: (config: TConfig) => void;
     clear: () => void;
 }
 type NotifyFull = {
@@ -119,6 +129,14 @@ type Couples = {
     from: Point;
     to: Point;
 }
+type CustomEventListener = {
+    bindEvents: () => void;
+}
+type ListenerProps = {
+    ctx: CanvasRenderingContext2D;
+    controller: TController;
+    config: TConfig;
+}
 
 // enums
 enum Message {
@@ -141,6 +159,7 @@ export {
     TObserver,
     ConfigProps,
     TConfig,
+    TController,
     Point,
     ASizes,
     APoints,
@@ -152,5 +171,7 @@ export {
     Couples,
     Message,
     Color,
-    NotifyFull
+    NotifyFull,
+    CustomEventListener,
+    ListenerProps
 }

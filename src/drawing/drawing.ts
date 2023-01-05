@@ -186,7 +186,7 @@ export class Drawing {
         if(!this.isCursorArea){
             return
         }
-        
+
         const top: Point = {
             pointX: this.cursorPoint.pointX,
             pointY: this.basePoint.pointY
@@ -215,6 +215,7 @@ export class Drawing {
         this.ctx.moveTo(left.pointX, left.pointY);
         this.ctx.lineTo(right.pointX, right.pointY);
         this.ctx.stroke();
+        this.ctx.restore();
     }
 
     clear(){
