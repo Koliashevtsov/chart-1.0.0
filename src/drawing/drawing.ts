@@ -19,8 +19,9 @@ export class Drawing {
     height: number;
     gridOpt: GridOpt;
     cursorPoint: Point;
+    isCursorArea: boolean;
 
-    constructor({ctx, data, height, width, basePoint, gridOpt, options, cursorPoint}: DrawingInitProps){
+    constructor({ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea}: DrawingInitProps){
         this.ctx = ctx;
         this.data = data;
         this.options = options;
@@ -29,6 +30,7 @@ export class Drawing {
         this.gridOpt = gridOpt;
         this.basePoint = basePoint;
         this.cursorPoint = cursorPoint;
+        this.isCursorArea = isCursorArea;
     }
 
     drawBackground(){
@@ -181,6 +183,10 @@ export class Drawing {
     }
 
     drawIntersection(){
+        if(!this.isCursorArea){
+            return
+        }
+        
         const top: Point = {
             pointX: this.cursorPoint.pointX,
             pointY: this.basePoint.pointY

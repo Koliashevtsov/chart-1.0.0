@@ -1,8 +1,7 @@
 import { InitSettings, Point, Offset, Data, Options, DefOptions, InputOptions, TObserver } from '../types';
 
 import Core from '../core';
-import Config from '../config';
-import { ChartArea, LabelsArea, ValuesArea, WhiteArea } from '../areas';
+import { ChartArea, LabelsArea, ValuesArea, WhiteArea, CursorArea } from '../areas';
 
 type ChartConstructor = {
     context: CanvasRenderingContext2D
@@ -26,12 +25,14 @@ class Chart {
         const labelsArea = new LabelsArea();
         const valuesArea = new ValuesArea();
         const whiteArea = new WhiteArea();
+        const cursorArea = new CursorArea();
 
        
         this.core.register(chartArea);
         this.core.register(labelsArea);
         this.core.register(valuesArea);
         this.core.register(whiteArea);
+        this.core.register(cursorArea);
         this.core.run();
     }
 }

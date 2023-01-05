@@ -36,6 +36,7 @@ class Config implements TConfig{
     areasPoints: APoints;
     gridOpt: GridOpt;
     cursorPoint: Point;
+    isCursorArea: boolean;
 
     constructor({ctx, data, inputOptions}: ConfigProps){
         this.ctx = ctx;
@@ -48,6 +49,7 @@ class Config implements TConfig{
         this.areasPoints = this._getAreasPoints();
         this.gridOpt = this._getGridOpt(this.areasSizes.chart.height, this.areasSizes.chart.width);
         this.cursorPoint = baseCursorPoint;
+        this.isCursorArea = false;
     }
 
     private _getOptions(options?: InputOptions): Options {

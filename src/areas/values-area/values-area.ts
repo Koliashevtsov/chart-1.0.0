@@ -44,7 +44,8 @@ export class ValuesArea implements TObserver {
             basePoint: config.areasPoints.values, 
             gridOpt: config.gridOpt, 
             options: config.options,
-            cursorPoint: config.cursorPoint
+            cursorPoint: config.cursorPoint,
+            isCursorArea: config.isCursorArea
         })
     }
 }

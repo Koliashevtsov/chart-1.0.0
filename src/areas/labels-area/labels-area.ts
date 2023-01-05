@@ -43,7 +43,8 @@ export class LabelsArea implements TObserver{
             basePoint: config.areasPoints.labels, 
             gridOpt: config.gridOpt, 
             options: config.options,
-            cursorPoint: config.cursorPoint
+            cursorPoint: config.cursorPoint,
+            isCursorArea: config.isCursorArea
         })
     }
 }

@@ -56,6 +56,7 @@ type TConfig = {
     areasPoints: APoints;
     gridOpt: GridOpt;
     cursorPoint: Point;
+    isCursorArea: boolean;
 }
 type Point = {
     pointX: number;
@@ -108,6 +109,7 @@ type DrawingInitProps = {
     gridOpt: GridOpt;
     options: Options;
     cursorPoint: Point;
+    isCursorArea: boolean;
 }
 type AreaDrawProps = {
     basePoint: Point;

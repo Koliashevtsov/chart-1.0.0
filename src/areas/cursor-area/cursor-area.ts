@@ -12,7 +12,7 @@ export class CursorArea implements TObserver {
     }
 
     private _draw(){
-        
+        this.drawing.drawIntersection();
     }
 
     clear(){
@@ -41,7 +41,8 @@ export class CursorArea implements TObserver {
             basePoint: config.areasPoints.cursor, 
             gridOpt: config.gridOpt, 
             options: config.options,
-            cursorPoint: config.cursorPoint
+            cursorPoint: config.cursorPoint,
+            isCursorArea: config.isCursorArea
         })
     }
 }
