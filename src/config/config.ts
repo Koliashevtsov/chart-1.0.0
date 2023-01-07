@@ -23,7 +23,8 @@ import {
     ConfigProps, 
     TDefSizes,
     PanConfUpd,
-    HoverConfUpd
+    HoverConfUpd,
+    TDefGridOpt
 } from '../types';
 
 
@@ -44,29 +45,19 @@ class Config implements TConfig{
 
     constructor({ctx, data, inputOptions}: ConfigProps){
         this._config = this._initConfig({ctx, data, inputOptions});
-        this.ctx = this._config.ctx;
-        this.data = this._config.data;
-        this.options = this._config.options;
-        this.basePoint = this._config.basePoint;
-        this.clientRect = this._config.clientRect;
-        this.areasSizes = this._config.areasSizes;
-        this.offset = this._config.offset;
-        this.areasPoints = this._config.areasPoints;
-        this.gridOpt = this._config.gridOpt;
-        this.cursorPoint = this._config.cursorPoint;
-        this.isCursorArea = this._config.isCursorArea;
+        this._unzipProps();
     }
 
-    private _initConfig({ctx, data, inputOptions}: ConfigProps): TConfig {
+    private _initConfig({ctx, data, inputOptions}: ConfigProps){
         const _ctx = ctx;
         const _data = data;
         const _options = this._getOptions(inputOptions);
         const _basePoint = Object.freeze(basePoint);
-        const _clientRect = this.ctx.canvas.getBoundingClientRect();
+        const _clientRect = _ctx.canvas.getBoundingClientRect();
         const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes, _data, _options);
         const _offset = this._scrollToFinishOffset(_areasSizes, baseOffset);
         const _areasPoints = this._getAreasPoints(_basePoint, _offset, _clientRect, defaultSizes, _areasSizes);
-        const _gridOpt = this._getGridOpt(_areasSizes.chart.height, _areasSizes.chart.width);
+        const _gridOpt = this._getGridOpt(_areasSizes.chart.height, _areasSizes.chart.width, data, defaultGridOpt);
         const _cursorPoint = baseCursorPoint;
         const _isCursorArea = false;
 
@@ -85,8 +76,28 @@ class Config implements TConfig{
         }
     }
 
+    private _unzipProps(){
+        this.ctx = this._config.ctx;
+        this.data = this._config.data;
+        this.options = this._config.options;
+        this.basePoint = this._config.basePoint;
+        this.clientRect = this._config.clientRect;
+        this.areasSizes = this._config.areasSizes;
+        this.offset = this._config.offset;
+        this.areasPoints = this._config.areasPoints;
+        this.gridOpt = this._config.gridOpt;
+        this.cursorPoint = this._config.cursorPoint;
+        this.isCursorArea = this._config.isCursorArea;
+    }
+
     update(updater: PanConfUpd | HoverConfUpd){
-        this._config = { ...this._config, ...updater }
+        this._config = { ...this._config, ...updater };
+        this._unzipProps();
+        console.log('updater => ', updater);
+        
+        console.log('updated, this.offset =>', this.offset.distanceX);
+        console.log('updated, this._config.offset => ', this._config.offset.distanceX)
+        
     }
 
     private _getOptions(options?: InputOptions): Options {
@@ -175,13 +186,13 @@ class Config implements TConfig{
         }
     }
 
-    private _getGridOpt(height: number, width: number){   
-        const absoluteValues = absValues(this.data, defaultGridOpt.yScale);
+    private _getGridOpt(height: number, width: number, data: Data, defaultGridOpt: TDefGridOpt){   
+        const absoluteValues = absValues(data, defaultGridOpt.yScale);
         const absOffsetY = absoluteValues[absoluteValues.length - 1];
         const absValueInOnePixel = height / (absoluteValues[0] - absOffsetY); 
         const horizontalLinesCount = absoluteValues.length;
         const horizontalStep = height / (horizontalLinesCount - 1);
-        const verticalLinesCount = this.data.labels.length;
+        const verticalLinesCount = data.labels.length;
         const verticalStep = width / (verticalLinesCount - 1);
         
         return {

@@ -1,6 +1,6 @@
 import Controller from '../controller';
 
-import { TConfig, CustomEventListener, ListenerProps } from '../types';
+import { CustomEventListener, ListenerProps } from '../types';
 
 import Pan from './pan/pan';
 import CursorHover from './cursor-hover/cursor-hover';

@@ -15,6 +15,9 @@ type DefOptions = {
     color: string;
     horizontalScrolling: false;
 }
+type TDefGridOpt = {
+    yScale: number;
+}
 
 type Options = {
     backgroundColor: string;
@@ -67,6 +70,7 @@ type TConfig = {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
+    update: (updater: PanConfUpd | HoverConfUpd) => void;
 }
 type Point = {
     pointX: number;
@@ -143,7 +147,7 @@ type ListenerProps = {
 }
 type PanConfUpd = {
     offset: Offset;
-    areasPoint: APoints
+    areasPoints: APoints
 }
 type HoverConfUpd = {
     cursorPoint: Point;
@@ -165,6 +169,7 @@ enum Color {
 export {
     Data,
     DefOptions,
+    TDefGridOpt,
     Options,
     InputOptions,
     InitSettings,
