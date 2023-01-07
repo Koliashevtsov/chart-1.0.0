@@ -26,14 +26,14 @@ class CursorHover implements CustomEventListener {
         
         const isCursorArea = this._isPointInArea(this.cursorPoint);
 
-        const config = {
+        this.config = {
             ...this.config,
             cursorPoint: this.cursorPoint,
             isCursorArea
         }
         
         this.controller.clear();
-        this.controller.update(config)
+        this.controller.update(this.config)
     }
 
     private _isPointInArea(point: Point){

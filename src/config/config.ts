@@ -20,12 +20,16 @@ import {
     Options, 
     Point, 
     TConfig, 
-    ConfigProps 
+    ConfigProps, 
+    TDefSizes,
+    PanConfUpd,
+    HoverConfUpd
 } from '../types';
 
 
 
 class Config implements TConfig{
+    _config
     ctx: CanvasRenderingContext2D;
     data: Data;
     options: Options;
@@ -39,17 +43,50 @@ class Config implements TConfig{
     isCursorArea: boolean;
 
     constructor({ctx, data, inputOptions}: ConfigProps){
-        this.ctx = ctx;
-        this.data = data;
-        this.options = this._getOptions(inputOptions);
-        this.basePoint = Object.freeze(basePoint);
-        this.clientRect = this.ctx.canvas.getBoundingClientRect();
-        this.areasSizes = this._getAreasSizes();
-        this.offset = this._scrollToFinishOffset();
-        this.areasPoints = this._getAreasPoints();
-        this.gridOpt = this._getGridOpt(this.areasSizes.chart.height, this.areasSizes.chart.width);
-        this.cursorPoint = baseCursorPoint;
-        this.isCursorArea = false;
+        this._config = this._initConfig({ctx, data, inputOptions});
+        this.ctx = this._config.ctx;
+        this.data = this._config.data;
+        this.options = this._config.options;
+        this.basePoint = this._config.basePoint;
+        this.clientRect = this._config.clientRect;
+        this.areasSizes = this._config.areasSizes;
+        this.offset = this._config.offset;
+        this.areasPoints = this._config.areasPoints;
+        this.gridOpt = this._config.gridOpt;
+        this.cursorPoint = this._config.cursorPoint;
+        this.isCursorArea = this._config.isCursorArea;
+    }
+
+    private _initConfig({ctx, data, inputOptions}: ConfigProps): TConfig {
+        const _ctx = ctx;
+        const _data = data;
+        const _options = this._getOptions(inputOptions);
+        const _basePoint = Object.freeze(basePoint);
+        const _clientRect = this.ctx.canvas.getBoundingClientRect();
+        const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes, _data, _options);
+        const _offset = this._scrollToFinishOffset(_areasSizes, baseOffset);
+        const _areasPoints = this._getAreasPoints(_basePoint, _offset, _clientRect, defaultSizes, _areasSizes);
+        const _gridOpt = this._getGridOpt(_areasSizes.chart.height, _areasSizes.chart.width);
+        const _cursorPoint = baseCursorPoint;
+        const _isCursorArea = false;
+
+        return {
+            ctx: _ctx,
+            data: _data,
+            options: _options,
+            basePoint: _basePoint,
+            clientRect: _clientRect,
+            areasSizes: _areasSizes,
+            offset: _offset,
+            areasPoints: _areasPoints,
+            gridOpt: _gridOpt,
+            cursorPoint: _cursorPoint,
+            isCursorArea: _isCursorArea
+        }
+    }
+
+    update(updater: PanConfUpd | HoverConfUpd){
+        this._config = { ...this._config, ...updater }
     }
 
     private _getOptions(options?: InputOptions): Options {
@@ -57,28 +94,28 @@ class Config implements TConfig{
         return opts;
     }
 
-    private _getAreasSizes() {
+    private _getAreasSizes(clientRect: DOMRect, defaultSizes: TDefSizes, data: Data, options: Options) {
         let chartWidth;
         let chartHeight;
         let labelsWidth;
         let labelsHeight = defaultSizes.horizontalAxisHeight;
         let valuesWidth = defaultSizes.verticalAxisWidth;
-        let valuesHeight = this.clientRect.height;
-        const whiteWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
-        const whiteHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+        let valuesHeight = clientRect.height;
+        const whiteWidth = clientRect.width - defaultSizes.verticalAxisWidth;
+        const whiteHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
         const cursorAreaWidth = whiteWidth;
         const cursorAreaHeight = whiteHeight;
 
-        if(!this.options.horizontalScrolling){
+        if(!options.horizontalScrolling){
             // chart area
-            chartWidth = this.clientRect.width - defaultSizes.verticalAxisWidth;
-            chartHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
+            chartWidth = clientRect.width - defaultSizes.verticalAxisWidth;
+            chartHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
             // labels area
             labelsWidth = chartWidth;
         } else {
             // chart area
-            chartHeight = this.clientRect.height - defaultSizes.horizontalAxisHeight;
-            chartWidth = this.options.horizontalScrolling.labelsStep * (this.data.labels.length - 1);
+            chartHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
+            chartWidth = options.horizontalScrolling.labelsStep * (data.labels.length - 1);
             // labels area
             labelsWidth = chartWidth;
         }
@@ -107,27 +144,33 @@ class Config implements TConfig{
         }
     }
 
-    private _getAreasPoints(){
+    private _getAreasPoints(
+        basePoint: Point, 
+        offset: Offset, 
+        clientRect: DOMRect, 
+        defaultSizes: TDefSizes,
+        areasSizes: ASizes
+        ) {
         return {
             chart: {
-                pointX: this.basePoint.pointX + this.offset.distanceX,
-                pointY: this.basePoint.pointY + this.offset.distanceY
+                pointX: basePoint.pointX + offset.distanceX,
+                pointY: basePoint.pointY + offset.distanceY
             },
             labels: {
-                pointX: this.basePoint.pointX + this.offset.distanceX,
-                pointY: this.clientRect.height - defaultSizes.horizontalAxisHeight + this.offset.distanceY
+                pointX: basePoint.pointX + offset.distanceX,
+                pointY: clientRect.height - defaultSizes.horizontalAxisHeight + offset.distanceY
             },
             values: {
-                pointX: this.clientRect.width - this.areasSizes.values.width,
-                pointY: this.basePoint.pointY
+                pointX: clientRect.width - areasSizes.values.width,
+                pointY: basePoint.pointY
             },
             white: {
-                pointX: this.basePoint.pointX,
-                pointY: this.basePoint.pointY
+                pointX: basePoint.pointX,
+                pointY: basePoint.pointY
             },
             cursor: {
-                pointX: this.basePoint.pointX,
-                pointY: this.basePoint.pointY
+                pointX: basePoint.pointX,
+                pointY: basePoint.pointY
             }
         }
     }
@@ -152,14 +195,13 @@ class Config implements TConfig{
         }
     }
 
-    private _scrollToFinishOffset(){
+    private _scrollToFinishOffset(areasSizes: ASizes, baseOffset: Offset){
         const offset: Offset = {
-            distanceX: this.areasSizes.white.width - this.areasSizes.chart.width,
+            distanceX: areasSizes.white.width - areasSizes.chart.width,
             distanceY: baseOffset.distanceY
         }
         return offset;
     }
-
 }
 
 export default Config;

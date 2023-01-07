@@ -77,6 +77,10 @@ type Offset = {
     distanceY: number;
 }
 // areas types
+type TDefSizes = {
+    verticalAxisWidth: number;
+    horizontalAxisHeight: number;
+}
 type AreaDimentions = {
     width: number;
     height: number;
@@ -137,6 +141,14 @@ type ListenerProps = {
     controller: TController;
     config: TConfig;
 }
+type PanConfUpd = {
+    offset: Offset;
+    areasPoint: APoints
+}
+type HoverConfUpd = {
+    cursorPoint: Point;
+    isCursorArea: boolean;
+}
 
 // enums
 enum Message {
@@ -161,6 +173,7 @@ export {
     TConfig,
     TController,
     Point,
+    TDefSizes,
     ASizes,
     APoints,
     Offset,
@@ -173,5 +186,7 @@ export {
     Color,
     NotifyFull,
     CustomEventListener,
-    ListenerProps
+    ListenerProps,
+    PanConfUpd,
+    HoverConfUpd
 }

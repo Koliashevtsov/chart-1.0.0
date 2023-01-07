@@ -74,10 +74,10 @@ class Pan implements CustomEventListener {
             }
         }
 
-        const config = { ...this.config, offset, areasPoints: updatedPoints}
+        this.config = { ...this.config, offset, areasPoints: updatedPoints}
         
         this.controller.clear();
-        this.controller.update(config);
+        this.controller.update(this.config);
     }
 
     private _addEventListeners(){
