@@ -72,11 +72,9 @@ class Pan implements CustomEventListener {
                 pointX: offset.distanceX,
                 pointY: areasPoints.labels.pointY
             }
-        }
-        console.log(offset.distanceX);
+        };
         
-        this.config.update({ offset, areasPoints })
-        console.log(this.config.offset.distanceX);
+        this.config.update({ offset, areasPoints: updatedPoints });
         
         this.controller.clear();
         this.controller.update(this.config);

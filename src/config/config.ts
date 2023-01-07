@@ -93,10 +93,10 @@ class Config implements TConfig{
     update(updater: PanConfUpd | HoverConfUpd){
         this._config = { ...this._config, ...updater };
         this._unzipProps();
-        console.log('updater => ', updater);
+        // console.log('updater => ', updater);
         
-        console.log('updated, this.offset =>', this.offset.distanceX);
-        console.log('updated, this._config.offset => ', this._config.offset.distanceX)
+        // console.log('updated, this.offset =>', this.offset.distanceX);
+        // console.log('updated, this._config.offset => ', this._config.offset.distanceX)
         
     }
 
