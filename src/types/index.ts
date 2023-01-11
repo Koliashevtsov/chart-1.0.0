@@ -24,7 +24,14 @@ type TStyles = {
     boundary: TStyle,
     cursor: TStyle
 }
-
+type TPointPath = {
+    path: Path2D,
+    coordinates: Point;
+    data: Data
+}
+type TState = {
+    pointsPath: Array<TPointPath>
+}
 type DefOptions = {
     horizontalScrolling: false;
     styles: TStyles;
@@ -192,6 +199,8 @@ export {
     ConfigProps,
     TConfig,
     TController,
+    TPointPath,
+    TState,
     Point,
     TDefSizes,
     ASizes,
