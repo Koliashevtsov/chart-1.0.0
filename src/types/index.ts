@@ -27,7 +27,7 @@ type TStyles = {
 type TPointPath = {
     path: Path2D,
     coordinates: Point;
-    data: Data
+    value: string;
 }
 type TState = {
     pointsPath: Array<TPointPath>

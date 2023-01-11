@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples, Data, DrawingInitProps } from '../types';
+import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -7,7 +7,7 @@ import {
     pointsForValues,
     labelTextAlign,
     valueTextBaseline,
-    pointsForChart
+    pointsPathForChart
 } from '../helpers';
 
 export class Drawing {
@@ -170,10 +170,12 @@ export class Drawing {
         }
     }
 
-    drawChart(){
+    drawChart(): Array<TPointPath>{
+        const pointsPathList: Array<TPointPath> = []
+
         this.data.datasets.forEach((dataset, index) => {
             // get points for each dataset
-            const points = pointsForChart(
+            const pointsPath = pointsPathForChart(
                 dataset.data, 
                 this.basePoint, 
                 this.height, 
@@ -182,12 +184,18 @@ export class Drawing {
                 this.gridOpt.absOffsetY
             );
             
-            const [startingPoint, ...otherPoints] = points;
+            const [startingPointPath, ...otherPointsPath] = pointsPath;
             // draw lines
             this.ctx.save();
             this.ctx.beginPath();
-            this.ctx.moveTo(startingPoint.pointX, startingPoint.pointY);
-            otherPoints.forEach(point => this.ctx.lineTo(point.pointX, point.pointY));
+            this.ctx.moveTo(
+                startingPointPath.coordinates.pointX, 
+                startingPointPath.coordinates.pointY
+            );
+            otherPointsPath.forEach(point => this.ctx.lineTo(
+                point.coordinates.pointX, 
+                point.coordinates.pointY
+                ));
             this.ctx.strokeStyle = this.options.styles.chart.colors[index];
             this.ctx.lineWidth = this.options.styles.chart.lineWidth;
             this.ctx.stroke();
@@ -196,17 +204,19 @@ export class Drawing {
             // draw circles
             const radius = 3;
             
-            points.forEach(point => {
+            pointsPath.forEach(point => {
                 this.ctx.save();
                 this.ctx.beginPath();
-                this.ctx.arc(point.pointX, point.pointY, radius, 0, 2 * Math.PI);
+                this.ctx.arc(point.coordinates.pointX, point.coordinates.pointY, radius, 0, 2 * Math.PI);
                 this.ctx.fillStyle = this.options.styles.chart.colors[index];
                 this.ctx.fill();
                 this.ctx.restore();
             })
-            
+            // push paths from each dataset
+            pointsPathList.push(...pointsPath)
         })
-        
+
+        return pointsPathList;
     }
 
     drawVisibleChartBoundaries(){

@@ -6,6 +6,7 @@ import { labelTextAlign } from './label-text-align';
 import { valueTextBaseline } from './value-text-baseline';
 import { absValues } from './absValues';
 import { pointsForChart } from './points-for-chart';
+import { pointsPathForChart } from './points-path-for-chart';
 
 export {
     verticalCouplesPoint,
@@ -15,5 +16,6 @@ export {
     labelTextAlign,
     valueTextBaseline,
     absValues,
-    pointsForChart
+    pointsForChart,
+    pointsPathForChart
 }
