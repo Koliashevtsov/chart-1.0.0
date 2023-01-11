@@ -9,20 +9,33 @@ type Data = {
     datasets: Array<Dataset>;
     labels: Array<string> | [];
 }
+type TStyle = {
+    backgroundColor?: Color | string,
+    color: Color | string,
+    lineWidth: number;
+    font?: string;
+    colors?: Array<string>
+}
+type TStyles = {
+    chart: TStyle,
+    grid: TStyle,
+    labels: TStyle,
+    values: TStyle,
+    boundary: TStyle,
+    cursor: TStyle
+}
 
 type DefOptions = {
-    backgroundColor: string;
-    color: string;
     horizontalScrolling: false;
+    styles: TStyles;
 }
 type TDefGridOpt = {
     yScale: number;
 }
 
 type Options = {
-    backgroundColor: string;
-    color: string;
     horizontalScrolling: {labelsStep: number} | false;
+    styles: TStyles;
 }
 type InputOptions = {
     backgroundColor?: string;
@@ -162,8 +175,10 @@ enum Message {
     CLEAR = 'CLEAR'
 };
 enum Color {
-    Grey = '#34495e',
-    Orange = '#edbb99'
+    Grey = '#696969',
+    Orange = '#edbb99',
+    White = '#ffffff',
+    Purple = '#9F2B68'
 }
 
 export {

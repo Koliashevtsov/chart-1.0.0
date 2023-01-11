@@ -1,9 +1,37 @@
 import { DefOptions, Color } from '../../types';
 
 const defaultChartOptions: DefOptions = {
-    backgroundColor: Color.Orange,
-    color: 'blue',
-    horizontalScrolling: false
+    horizontalScrolling: false,
+    styles: {
+        chart: {
+            backgroundColor: Color.White,
+            color: 'blue',
+            lineWidth: 1.2,
+            colors: ['#176ba0', '#7d3a71', '#de542c']
+        },
+        grid: {
+            color: Color.Grey,
+            lineWidth: 0.2
+        },
+        labels: {
+            color: Color.Grey,
+            lineWidth: 0.2,
+            font: '14px Arial'
+        },
+        values: {
+            color: Color.Grey,
+            lineWidth: 0.2,
+            font: '14px Arial'
+        },
+        boundary: {
+            color: Color.Grey,
+            lineWidth: 0.2
+        },
+        cursor: {
+            color: Color.Purple,
+            lineWidth: 1
+        }
+    }
 }
 
 const defaultGridOpt = {

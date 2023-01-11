@@ -41,7 +41,7 @@ export class Drawing {
             this.width,
             this.height
         )
-        this.ctx.fillStyle = this.options.backgroundColor;
+        this.ctx.fillStyle = this.options.styles.chart.backgroundColor;
         this.ctx.fill(background);
         this.ctx.save();
     }
@@ -56,11 +56,14 @@ export class Drawing {
         )
         if(vertCouples.length > 0) {
             vertCouples.forEach((couple: Couples) => {
+                this.ctx.save();
                 this.ctx.beginPath();
                 this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
                 this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
-                this.ctx.strokeStyle = 'green';
+                this.ctx.strokeStyle = this.options.styles.grid.color;
+                this.ctx.lineWidth = this.options.styles.grid.lineWidth;
                 this.ctx.stroke();
+                this.ctx.restore();
             })
         }
         // horizontal lines
@@ -72,11 +75,14 @@ export class Drawing {
         );
         if(horCouples.length > 0) {
             horCouples.forEach((couple: Couples) => {
+                this.ctx.save();
                 this.ctx.beginPath();
                 this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
                 this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
-                this.ctx.strokeStyle = 'green';
+                this.ctx.strokeStyle = this.options.styles.grid.color;
+                this.ctx.lineWidth = this.options.styles.grid.lineWidth;
                 this.ctx.stroke();
+                this.ctx.restore();
             })
         }
     }
@@ -91,11 +97,14 @@ export class Drawing {
         // draw lines by points
         if(pointCouples.length > 0) {
             pointCouples.forEach((couple: Couples) => {
+                this.ctx.save()
                 this.ctx.beginPath();
                 this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
                 this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
-                this.ctx.strokeStyle = 'green';
+                this.ctx.strokeStyle = this.options.styles.labels.color;
+                this.ctx.lineWidth = this.options.styles.labels.lineWidth;
                 this.ctx.stroke();
+                this.ctx.restore()
             })
         }
     }
@@ -109,10 +118,12 @@ export class Drawing {
         
         if(points.length > 0){
             points.forEach((point, index) => {
-                this.ctx.font = '14px Arial';
-                this.ctx.fillStyle = 'red';
+                this.ctx.save();
+                this.ctx.font = this.options.styles.labels.font;
+                this.ctx.fillStyle = this.options.styles.labels.color;
                 this.ctx.textAlign = labelTextAlign(points, index);
                 this.ctx.fillText(labels[index], point.pointX, point.pointY);
+                this.ctx.restore();
             })
         }
     }
@@ -129,11 +140,14 @@ export class Drawing {
         // draw lines by points
         if(pointCouples.length > 0) {
             pointCouples.forEach((couple: Couples) => {
+                this.ctx.save();
                 this.ctx.beginPath();
                 this.ctx.moveTo(couple.from.pointX, couple.from.pointY);
                 this.ctx.lineTo(couple.to.pointX, couple.to.pointY);
-                this.ctx.strokeStyle = 'green';
+                this.ctx.strokeStyle = this.options.styles.values.color;
+                this.ctx.lineWidth = this.options.styles.values.lineWidth;
                 this.ctx.stroke();
+                this.ctx.restore();
             })
         }
     }
@@ -145,17 +159,19 @@ export class Drawing {
         const points = pointsForValues(bPoint, this.gridOpt);
         if(points.length > 0){
             points.forEach((point, index) => {
-                this.ctx.font = '14px Arial';
-                this.ctx.fillStyle = 'red';
+                this.ctx.save();
+                this.ctx.font = this.options.styles.values.font;
+                this.ctx.fillStyle = this.options.styles.values.color;
                 this.ctx.textAlign = 'center';
                 this.ctx.textBaseline = valueTextBaseline(points, index);
                 this.ctx.fillText(String(values[index]), point.pointX, point.pointY);
+                this.ctx.restore();
             })
         }
     }
 
     drawChart(){
-        this.data.datasets.forEach(dataset => {
+        this.data.datasets.forEach((dataset, index) => {
             // get points for each dataset
             const points = pointsForChart(
                 dataset.data, 
@@ -168,18 +184,37 @@ export class Drawing {
             
             const [startingPoint, ...otherPoints] = points;
             // draw lines
+            this.ctx.save();
             this.ctx.beginPath();
             this.ctx.moveTo(startingPoint.pointX, startingPoint.pointY);
             otherPoints.forEach(point => this.ctx.lineTo(point.pointX, point.pointY));
-            this.ctx.fillStyle = 'grey';
+            this.ctx.strokeStyle = this.options.styles.chart.colors[index];
+            this.ctx.lineWidth = this.options.styles.chart.lineWidth;
             this.ctx.stroke();
+            this.ctx.restore();
+
+            // draw circles
+            const radius = 3;
+            
+            points.forEach(point => {
+                this.ctx.save();
+                this.ctx.beginPath();
+                this.ctx.arc(point.pointX, point.pointY, radius, 0, 2 * Math.PI);
+                this.ctx.fillStyle = this.options.styles.chart.colors[index];
+                this.ctx.fill();
+                this.ctx.restore();
+            })
+            
         })
         
     }
 
     drawVisibleChartBoundaries(){
-        this.ctx.strokeStyle = 'blue';
+        this.ctx.save();
+        this.ctx.strokeStyle = this.options.styles.boundary.color;
+        this.ctx.lineWidth = this.options.styles.boundary.lineWidth;
         this.ctx.strokeRect(this.basePoint.pointX, this.basePoint.pointY, this.width, this.height)
+        this.ctx.restore();
     }
 
     drawIntersection(){
@@ -205,7 +240,8 @@ export class Drawing {
         }
 
         this.ctx.save();
-        this.ctx.strokeStyle = 'purple';
+        this.ctx.strokeStyle = this.options.styles.cursor.color;
+        this.ctx.lineWidth = this.options.styles.cursor.lineWidth;
         this.ctx.beginPath();
         this.ctx.setLineDash([10, 12]);
         // vertical line
