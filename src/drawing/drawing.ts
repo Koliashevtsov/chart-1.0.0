@@ -207,9 +207,11 @@ export class Drawing {
             pointsPath.forEach(point => {
                 this.ctx.save();
                 this.ctx.beginPath();
-                this.ctx.arc(point.coordinates.pointX, point.coordinates.pointY, radius, 0, 2 * Math.PI);
+                // using path in order to save info about points
+                const path = point.path;
+                path.arc(point.coordinates.pointX, point.coordinates.pointY, radius, 0, 2 * Math.PI);
                 this.ctx.fillStyle = this.options.styles.chart.colors[index];
-                this.ctx.fill();
+                this.ctx.fill(path);
                 this.ctx.restore();
             })
             // push paths from each dataset

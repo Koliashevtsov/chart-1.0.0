@@ -1,3 +1,5 @@
+import state from '../../state/state';
+
 import { CustomEventListener, ListenerProps, TController, TConfig, Point } from '../../types';
 
 class CursorHover implements CustomEventListener {
@@ -18,12 +20,20 @@ class CursorHover implements CustomEventListener {
             pointX: event.offsetX,
             pointY: event.offsetY
         }
-
+        
         this._updateConfig()
     }
 
     private _updateConfig(){
         const isCursorArea = this._isPointInArea(this.cursorPoint);
+        // check if cursor on chart top point
+        const pointsPath = state.getState().pointsPath;
+        pointsPath.forEach(pointPath => {
+            if(this.ctx.isPointInPath(pointPath.path, this.cursorPoint.pointX, this.cursorPoint.pointY)){
+                console.log(pointPath.value);
+                
+            }
+        })
 
         this.config.update({ cursorPoint: this.cursorPoint, isCursorArea })
         

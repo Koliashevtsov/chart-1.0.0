@@ -2,7 +2,7 @@
 import { TPointPath, TState } from '../types';
 
 
-export const state = () => {
+const state = () => {
     const initialPointsPath: Array<TPointPath> = []
 
     let state: TState = {
@@ -18,3 +18,5 @@ export const state = () => {
         }
     }
 }
+
+export default state();

@@ -1,4 +1,5 @@
 import { Drawing } from '../../drawing';
+import state  from '../../state/state';
 
 import { TObserver, TConfig} from '../../types';
 
@@ -16,7 +17,9 @@ export class ChartArea implements TObserver {
         // draw grid
         this.drawing.drawGrid();
         // draw chart
-        this.drawing.drawChart();
+        const pointsPath = this.drawing.drawChart();
+        // and write points path to state
+        state.setState({pointsPath})
     }
 
     clear(){
