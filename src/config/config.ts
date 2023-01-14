@@ -24,7 +24,8 @@ import {
     TDefSizes,
     PanConfUpd,
     HoverConfUpd,
-    TDefGridOpt
+    TDefGridOpt,
+    TValueTab
 } from '../types';
 
 
@@ -42,6 +43,7 @@ class Config implements TConfig{
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
+    valueTab: TValueTab;
 
     constructor({ctx, data, inputOptions}: ConfigProps){
         this._config = this._initConfig({ctx, data, inputOptions});
@@ -60,6 +62,7 @@ class Config implements TConfig{
         const _gridOpt = this._getGridOpt(_areasSizes.chart.height, _areasSizes.chart.width, data, defaultGridOpt);
         const _cursorPoint = baseCursorPoint;
         const _isCursorArea = false;
+        const _valueTab = this._getValueTab(defaultSizes.valueTabWidth, defaultSizes.valueTabHeight);
 
         return {
             ctx: _ctx,
@@ -72,7 +75,8 @@ class Config implements TConfig{
             areasPoints: _areasPoints,
             gridOpt: _gridOpt,
             cursorPoint: _cursorPoint,
-            isCursorArea: _isCursorArea
+            isCursorArea: _isCursorArea,
+            valueTab: _valueTab
         }
     }
 
@@ -88,16 +92,12 @@ class Config implements TConfig{
         this.gridOpt = this._config.gridOpt;
         this.cursorPoint = this._config.cursorPoint;
         this.isCursorArea = this._config.isCursorArea;
+        this.valueTab = this._config.valueTab
     }
 
     update(updater: PanConfUpd | HoverConfUpd){
         this._config = { ...this._config, ...updater };
         this._unzipProps();
-        // console.log('updater => ', updater);
-        
-        // console.log('updated, this.offset =>', this.offset.distanceX);
-        // console.log('updated, this._config.offset => ', this._config.offset.distanceX)
-        
     }
 
     private _getOptions(options?: InputOptions): Options {
@@ -203,6 +203,15 @@ class Config implements TConfig{
             horizontalLinesCount,
             verticalStep,
             horizontalStep
+        }
+    }
+
+    private _getValueTab(width: number, height: number){
+        return {
+            isOpen: false,
+            value: '',
+            width,
+            height
         }
     }
 

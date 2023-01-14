@@ -69,6 +69,12 @@ type TController = {
     update: (config: TConfig) => void;
     clear: () => void;
 }
+type TValueTab = {
+    isOpen: boolean;
+    value: string;
+    width: number;
+    height: number;
+}
 type NotifyFull = {
     message: Message;
     config: TConfig;
@@ -90,6 +96,7 @@ type TConfig = {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
+    valueTab: TValueTab;
     update: (updater: PanConfUpd | HoverConfUpd) => void;
 }
 type Point = {
@@ -148,6 +155,7 @@ type DrawingInitProps = {
     options: Options;
     cursorPoint: Point;
     isCursorArea: boolean;
+    valueTab: TValueTab;
 }
 type AreaDrawProps = {
     basePoint: Point;
@@ -172,6 +180,7 @@ type PanConfUpd = {
 type HoverConfUpd = {
     cursorPoint: Point;
     isCursorArea: boolean;
+    valueTab: TValueTab;
 }
 
 // enums
@@ -185,7 +194,8 @@ enum Color {
     Grey = '#696969',
     Orange = '#edbb99',
     White = '#ffffff',
-    Purple = '#9F2B68'
+    Purple = '#9F2B68',
+    Blue = '#00a2ed'
 }
 
 export {
@@ -201,6 +211,7 @@ export {
     TController,
     TPointPath,
     TState,
+    TValueTab,
     Point,
     TDefSizes,
     ASizes,

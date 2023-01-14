@@ -1,18 +1,20 @@
 import state from '../../state/state';
 
-import { CustomEventListener, ListenerProps, TController, TConfig, Point } from '../../types';
+import { CustomEventListener, ListenerProps, TController, TConfig, Point, TValueTab } from '../../types';
 
 class CursorHover implements CustomEventListener {
     ctx: CanvasRenderingContext2D;
     controller: TController;
     config: TConfig;
-    cursorPoint: Point
+    cursorPoint: Point;
+    valueTab: TValueTab;
 
     constructor({ctx, controller, config}: ListenerProps){
         this.ctx = ctx;
         this.controller = controller;
         this.config = config;
         this.cursorPoint = this.config.cursorPoint;
+        this.valueTab = this.config.valueTab;
     }
 
     private _mouseMove(event: MouseEvent){
@@ -20,6 +22,17 @@ class CursorHover implements CustomEventListener {
             pointX: event.offsetX,
             pointY: event.offsetY
         }
+        this.valueTab.isOpen = false
+        
+        this._updateConfig()
+    }
+
+    private _mouseLeave(event: MouseEvent){
+        this.cursorPoint = {
+            pointX: event.offsetX,
+            pointY: event.offsetY
+        }
+        this.valueTab.isOpen = false;
         
         this._updateConfig()
     }
@@ -30,12 +43,12 @@ class CursorHover implements CustomEventListener {
         const pointsPath = state.getState().pointsPath;
         pointsPath.forEach(pointPath => {
             if(this.ctx.isPointInPath(pointPath.path, this.cursorPoint.pointX, this.cursorPoint.pointY)){
-                console.log(pointPath.value);
-                
+                this.valueTab.isOpen = true;
+                this.valueTab.value = pointPath.value
             }
         })
 
-        this.config.update({ cursorPoint: this.cursorPoint, isCursorArea })
+        this.config.update({ cursorPoint: this.cursorPoint, isCursorArea, valueTab: this.valueTab })
         
         this.controller.clear();
         this.controller.update(this.config)
@@ -54,7 +67,8 @@ class CursorHover implements CustomEventListener {
     }
 
     private _addEventListeners(){
-       this.ctx.canvas.addEventListener('mousemove', this._mouseMove.bind(this))
+       this.ctx.canvas.addEventListener('mousemove', this._mouseMove.bind(this));
+       this.ctx.canvas.addEventListener('mouseleave', this._mouseLeave.bind(this));
     }
 
     bindEvents(){

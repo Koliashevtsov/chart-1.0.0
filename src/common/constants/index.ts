@@ -28,8 +28,10 @@ const defaultChartOptions: DefOptions = {
             lineWidth: 0.2
         },
         cursor: {
+            backgroundColor: Color.Blue,
             color: Color.Purple,
-            lineWidth: 1
+            lineWidth: 1,
+            font: '14px Arial'
         }
     }
 }
@@ -40,7 +42,9 @@ const defaultGridOpt = {
 
 const defaultSizes = {
     verticalAxisWidth: 80,
-    horizontalAxisHeight: 40
+    horizontalAxisHeight: 40,
+    valueTabWidth: 80,
+    valueTabHeight: 25
 }
 
 const basePoint = {

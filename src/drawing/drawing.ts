@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath } from '../types';
+import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath, TValueTab } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -20,8 +20,9 @@ export class Drawing {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
+    valueTab: TValueTab;
 
-    constructor({ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea}: DrawingInitProps){
+    constructor({ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea, valueTab}: DrawingInitProps){
         this.ctx = ctx;
         this.data = data;
         this.options = options;
@@ -31,6 +32,7 @@ export class Drawing {
         this.basePoint = basePoint;
         this.cursorPoint = cursorPoint;
         this.isCursorArea = isCursorArea;
+        this.valueTab = valueTab;
     }
 
     drawBackground(){
@@ -264,6 +266,25 @@ export class Drawing {
         this.ctx.lineTo(right.pointX, right.pointY);
         this.ctx.stroke();
         this.ctx.restore();
+        // valueTab
+        if(this.valueTab.isOpen){
+            const x = right.pointX;
+            const y = right.pointY - (this.valueTab.height / 2)
+            // background
+            this.ctx.save()
+            this.ctx.beginPath()
+            this.ctx.fillStyle = this.options.styles.cursor.backgroundColor;
+            this.ctx.fillRect(x, y, this.valueTab.width, this.valueTab.height);
+            this.ctx.restore()
+            // text
+            this.ctx.save()
+            this.ctx.beginPath()
+            this.ctx.font = this.options.styles.cursor.font;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillText(this.valueTab.value, x + 20, right.pointY);
+            this.ctx.restore()
+        }
     }
 
     clear(){
