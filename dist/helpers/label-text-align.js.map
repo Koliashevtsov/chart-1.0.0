@@ -1,0 +1,1 @@
+{"version":3,"file":"label-text-align.js","sourceRoot":"","sources":["../../src/helpers/label-text-align.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,MAAM,cAAc,GAAG,CAAC,MAAoB,EAAE,KAAa,EAAE,EAAE;IAClE,IAAG,KAAK,KAAK,CAAC,EAAC;QACX,OAAO,MAAM,CAAA;KAChB;SAAM,IAAI,KAAK,KAAK,MAAM,CAAC,MAAM,GAAE,CAAC,EAAE;QACnC,OAAO,OAAO,CAAA;KACjB;SAAM;QACH,OAAO,QAAQ,CAAA;KAClB;AACL,CAAC,CAAA"}
