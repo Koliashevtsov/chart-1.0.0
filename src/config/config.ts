@@ -7,7 +7,7 @@ import {
     baseCursorPoint
 } from '../common/';
 
-import { absValues } from '../helpers';
+import { absValues, randomColors } from '../helpers';
 
 import { 
     APoints, 
@@ -53,7 +53,7 @@ class Config implements TConfig{
     private _initConfig({ctx, data, inputOptions}: ConfigProps){
         const _ctx = ctx;
         const _data = data;
-        const _options = this._getOptions(inputOptions);
+        const _options = this._getOptions(data, inputOptions);
         const _basePoint = Object.freeze(basePoint);
         const _clientRect = _ctx.canvas.getBoundingClientRect();
         const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes, _data, _options);
@@ -100,8 +100,18 @@ class Config implements TConfig{
         this._unzipProps();
     }
 
-    private _getOptions(options?: InputOptions): Options {
-        const opts = Boolean(options) ? Object.assign(defOptions, options) : defOptions;
+    private _getOptions(data: Data, options?: InputOptions): Options {
+        const defOptionsWithColors = {
+            ...defOptions,
+            styles: {
+                ...defOptions.styles,
+                chart: {
+                    ...defOptions.styles.chart,
+                    colors: randomColors(data.datasets.length)
+                }
+            }
+        }
+        const opts = Boolean(options) ? Object.assign(defOptionsWithColors, options) : defOptionsWithColors;
         return opts;
     }
 
