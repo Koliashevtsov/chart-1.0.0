@@ -1,6 +1,6 @@
 {
   "name": "canvas-fin-chart",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A canvas html5 chart library",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
