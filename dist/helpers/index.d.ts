@@ -7,4 +7,5 @@ import { valueTextBaseline } from './value-text-baseline';
 import { absValues } from './absValues';
 import { pointsForChart } from './points-for-chart';
 import { pointsPathForChart } from './points-path-for-chart';
-export { verticalCouplesPoint, horizontalCouplesPoint, pointsForLabels, pointsForValues, labelTextAlign, valueTextBaseline, absValues, pointsForChart, pointsPathForChart };
+import { randomColors } from './random-colors';
+export { verticalCouplesPoint, horizontalCouplesPoint, pointsForLabels, pointsForValues, labelTextAlign, valueTextBaseline, absValues, pointsForChart, pointsPathForChart, randomColors };

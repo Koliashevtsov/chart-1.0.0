@@ -8,8 +8,8 @@ type Data = {
 };
 type TStyle = {
     backgroundColor?: Color | string;
-    color: Color | string;
-    lineWidth: number;
+    color?: Color | string;
+    lineWidth?: number;
     font?: string;
     colors?: Array<string>;
 };
@@ -43,10 +43,16 @@ type Options = {
     styles: TStyles;
 };
 type InputOptions = {
-    backgroundColor?: string;
-    color?: string;
     horizontalScrolling?: {
         labelsStep: number;
+    };
+    styles?: {
+        chart?: TStyle;
+        grid?: TStyle;
+        labels?: TStyle;
+        values?: TStyle;
+        boundary?: TStyle;
+        cursor?: TStyle;
     };
 };
 type InitSettings = {
