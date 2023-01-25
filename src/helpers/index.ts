@@ -7,6 +7,7 @@ import { valueTextBaseline } from './value-text-baseline';
 import { absValues } from './absValues';
 import { pointsForChart } from './points-for-chart';
 import { pointsPathForChart } from './points-path-for-chart';
+import { randomColors } from './random-colors';
 
 export {
     verticalCouplesPoint,
@@ -17,5 +18,6 @@ export {
     valueTextBaseline,
     absValues,
     pointsForChart,
-    pointsPathForChart
+    pointsPathForChart,
+    randomColors
 }
