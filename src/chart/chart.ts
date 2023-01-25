@@ -19,6 +19,16 @@ class Chart {
     init(settings: InitSettings){
         const { data, options } = settings;
 
+        if(data.datasets.length === 0){
+            throw Error('At least one dataset required')
+        }
+        
+        data.datasets.forEach(dataset => {
+            if(!dataset.data){
+                throw Error('Property data is required in each dataset')
+            }
+        })
+        
         this.core = new Core({ctx: this.ctx, data, inputOptions: options})
 
         const chartArea = new ChartArea();
