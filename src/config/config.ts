@@ -1,3 +1,5 @@
+import * as lodash from 'lodash';
+
 import { 
     defaultChartOptions as defOptions, 
     defaultSizes,
@@ -101,17 +103,19 @@ class Config implements TConfig{
     }
 
     private _getOptions(data: Data, options?: InputOptions): Options {
-        const defOptionsWithColors = {
-            ...defOptions,
+        const updater = {
             styles: {
-                ...defOptions.styles,
                 chart: {
-                    ...defOptions.styles.chart,
                     colors: randomColors(data.datasets.length)
                 }
             }
-        }
-        const opts = Boolean(options) ? Object.assign(defOptionsWithColors, options) : defOptionsWithColors;
+        };
+
+        const defOptionsWithColors = lodash.merge(defOptions, updater);
+        
+          const opts = Boolean(options)
+            ? lodash.merge(defOptionsWithColors, options)
+            : defOptionsWithColors;
         return opts;
     }
 

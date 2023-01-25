@@ -24,7 +24,12 @@ const data: Data = {
 };
 
 const options: InputOptions = {
-    horizontalScrolling: { labelsStep: 80 }
+    horizontalScrolling: { labelsStep: 80 },
+    styles: {
+        chart: {
+            colors: ['#176ba0', '#7d3a71', '#de542c']
+        }
+    }
 }
 
 
