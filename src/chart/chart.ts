@@ -27,6 +27,9 @@ class Chart {
             if(!dataset.data){
                 throw Error('Property data is required in each dataset')
             }
+            if(dataset.data.length == 0){
+                throw Error('Property data can not be an empty array')
+            }
         })
 
         this.core = new Core({ctx: this.ctx, data, inputOptions: options})
