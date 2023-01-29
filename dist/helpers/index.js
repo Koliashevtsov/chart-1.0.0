@@ -8,5 +8,6 @@ import { absValues } from './absValues';
 import { pointsForChart } from './points-for-chart';
 import { pointsPathForChart } from './points-path-for-chart';
 import { randomColors } from './random-colors';
-export { verticalCouplesPoint, horizontalCouplesPoint, pointsForLabels, pointsForValues, labelTextAlign, valueTextBaseline, absValues, pointsForChart, pointsPathForChart, randomColors };
+import { backgroundColorFromCss } from './background-color-from-css';
+export { verticalCouplesPoint, horizontalCouplesPoint, pointsForLabels, pointsForValues, labelTextAlign, valueTextBaseline, absValues, pointsForChart, pointsPathForChart, randomColors, backgroundColorFromCss };
 //# sourceMappingURL=index.js.map

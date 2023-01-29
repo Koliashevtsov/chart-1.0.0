@@ -1,6 +1,6 @@
 import * as lodash from 'lodash';
 import { defaultChartOptions as defOptions, defaultSizes, basePoint, defaultGridOpt, baseOffset, baseCursorPoint } from '../common/';
-import { absValues, randomColors } from '../helpers';
+import { absValues, backgroundColorFromCss, randomColors } from '../helpers';
 class Config {
     _config;
     ctx;
@@ -22,7 +22,7 @@ class Config {
     _initConfig({ ctx, data, inputOptions }) {
         const _ctx = ctx;
         const _data = data;
-        const _options = this._getOptions(data, inputOptions);
+        const _options = this._getOptions(ctx, data, inputOptions);
         const _basePoint = Object.freeze(basePoint);
         const _clientRect = _ctx.canvas.getBoundingClientRect();
         const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes, _data, _options);
@@ -65,10 +65,11 @@ class Config {
         this._config = { ...this._config, ...updater };
         this._unzipProps();
     }
-    _getOptions(data, options) {
+    _getOptions(ctx, data, options) {
         const updater = {
             styles: {
                 chart: {
+                    backgroundColor: backgroundColorFromCss(ctx.canvas),
                     colors: randomColors(data.datasets.length)
                 }
             }
