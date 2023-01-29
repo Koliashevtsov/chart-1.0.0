@@ -8,6 +8,7 @@ import { absValues } from './absValues';
 import { pointsForChart } from './points-for-chart';
 import { pointsPathForChart } from './points-path-for-chart';
 import { randomColors } from './random-colors';
+import { backgroundColorFromCss } from './background-color-from-css';
 
 export {
     verticalCouplesPoint,
@@ -19,5 +20,6 @@ export {
     absValues,
     pointsForChart,
     pointsPathForChart,
-    randomColors
+    randomColors,
+    backgroundColorFromCss
 }
