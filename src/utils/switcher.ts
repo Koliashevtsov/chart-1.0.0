@@ -1,10 +1,4 @@
-import { NotifyFull, TConfig, TObserver } from '../types';
-
-enum Message {
-    INITIALIZE = 'INITIALIZE',
-    RENDER = 'RENDER',
-    UPDATE = 'UPDATE'
-};
+import { NotifyFull, TObserver } from '../types';
 
 export const switcher = ({ message, config }: NotifyFull, observers: Array<TObserver>) => {
     switch(message){

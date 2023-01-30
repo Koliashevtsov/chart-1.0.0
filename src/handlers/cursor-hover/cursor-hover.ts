@@ -66,13 +66,24 @@ class CursorHover implements CustomEventListener {
         return this.ctx.isPointInPath(cursorPseudo, point.pointX, point.pointY)
     }
 
+    private _mouseMoveBinded = this._mouseMove.bind(this);
+    private _mouseLeaveBinded = this._mouseLeave.bind(this);
+
     private _addEventListeners(){
-       this.ctx.canvas.addEventListener('mousemove', this._mouseMove.bind(this));
-       this.ctx.canvas.addEventListener('mouseleave', this._mouseLeave.bind(this));
+       this.ctx.canvas.addEventListener('mousemove', this._mouseMoveBinded);
+       this.ctx.canvas.addEventListener('mouseleave', this._mouseLeaveBinded);
+    }
+    private _removeEventListeners(){
+        this.ctx.canvas.removeEventListener('mousemove', this._mouseMoveBinded);
+        this.ctx.canvas.removeEventListener('mouseleave', this._mouseLeaveBinded);
     }
 
     bindEvents(){
         this._addEventListeners()
+    }
+
+    unbindEvents(){
+        this._removeEventListeners()
     }
 }
 
