@@ -18,6 +18,10 @@ class EventHandler {
     bindEvents(){
         this.listeners.forEach(listener => listener.bindEvents())
     }
+
+    unbindEvents(){
+        this.listeners.forEach(listener => listener.unbindEvents())
+    }
 }
 
 export default EventHandler;

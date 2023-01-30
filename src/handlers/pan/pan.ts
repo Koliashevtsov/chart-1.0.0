@@ -80,14 +80,26 @@ class Pan implements CustomEventListener {
         this.controller.update(this.config);
     }
 
+    private _mouseDownBinded = this._mouseDown.bind(this);
+    private _mouseUpBinded = this._mouseUp.bind(this);
+    private _mouseMoveBinded = this._mouseMove.bind(this);
+
     private _addEventListeners(){
-        this.ctx.canvas.addEventListener('mousedown', this._mouseDown.bind(this));
-        this.ctx.canvas.addEventListener('mouseup', this._mouseUp.bind(this));
-        this.ctx.canvas.addEventListener('mousemove', this._mouseMove.bind(this))
+        this.ctx.canvas.addEventListener('mousedown', this._mouseDownBinded);
+        this.ctx.canvas.addEventListener('mouseup', this._mouseUpBinded);
+        this.ctx.canvas.addEventListener('mousemove', this._mouseMoveBinded);
+    }
+    private _removeEventListeners(){
+        this.ctx.canvas.removeEventListener('mousedown', this._mouseDownBinded);
+        this.ctx.canvas.removeEventListener('mouseup', this._mouseUpBinded);
+        this.ctx.canvas.removeEventListener('mousemove', this._mouseMoveBinded)
     }
 
     bindEvents(){
         this._addEventListeners()
+    }
+    unbindEvents(){
+        this._removeEventListeners()
     }
 }
 

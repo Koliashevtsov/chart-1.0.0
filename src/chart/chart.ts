@@ -45,6 +45,10 @@ class Chart {
         this.core.register(cursorArea);
         this.core.run();
     }
+
+    destroy(){
+        this.core.stop();
+    }
 }
 
 export default Chart;
