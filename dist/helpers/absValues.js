@@ -1,17 +1,17 @@
 // return closest bigger number dividing on five
 const closestMax = (value, divid) => {
-    let absMax = value;
-    while (absMax % divid !== 0) {
+    let absMax = Math.ceil(value);
+    do {
         absMax += 1;
-    }
+    } while (absMax % divid !== 0);
     return absMax;
 };
 // return closest smaller number dividing on five
 const closestMin = (value, divid) => {
-    let absMin = value;
-    while (absMin % divid !== 0) {
+    let absMin = Math.ceil(value);
+    do {
         absMin -= 1;
-    }
+    } while (absMin % divid !== 0);
     return absMin;
 };
 export const absValues = (data, scale) => {
