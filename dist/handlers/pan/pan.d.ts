@@ -11,7 +11,12 @@ declare class Pan implements CustomEventListener {
     private _mouseUp;
     private _mouseMove;
     private _updateConfig;
+    private _mouseDownBinded;
+    private _mouseUpBinded;
+    private _mouseMoveBinded;
     private _addEventListeners;
+    private _removeEventListeners;
     bindEvents(): void;
+    unbindEvents(): void;
 }
 export default Pan;

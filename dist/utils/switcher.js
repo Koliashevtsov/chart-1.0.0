@@ -1,10 +1,3 @@
-var Message;
-(function (Message) {
-    Message["INITIALIZE"] = "INITIALIZE";
-    Message["RENDER"] = "RENDER";
-    Message["UPDATE"] = "UPDATE";
-})(Message || (Message = {}));
-;
 export const switcher = ({ message, config }, observers) => {
     switch (message) {
         case 'INITIALIZE':

@@ -170,6 +170,7 @@ type Couples = {
 };
 type CustomEventListener = {
     bindEvents: () => void;
+    unbindEvents: () => void;
 };
 type ListenerProps = {
     ctx: CanvasRenderingContext2D;

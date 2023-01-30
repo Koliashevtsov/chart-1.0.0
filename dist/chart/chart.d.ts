@@ -8,5 +8,6 @@ declare class Chart {
     core: Core;
     constructor({ context }: ChartConstructor);
     init(settings: InitSettings): void;
+    destroy(): void;
 }
 export default Chart;

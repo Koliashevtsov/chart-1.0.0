@@ -68,13 +68,24 @@ class Pan {
         this.controller.clear();
         this.controller.update(this.config);
     }
+    _mouseDownBinded = this._mouseDown.bind(this);
+    _mouseUpBinded = this._mouseUp.bind(this);
+    _mouseMoveBinded = this._mouseMove.bind(this);
     _addEventListeners() {
-        this.ctx.canvas.addEventListener('mousedown', this._mouseDown.bind(this));
-        this.ctx.canvas.addEventListener('mouseup', this._mouseUp.bind(this));
-        this.ctx.canvas.addEventListener('mousemove', this._mouseMove.bind(this));
+        this.ctx.canvas.addEventListener('mousedown', this._mouseDownBinded);
+        this.ctx.canvas.addEventListener('mouseup', this._mouseUpBinded);
+        this.ctx.canvas.addEventListener('mousemove', this._mouseMoveBinded);
+    }
+    _removeEventListeners() {
+        this.ctx.canvas.removeEventListener('mousedown', this._mouseDownBinded);
+        this.ctx.canvas.removeEventListener('mouseup', this._mouseUpBinded);
+        this.ctx.canvas.removeEventListener('mousemove', this._mouseMoveBinded);
     }
     bindEvents() {
         this._addEventListeners();
+    }
+    unbindEvents() {
+        this._removeEventListeners();
     }
 }
 export default Pan;

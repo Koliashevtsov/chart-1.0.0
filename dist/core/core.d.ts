@@ -10,5 +10,6 @@ declare class Core {
     private _initialize;
     private _render;
     run(): void;
+    stop(): void;
 }
 export default Core;

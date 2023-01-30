@@ -24,6 +24,10 @@ class Core {
         this._initialize();
         this._render();
     }
+    stop() {
+        this.eventHandler.unbindEvents();
+        this.controller.clear();
+    }
 }
 export default Core;
 //# sourceMappingURL=core.js.map

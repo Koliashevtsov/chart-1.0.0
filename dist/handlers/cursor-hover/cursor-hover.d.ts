@@ -10,7 +10,11 @@ declare class CursorHover implements CustomEventListener {
     private _mouseLeave;
     private _updateConfig;
     private _isPointInArea;
+    private _mouseMoveBinded;
+    private _mouseLeaveBinded;
     private _addEventListeners;
+    private _removeEventListeners;
     bindEvents(): void;
+    unbindEvents(): void;
 }
 export default CursorHover;
