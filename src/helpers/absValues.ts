@@ -2,19 +2,20 @@ import { Data } from '../types';
 
 // return closest bigger number dividing on five
 const closestMax = (value: number, divid: number) => {
-    let absMax = value;
-    while(absMax % divid !== 0){
-        absMax += 1
-    }
+    let absMax = Math.ceil(value);
+    do {
+        absMax += 1;
+    } while (absMax % divid !== 0);
     return absMax;
 }
 
 // return closest smaller number dividing on five
 const closestMin = (value: number, divid: number) => {
-    let absMin = value;
-    while(absMin % divid !== 0){
-        absMin -= 1
-    }
+    let absMin = Math.ceil(value);
+    do {
+        absMin -= 1;
+    } while (absMin % divid !== 0);
+
     return absMin;
 }
 
