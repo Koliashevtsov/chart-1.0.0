@@ -27,7 +27,9 @@ import {
     PanConfUpd,
     HoverConfUpd,
     TDefGridOpt,
-    TValueTab
+    TValueTab,
+    Color,
+    DefOptions
 } from '../types';
 
 
@@ -55,7 +57,7 @@ class Config implements TConfig{
     private _initConfig({ctx, data, inputOptions}: ConfigProps){
         const _ctx = ctx;
         const _data = data;
-        const _options = this._getOptions(ctx, data, inputOptions);
+        const _options = this._getOptions(ctx, data, defOptions, inputOptions);
         const _basePoint = Object.freeze(basePoint);
         const _clientRect = _ctx.canvas.getBoundingClientRect();
         const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes, _data, _options);
@@ -102,12 +104,15 @@ class Config implements TConfig{
         this._unzipProps();
     }
 
-    private _getOptions(ctx: CanvasRenderingContext2D, data: Data, options?: InputOptions): Options {
-        
+    private _getOptions(ctx: CanvasRenderingContext2D, data: Data, defOptions: DefOptions, options?: InputOptions): Options {
+        const backgroundColor = backgroundColorFromCss(ctx.canvas) 
+            ? backgroundColorFromCss(ctx.canvas) 
+            : defOptions.styles.chart.backgroundColor;
+
         const updater = {
             styles: {
                 chart: {
-                    backgroundColor: backgroundColorFromCss(ctx.canvas),
+                    backgroundColor:  backgroundColor,
                     colors: randomColors(data.datasets.length)
                 }
             }
