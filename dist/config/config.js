@@ -22,7 +22,7 @@ class Config {
     _initConfig({ ctx, data, inputOptions }) {
         const _ctx = ctx;
         const _data = data;
-        const _options = this._getOptions(ctx, data, inputOptions);
+        const _options = this._getOptions(ctx, data, defOptions, inputOptions);
         const _basePoint = Object.freeze(basePoint);
         const _clientRect = _ctx.canvas.getBoundingClientRect();
         const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes, _data, _options);
@@ -65,11 +65,14 @@ class Config {
         this._config = { ...this._config, ...updater };
         this._unzipProps();
     }
-    _getOptions(ctx, data, options) {
+    _getOptions(ctx, data, defOptions, options) {
+        const backgroundColor = backgroundColorFromCss(ctx.canvas)
+            ? backgroundColorFromCss(ctx.canvas)
+            : defOptions.styles.chart.backgroundColor;
         const updater = {
             styles: {
                 chart: {
-                    backgroundColor: backgroundColorFromCss(ctx.canvas),
+                    backgroundColor: backgroundColor,
                     colors: randomColors(data.datasets.length)
                 }
             }

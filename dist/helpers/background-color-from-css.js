@@ -1,6 +1,6 @@
 export const backgroundColorFromCss = (element) => {
     if (element.tagName === 'BODY') {
-        return 'rgba(0, 0, 0, 0)';
+        return null;
     }
     const styles = getComputedStyle(element);
     const color = styles.backgroundColor;
