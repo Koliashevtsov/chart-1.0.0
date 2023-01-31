@@ -1,7 +1,7 @@
-export const backgroundColorFromCss = (element: HTMLElement): string | undefined => {
+export const backgroundColorFromCss = (element: HTMLElement): string | null => {
     
     if(element.tagName === 'BODY'){
-        return 'rgba(0, 0, 0, 0)'
+        return null
     }
 
     const styles = getComputedStyle(element)
