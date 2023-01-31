@@ -282,6 +282,7 @@ export class Drawing {
             this.ctx.font = this.options.styles.cursor.font;
             this.ctx.textAlign = 'center';
             this.ctx.textBaseline = 'middle';
+            this.ctx.fillStyle = this.options.styles.cursor.color;
             this.ctx.fillText(this.valueTab.value, x + 20, right.pointY);
             this.ctx.restore()
         }
