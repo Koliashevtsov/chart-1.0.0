@@ -1,5 +1,3 @@
-import Controller from '../controller';
-
 import { CustomEventListener, ListenerProps } from '../types';
 
 import Pan from './pan/pan';

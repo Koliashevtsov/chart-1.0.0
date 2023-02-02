@@ -196,7 +196,7 @@ enum Message {
     RENDER = 'RENDER',
     UPDATE = 'UPDATE',
     CLEAR = 'CLEAR'
-};
+}
 enum Color {
     Grey = '#696969',
     Orange = '#edbb99',
