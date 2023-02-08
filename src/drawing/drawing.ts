@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath, TValueTab } from '../types';
+import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath, TValueTab, Dataset } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -116,7 +116,7 @@ export class Drawing {
         const offsetText = 20;
         const bPoint = {pointX: this.basePoint.pointX, pointY: this.basePoint.pointY + offsetText};
         
-        const points = pointsForLabels(bPoint, this.gridOpt);
+        const points = pointsForLabels(bPoint, this.gridOpt.verticalLinesCount, this.gridOpt.verticalStep);
         
         if(points.length > 0){
             points.forEach((point, index) => {
@@ -158,7 +158,7 @@ export class Drawing {
         const values = this.gridOpt.absoluteValues;
         const offsetText = 20;
         const bPoint = {pointX: this.basePoint.pointX + offsetText, pointY: this.basePoint.pointY};
-        const points = pointsForValues(bPoint, this.gridOpt);
+        const points = pointsForValues(bPoint, this.gridOpt.horizontalLinesCount, this.gridOpt.horizontalStep);
         if(points.length > 0){
             points.forEach((point, index) => {
                 this.ctx.save();
@@ -175,7 +175,7 @@ export class Drawing {
     drawChart(): Array<TPointPath>{
         const pointsPathList: Array<TPointPath> = []
 
-        this.data.datasets.forEach((dataset, index) => {
+        this.data.datasets.forEach((dataset: Dataset, index) => {
             // get points for each dataset
             const pointsPath = pointsPathForChart(
                 dataset.data, 
