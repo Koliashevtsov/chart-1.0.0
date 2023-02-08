@@ -207,7 +207,7 @@ class Config implements TConfig{
     }
 
     private _getGridOpt(height: number, width: number, data: Data, defaultGridOpt: TDefGridOpt){   
-        const absoluteValues = absValues(data, defaultGridOpt.yScale);
+        const absoluteValues = absValues(data.datasets, defaultGridOpt.yScale);
         const absOffsetY = absoluteValues[absoluteValues.length - 1];
         const absValueInOnePixel = height / (absoluteValues[0] - absOffsetY); 
         const horizontalLinesCount = absoluteValues.length;

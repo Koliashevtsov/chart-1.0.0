@@ -5,7 +5,6 @@ import { pointsForValues } from './points-for-values';
 import { labelTextAlign } from './label-text-align';
 import { valueTextBaseline } from './value-text-baseline';
 import { absValues } from './abs-values';
-import { pointsForChart } from './points-for-chart';
 import { pointsPathForChart } from './points-path-for-chart';
 import { randomColors } from './random-colors';
 import { backgroundColorFromCss } from './background-color-from-css';
@@ -18,7 +17,6 @@ export {
     labelTextAlign,
     valueTextBaseline,
     absValues,
-    pointsForChart,
     pointsPathForChart,
     randomColors,
     backgroundColorFromCss
