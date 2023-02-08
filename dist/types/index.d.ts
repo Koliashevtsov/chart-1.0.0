@@ -1,10 +1,10 @@
 import { Observable } from '../utils';
 type Dataset = {
-    data: Array<string> | [];
+    data: Array<string>;
 };
 type Data = {
     datasets: Array<Dataset>;
-    labels: Array<string> | [];
+    labels: Array<string>;
 };
 type TStyle = {
     backgroundColor?: Color | string;
@@ -199,4 +199,4 @@ declare enum Color {
     Purple = "#9F2B68",
     Blue = "#00a2ed"
 }
-export { Data, DefOptions, TDefGridOpt, Options, InputOptions, InitSettings, TObserver, ConfigProps, TConfig, TController, TPointPath, TState, TValueTab, Point, TDefSizes, ASizes, APoints, Offset, GridOpt, DrawingInitProps, AreaDrawProps, ClientRectType, Couples, Message, Color, NotifyFull, CustomEventListener, ListenerProps, PanConfUpd, HoverConfUpd };
+export { Dataset, Data, DefOptions, TDefGridOpt, Options, InputOptions, InitSettings, TObserver, ConfigProps, TConfig, TController, TPointPath, TState, TValueTab, Point, TDefSizes, ASizes, APoints, Offset, GridOpt, DrawingInitProps, AreaDrawProps, ClientRectType, Couples, Message, Color, NotifyFull, CustomEventListener, ListenerProps, PanConfUpd, HoverConfUpd };

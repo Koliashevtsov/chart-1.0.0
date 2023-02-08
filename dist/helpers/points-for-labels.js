@@ -1,6 +1,4 @@
-export const pointsForLabels = (basePoint, gridOpt) => {
-    const count = gridOpt.verticalLinesCount;
-    const step = gridOpt.verticalStep;
+export const pointsForLabels = (basePoint, count, step) => {
     const points = [];
     for (let i = 0; i < count; i++) {
         const point = {

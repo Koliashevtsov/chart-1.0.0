@@ -1,4 +1,3 @@
-// function above is similar to pointsForChart but return object with additional properties
 export const pointsPathForChart = (data, basePoint, areaHeight, step, scale, absOffsetY) => {
     const paths = [];
     const pixelsFromAbsZero = areaHeight + (absOffsetY * scale);

@@ -6,7 +6,6 @@ var Message;
     Message["UPDATE"] = "UPDATE";
     Message["CLEAR"] = "CLEAR";
 })(Message || (Message = {}));
-;
 var Color;
 (function (Color) {
     Color["Grey"] = "#696969";
