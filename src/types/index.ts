@@ -2,12 +2,12 @@ import { Observable } from '../utils';
 
 // types
 type Dataset = {
-    data: Array<string> | [];
+    data: Array<string>;
 }
 
 type Data = {
     datasets: Array<Dataset>;
-    labels: Array<string> | [];
+    labels: Array<string>;
 }
 type TStyle = {
     backgroundColor?: Color | string,
@@ -196,7 +196,7 @@ enum Message {
     RENDER = 'RENDER',
     UPDATE = 'UPDATE',
     CLEAR = 'CLEAR'
-};
+}
 enum Color {
     Grey = '#696969',
     Orange = '#edbb99',
@@ -206,6 +206,7 @@ enum Color {
 }
 
 export {
+    Dataset,
     Data,
     DefOptions,
     TDefGridOpt,

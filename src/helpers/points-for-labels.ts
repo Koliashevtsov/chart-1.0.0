@@ -1,9 +1,7 @@
-import { GridOpt, Point } from '../types';
+import { Point } from '../types';
 
-export const pointsForLabels = (basePoint: Point, gridOpt: GridOpt) => {
-    const count = gridOpt.verticalLinesCount;
-    const step = gridOpt.verticalStep;
-    const points = [];
+export const pointsForLabels = (basePoint: Point, count: number, step: number) => {
+    const points: Point[] = [];
 
     for(let i = 0; i < count; i++){
         const point = {

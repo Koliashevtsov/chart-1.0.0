@@ -1,6 +1,6 @@
 import { switcher } from './switcher';
 
-import { NotifyFull, TConfig, TObserver, } from '../types';
+import { NotifyFull, TObserver, } from '../types';
 
 
 export class Observable {

@@ -1,6 +1,5 @@
 import { Point, TPointPath } from '../types';
 
-// function above is similar to pointsForChart but return object with additional properties
 export const pointsPathForChart = (
     data: Array<string>, 
     basePoint: Point, 

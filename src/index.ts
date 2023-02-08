@@ -5,12 +5,12 @@ const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const context = canvas.getContext('2d');
 
 type Dataset = {
-    data: Array<string> | [];
+    data: Array<string>;
 }
 
 type Data = {
     datasets: Array<Dataset>;
-    labels: Array<string> | [];
+    labels: Array<string> ;
 }
 
 const data: Data = {
@@ -21,7 +21,6 @@ const data: Data = {
         // {data: ['47', '55', '55', '45', '63', '24', '75', '22', '14', '55', '66', '70']},
         // {data: ['2.24', '5.24', '3.43', '2.73', '4.32', '4.45', '4.22', '5.45', '2.24', '3.44', '3.41', '5.47']},
         // {data: ['5.34', '5.44', '5.42', '5.3', '5.22', '6.45', '6.22', '3.45', '7.44', '5.44', '2.4', '3.47']}
-        {data: ['0.2', '0.8', '0.5', '0.4', '0']}
     ],
     labels: ['Jan', 'Fab', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 };

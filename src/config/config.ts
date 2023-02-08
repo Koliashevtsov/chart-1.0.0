@@ -28,7 +28,6 @@ import {
     HoverConfUpd,
     TDefGridOpt,
     TValueTab,
-    Color,
     DefOptions
 } from '../types';
 
@@ -120,7 +119,7 @@ class Config implements TConfig{
 
         const defOptionsWithColors = lodash.merge(defOptions, updater);
         
-          const opts = Boolean(options)
+          const opts = options
             ? lodash.merge(defOptionsWithColors, options)
             : defOptionsWithColors;
         return opts;
@@ -130,9 +129,9 @@ class Config implements TConfig{
         let chartWidth;
         let chartHeight;
         let labelsWidth;
-        let labelsHeight = defaultSizes.horizontalAxisHeight;
-        let valuesWidth = defaultSizes.verticalAxisWidth;
-        let valuesHeight = clientRect.height;
+        const labelsHeight = defaultSizes.horizontalAxisHeight;
+        const valuesWidth = defaultSizes.verticalAxisWidth;
+        const valuesHeight = clientRect.height;
         const whiteWidth = clientRect.width - defaultSizes.verticalAxisWidth;
         const whiteHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
         const cursorAreaWidth = whiteWidth;
@@ -208,7 +207,7 @@ class Config implements TConfig{
     }
 
     private _getGridOpt(height: number, width: number, data: Data, defaultGridOpt: TDefGridOpt){   
-        const absoluteValues = absValues(data, defaultGridOpt.yScale);
+        const absoluteValues = absValues(data.datasets, defaultGridOpt.yScale);
         const absOffsetY = absoluteValues[absoluteValues.length - 1];
         const absValueInOnePixel = height / (absoluteValues[0] - absOffsetY); 
         const horizontalLinesCount = absoluteValues.length;
