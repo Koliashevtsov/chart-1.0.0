@@ -5,7 +5,8 @@ type Dataset = {
     data: string[];
 }
 
-type ExtendedDataset = Dataset & {
+type ExtendedDataset =  {
+    data: string[];
     color: string;
     name: string;
 }

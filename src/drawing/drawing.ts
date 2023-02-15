@@ -176,9 +176,20 @@ export class Drawing {
         const pointsPathList: Array<TPointPath> = []
 
         this.data.datasets.forEach((dataset: Dataset | ExtendedDataset, index) => {
+            // color and name exist only in ExtendedDatases, so use narrowing
+            let chartColor = this.options.styles.chart.colors[index];
+            let chartName = null;
+            if('color' in dataset){
+                chartColor = dataset.color;
+            }
+
+            if('name' in dataset){
+                chartName = dataset.name
+            }
+
             // get points for each dataset
-            
             const pointsPath = pointsPathForChart(
+                chartName,
                 dataset.data,
                 this.data.labels, 
                 this.basePoint, 
@@ -200,7 +211,7 @@ export class Drawing {
                 point.coordinates.pointX, 
                 point.coordinates.pointY
                 ));
-            this.ctx.strokeStyle = this.options.styles.chart.colors[index];
+            this.ctx.strokeStyle = chartColor;
             this.ctx.lineWidth = this.options.styles.chart.lineWidth;
             this.ctx.stroke();
             this.ctx.restore();
@@ -214,7 +225,7 @@ export class Drawing {
                 // using path in order to save info about points
                 const path = point.path;
                 path.arc(point.coordinates.pointX, point.coordinates.pointY, radius, 0, 2 * Math.PI);
-                this.ctx.fillStyle = this.options.styles.chart.colors[index];
+                this.ctx.fillStyle = chartColor;
                 this.ctx.fill(path);
                 this.ctx.restore();
             })
