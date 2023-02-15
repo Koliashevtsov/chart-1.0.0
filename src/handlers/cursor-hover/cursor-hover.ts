@@ -53,6 +53,8 @@ class CursorHover implements CustomEventListener {
                 this.tooltips.label.isOpen = true;
 
                 this.tooltips.value.title = pointPath.value;
+                this.tooltips.label.title = pointPath.label;
+                this.tooltips.name.title = pointPath.name;
             }
         })
 
