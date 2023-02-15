@@ -43,7 +43,7 @@ export class CursorArea implements TObserver {
             options: config.options,
             cursorPoint: config.cursorPoint,
             isCursorArea: config.isCursorArea,
-            valueTab: config.valueTab
+            tooltips: config.tooltips
         })
     }
 }

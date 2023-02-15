@@ -80,11 +80,16 @@ type TController = {
     update: (config: TConfig) => void;
     clear: () => void;
 }
-type TValueTab = {
+type TooltipTab = {
     isOpen: boolean;
-    value: string;
+    title: string;
     width: number;
     height: number;
+}
+type TTooltips = {
+    name: TooltipTab,
+    value: TooltipTab,
+    label: TooltipTab
 }
 type NotifyFull = {
     message: Message;
@@ -107,7 +112,7 @@ type TConfig = {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
     update: (updater: PanConfUpd | HoverConfUpd) => void;
 }
 type Point = {
@@ -122,6 +127,12 @@ type Offset = {
 type TDefSizes = {
     verticalAxisWidth: number;
     horizontalAxisHeight: number;
+    nameTabWidth: number;
+    nameTabHeight: number;
+    valueTabWidth: number;
+    valueTabHeight: number;
+    labelTabWidth: number;
+    labelTabHeight: number;
 }
 type AreaDimentions = {
     width: number;
@@ -166,7 +177,7 @@ type DrawingInitProps = {
     options: Options;
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
 }
 type AreaDrawProps = {
     basePoint: Point;
@@ -192,7 +203,7 @@ type PanConfUpd = {
 type HoverConfUpd = {
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
 }
 
 // enums
@@ -225,7 +236,7 @@ export {
     TController,
     TPointPath,
     TState,
-    TValueTab,
+    TTooltips,
     Point,
     TDefSizes,
     ASizes,

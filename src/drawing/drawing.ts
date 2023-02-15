@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath, TValueTab, Dataset } from '../types';
+import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath, TTooltips, Dataset } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -20,9 +20,9 @@ export class Drawing {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
 
-    constructor({ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea, valueTab}: DrawingInitProps){
+    constructor({ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea, tooltips}: DrawingInitProps){
         this.ctx = ctx;
         this.data = data;
         this.options = options;
@@ -32,7 +32,7 @@ export class Drawing {
         this.basePoint = basePoint;
         this.cursorPoint = cursorPoint;
         this.isCursorArea = isCursorArea;
-        this.valueTab = valueTab;
+        this.tooltips = tooltips;
     }
 
     drawBackground(){
@@ -177,6 +177,7 @@ export class Drawing {
 
         this.data.datasets.forEach((dataset: Dataset, index) => {
             // get points for each dataset
+            
             const pointsPath = pointsPathForChart(
                 dataset.data, 
                 this.basePoint, 
@@ -267,14 +268,14 @@ export class Drawing {
         this.ctx.stroke();
         this.ctx.restore();
         // valueTab
-        if(this.valueTab.isOpen){
+        if(this.tooltips.value.isOpen){
             const x = right.pointX;
-            const y = right.pointY - (this.valueTab.height / 2)
+            const y = right.pointY - (this.tooltips.value.height / 2)
             // background
             this.ctx.save()
             this.ctx.beginPath()
             this.ctx.fillStyle = this.options.styles.cursor.backgroundColor;
-            this.ctx.fillRect(x, y, this.valueTab.width, this.valueTab.height);
+            this.ctx.fillRect(x, y, this.tooltips.value.width, this.tooltips.value.height);
             this.ctx.restore()
             // text
             this.ctx.save()
@@ -283,7 +284,7 @@ export class Drawing {
             this.ctx.textAlign = 'center';
             this.ctx.textBaseline = 'middle';
             this.ctx.fillStyle = this.options.styles.cursor.color;
-            this.ctx.fillText(this.valueTab.value, x + 20, right.pointY);
+            this.ctx.fillText(this.tooltips.value.title, x + 20, right.pointY);
             this.ctx.restore()
         }
     }
