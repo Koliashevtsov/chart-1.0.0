@@ -237,20 +237,17 @@ class Config implements TConfig{
     private _getTooltips(def: TDefSizes): TTooltips{
         return {
             name: {
-                isOpen: false,
-                title: '',
+                title: null,
                 width: def.nameTabWidth,
                 height: def.nameTabHeight
             },
             value: {
-                isOpen: false,
-                title: '',
+                title: null,
                 width: def.valueTabWidth,
                 height: def.valueTabHeight
             },
             label: {
-                isOpen: false,
-                title: '',
+                title: null,
                 width: def.labelTabWidth,
                 height: def.labelTabHeight
             }

@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath, TTooltips, Dataset } from '../types';
+import { GridOpt, Options, Point, Couples, Data, DrawingInitProps, TPointPath, TTooltips, Dataset, ExtendedDataset } from '../types';
 
 import { 
     verticalCouplesPoint, 
@@ -175,7 +175,7 @@ export class Drawing {
     drawChart(): Array<TPointPath>{
         const pointsPathList: Array<TPointPath> = []
 
-        this.data.datasets.forEach((dataset: Dataset, index) => {
+        this.data.datasets.forEach((dataset: Dataset | ExtendedDataset, index) => {
             // get points for each dataset
             
             const pointsPath = pointsPathForChart(
@@ -269,7 +269,7 @@ export class Drawing {
         this.ctx.stroke();
         this.ctx.restore();
         // value tooltip
-        if(this.tooltips.value.isOpen){
+        if(this.tooltips.value.title){
             const x = right.pointX;
             const y = right.pointY - (this.tooltips.value.height / 2)
             // background
@@ -289,7 +289,7 @@ export class Drawing {
             this.ctx.restore()
         }
         // label tooltip
-        if(this.tooltips.label.isOpen){
+        if(this.tooltips.label.title){
             const x = bottom.pointX - (this.tooltips.label.width / 2);
             const y = bottom.pointY;
             // background
@@ -309,7 +309,7 @@ export class Drawing {
             this.ctx.restore()
         }
         // line name tooltip
-        if(this.tooltips.name.isOpen){
+        if(this.tooltips.name.title){
             const x = this.cursorPoint.pointX + 10;
             const y = this.cursorPoint.pointY - this.tooltips.name.height - 10;
             // background

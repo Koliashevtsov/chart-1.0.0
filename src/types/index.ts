@@ -83,8 +83,7 @@ type TController = {
     clear: () => void;
 }
 type TooltipTab = {
-    isOpen: boolean;
-    title: string;
+    title: string | null;
     width: number;
     height: number;
 }
