@@ -2,12 +2,18 @@ import { Observable } from '../utils';
 
 // types
 type Dataset = {
-    data: Array<string>;
+    data: string[];
+}
+
+type ExtendedDataset =  {
+    data: string[];
+    color: string;
+    name: string;
 }
 
 type Data = {
-    datasets: Array<Dataset>;
-    labels: Array<string>;
+    datasets: Dataset[] | ExtendedDataset[];
+    labels: string[];
 }
 type TStyle = {
     backgroundColor?: Color | string,
@@ -27,7 +33,9 @@ type TStyles = {
 type TPointPath = {
     path: Path2D,
     coordinates: Point;
+    name: string;
     value: string;
+    label: string;
 }
 type TState = {
     pointsPath: Array<TPointPath>
@@ -75,11 +83,15 @@ type TController = {
     update: (config: TConfig) => void;
     clear: () => void;
 }
-type TValueTab = {
-    isOpen: boolean;
-    value: string;
+type TooltipTab = {
+    title: string | null;
     width: number;
     height: number;
+}
+type TTooltips = {
+    name: TooltipTab,
+    value: TooltipTab,
+    label: TooltipTab
 }
 type NotifyFull = {
     message: Message;
@@ -102,7 +114,7 @@ type TConfig = {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
     update: (updater: PanConfUpd | HoverConfUpd) => void;
 }
 type Point = {
@@ -117,6 +129,12 @@ type Offset = {
 type TDefSizes = {
     verticalAxisWidth: number;
     horizontalAxisHeight: number;
+    nameTabWidth: number;
+    nameTabHeight: number;
+    valueTabWidth: number;
+    valueTabHeight: number;
+    labelTabWidth: number;
+    labelTabHeight: number;
 }
 type AreaDimentions = {
     width: number;
@@ -161,7 +179,7 @@ type DrawingInitProps = {
     options: Options;
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
 }
 type AreaDrawProps = {
     basePoint: Point;
@@ -187,7 +205,7 @@ type PanConfUpd = {
 type HoverConfUpd = {
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
 }
 
 // enums
@@ -207,6 +225,7 @@ enum Color {
 
 export {
     Dataset,
+    ExtendedDataset,
     Data,
     DefOptions,
     TDefGridOpt,
@@ -219,7 +238,7 @@ export {
     TController,
     TPointPath,
     TState,
-    TValueTab,
+    TTooltips,
     Point,
     TDefSizes,
     ASizes,

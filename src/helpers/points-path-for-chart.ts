@@ -1,7 +1,9 @@
 import { Point, TPointPath } from '../types';
 
 export const pointsPathForChart = (
-    data: Array<string>, 
+    name: string | null,
+    data: string[],
+    labels: string[], 
     basePoint: Point, 
     areaHeight: number,
     step: number, 
@@ -14,7 +16,9 @@ export const pointsPathForChart = (
         data.forEach((value, index) => {
             const path: TPointPath = {
                 path: new Path2D(),
+                name,
                 value: value,
+                label: labels[index],
                 coordinates: {
                     pointX: basePoint.pointX + step * index,
                     pointY: pixelsFromAbsZero - Number(value) * scale
