@@ -1,4 +1,4 @@
-import { GridOpt, Options, Point, Data, DrawingInitProps, TPointPath, TValueTab } from '../types';
+import { GridOpt, Options, Point, Data, DrawingInitProps, TPointPath, TTooltips } from '../types';
 export declare class Drawing {
     ctx: CanvasRenderingContext2D;
     data: Data;
@@ -9,8 +9,8 @@ export declare class Drawing {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
-    constructor({ ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea, valueTab }: DrawingInitProps);
+    tooltips: TTooltips;
+    constructor({ ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea, tooltips }: DrawingInitProps);
     drawBackground(): void;
     drawGrid(): void;
     drawLabelMarks(): void;

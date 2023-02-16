@@ -36,7 +36,7 @@ export class ValuesArea {
             options: config.options,
             cursorPoint: config.cursorPoint,
             isCursorArea: config.isCursorArea,
-            valueTab: config.valueTab
+            tooltips: config.tooltips
         });
     }
 }

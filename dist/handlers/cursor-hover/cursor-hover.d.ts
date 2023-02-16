@@ -1,10 +1,10 @@
-import { CustomEventListener, ListenerProps, TController, TConfig, Point, TValueTab } from '../../types';
+import { CustomEventListener, ListenerProps, TController, TConfig, Point, TTooltips } from '../../types';
 declare class CursorHover implements CustomEventListener {
     ctx: CanvasRenderingContext2D;
     controller: TController;
     config: TConfig;
     cursorPoint: Point;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
     constructor({ ctx, controller, config }: ListenerProps);
     private _mouseMove;
     private _mouseLeave;

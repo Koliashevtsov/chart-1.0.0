@@ -14,7 +14,7 @@ class Config {
     gridOpt;
     cursorPoint;
     isCursorArea;
-    valueTab;
+    tooltips;
     constructor({ ctx, data, inputOptions }) {
         this._config = this._initConfig({ ctx, data, inputOptions });
         this._unzipProps();
@@ -31,7 +31,7 @@ class Config {
         const _gridOpt = this._getGridOpt(_areasSizes.chart.height, _areasSizes.chart.width, data, defaultGridOpt);
         const _cursorPoint = baseCursorPoint;
         const _isCursorArea = false;
-        const _valueTab = this._getValueTab(defaultSizes.valueTabWidth, defaultSizes.valueTabHeight);
+        const _tooltips = this._getTooltips(defaultSizes);
         return {
             ctx: _ctx,
             data: _data,
@@ -44,7 +44,7 @@ class Config {
             gridOpt: _gridOpt,
             cursorPoint: _cursorPoint,
             isCursorArea: _isCursorArea,
-            valueTab: _valueTab
+            tooltips: _tooltips
         };
     }
     _unzipProps() {
@@ -59,7 +59,7 @@ class Config {
         this.gridOpt = this._config.gridOpt;
         this.cursorPoint = this._config.cursorPoint;
         this.isCursorArea = this._config.isCursorArea;
-        this.valueTab = this._config.valueTab;
+        this.tooltips = this._config.tooltips;
     }
     update(updater) {
         this._config = { ...this._config, ...updater };
@@ -176,9 +176,28 @@ class Config {
     _getValueTab(width, height) {
         return {
             isOpen: false,
-            value: '',
+            title: '',
             width,
             height
+        };
+    }
+    _getTooltips(def) {
+        return {
+            name: {
+                title: null,
+                width: def.nameTabWidth,
+                height: def.nameTabHeight
+            },
+            value: {
+                title: null,
+                width: def.valueTabWidth,
+                height: def.valueTabHeight
+            },
+            label: {
+                title: null,
+                width: def.labelTabWidth,
+                height: def.labelTabHeight
+            }
         };
     }
     _scrollToFinishOffset(areasSizes, baseOffset) {

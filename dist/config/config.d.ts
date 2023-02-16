@@ -1,4 +1,4 @@
-import { APoints, ASizes, ClientRectType, Data, GridOpt, Offset, Options, Point, TConfig, ConfigProps, PanConfUpd, HoverConfUpd, TValueTab } from '../types';
+import { APoints, ASizes, ClientRectType, Data, GridOpt, Offset, Options, Point, TConfig, ConfigProps, PanConfUpd, HoverConfUpd, TTooltips } from '../types';
 declare class Config implements TConfig {
     _config: {
         ctx: CanvasRenderingContext2D;
@@ -68,12 +68,7 @@ declare class Config implements TConfig {
             pointY: number;
         };
         isCursorArea: boolean;
-        valueTab: {
-            isOpen: boolean;
-            value: string;
-            width: number;
-            height: number;
-        };
+        tooltips: TTooltips;
     };
     ctx: CanvasRenderingContext2D;
     data: Data;
@@ -86,7 +81,7 @@ declare class Config implements TConfig {
     gridOpt: GridOpt;
     cursorPoint: Point;
     isCursorArea: boolean;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
     constructor({ ctx, data, inputOptions }: ConfigProps);
     private _initConfig;
     private _unzipProps;
@@ -96,6 +91,7 @@ declare class Config implements TConfig {
     private _getAreasPoints;
     private _getGridOpt;
     private _getValueTab;
+    private _getTooltips;
     private _scrollToFinishOffset;
 }
 export default Config;

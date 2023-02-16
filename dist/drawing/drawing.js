@@ -9,8 +9,8 @@ export class Drawing {
     gridOpt;
     cursorPoint;
     isCursorArea;
-    valueTab;
-    constructor({ ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea, valueTab }) {
+    tooltips;
+    constructor({ ctx, data, height, width, basePoint, gridOpt, options, cursorPoint, isCursorArea, tooltips }) {
         this.ctx = ctx;
         this.data = data;
         this.options = options;
@@ -20,7 +20,7 @@ export class Drawing {
         this.basePoint = basePoint;
         this.cursorPoint = cursorPoint;
         this.isCursorArea = isCursorArea;
-        this.valueTab = valueTab;
+        this.tooltips = tooltips;
     }
     drawBackground() {
         const background = new Path2D();
@@ -129,15 +129,24 @@ export class Drawing {
     drawChart() {
         const pointsPathList = [];
         this.data.datasets.forEach((dataset, index) => {
+            // color and name exist only in ExtendedDatases, so use narrowing
+            let chartColor = this.options.styles.chart.colors[index];
+            let chartName = null;
+            if ('color' in dataset) {
+                chartColor = dataset.color;
+            }
+            if ('name' in dataset) {
+                chartName = dataset.name;
+            }
             // get points for each dataset
-            const pointsPath = pointsPathForChart(dataset.data, this.basePoint, this.height, this.gridOpt.verticalStep, this.gridOpt.absValueInOnePixel, this.gridOpt.absOffsetY);
+            const pointsPath = pointsPathForChart(chartName, dataset.data, this.data.labels, this.basePoint, this.height, this.gridOpt.verticalStep, this.gridOpt.absValueInOnePixel, this.gridOpt.absOffsetY);
             const [startingPointPath, ...otherPointsPath] = pointsPath;
             // draw lines
             this.ctx.save();
             this.ctx.beginPath();
             this.ctx.moveTo(startingPointPath.coordinates.pointX, startingPointPath.coordinates.pointY);
             otherPointsPath.forEach(point => this.ctx.lineTo(point.coordinates.pointX, point.coordinates.pointY));
-            this.ctx.strokeStyle = this.options.styles.chart.colors[index];
+            this.ctx.strokeStyle = chartColor;
             this.ctx.lineWidth = this.options.styles.chart.lineWidth;
             this.ctx.stroke();
             this.ctx.restore();
@@ -149,7 +158,7 @@ export class Drawing {
                 // using path in order to save info about points
                 const path = point.path;
                 path.arc(point.coordinates.pointX, point.coordinates.pointY, radius, 0, 2 * Math.PI);
-                this.ctx.fillStyle = this.options.styles.chart.colors[index];
+                this.ctx.fillStyle = chartColor;
                 this.ctx.fill(path);
                 this.ctx.restore();
             });
@@ -198,15 +207,15 @@ export class Drawing {
         this.ctx.lineTo(right.pointX, right.pointY);
         this.ctx.stroke();
         this.ctx.restore();
-        // valueTab
-        if (this.valueTab.isOpen) {
+        // value tooltip
+        if (this.tooltips.value.title) {
             const x = right.pointX;
-            const y = right.pointY - (this.valueTab.height / 2);
+            const y = right.pointY - (this.tooltips.value.height / 2);
             // background
             this.ctx.save();
             this.ctx.beginPath();
             this.ctx.fillStyle = this.options.styles.cursor.backgroundColor;
-            this.ctx.fillRect(x, y, this.valueTab.width, this.valueTab.height);
+            this.ctx.fillRect(x, y, this.tooltips.value.width, this.tooltips.value.height);
             this.ctx.restore();
             // text
             this.ctx.save();
@@ -215,7 +224,47 @@ export class Drawing {
             this.ctx.textAlign = 'center';
             this.ctx.textBaseline = 'middle';
             this.ctx.fillStyle = this.options.styles.cursor.color;
-            this.ctx.fillText(this.valueTab.value, x + 20, right.pointY);
+            this.ctx.fillText(this.tooltips.value.title, x + 20, right.pointY);
+            this.ctx.restore();
+        }
+        // label tooltip
+        if (this.tooltips.label.title) {
+            const x = bottom.pointX - (this.tooltips.label.width / 2);
+            const y = bottom.pointY;
+            // background
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.fillStyle = this.options.styles.cursor.backgroundColor;
+            this.ctx.fillRect(x, y, this.tooltips.label.width, this.tooltips.label.height);
+            this.ctx.restore();
+            // text
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.font = this.options.styles.cursor.font;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillStyle = this.options.styles.cursor.color;
+            this.ctx.fillText(this.tooltips.label.title, x + (this.tooltips.label.width / 2), bottom.pointY + (this.tooltips.label.height / 2));
+            this.ctx.restore();
+        }
+        // line name tooltip
+        if (this.tooltips.name.title) {
+            const x = this.cursorPoint.pointX + 10;
+            const y = this.cursorPoint.pointY - this.tooltips.name.height - 10;
+            // background
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.fillStyle = this.options.styles.cursor.backgroundColor;
+            this.ctx.fillRect(x, y, this.tooltips.name.width, this.tooltips.name.height);
+            this.ctx.restore();
+            // text
+            this.ctx.save();
+            this.ctx.beginPath();
+            this.ctx.font = this.options.styles.cursor.font;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillStyle = this.options.styles.cursor.color;
+            this.ctx.fillText(this.tooltips.name.title, x + (this.tooltips.name.width / 2), y + this.tooltips.name.height / 2);
             this.ctx.restore();
         }
     }

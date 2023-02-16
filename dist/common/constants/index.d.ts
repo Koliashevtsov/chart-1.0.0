@@ -6,8 +6,12 @@ declare const defaultGridOpt: {
 declare const defaultSizes: {
     verticalAxisWidth: number;
     horizontalAxisHeight: number;
+    nameTabWidth: number;
+    nameTabHeight: number;
     valueTabWidth: number;
     valueTabHeight: number;
+    labelTabWidth: number;
+    labelTabHeight: number;
 };
 declare const basePoint: {
     pointX: number;

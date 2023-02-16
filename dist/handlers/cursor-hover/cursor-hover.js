@@ -4,20 +4,22 @@ class CursorHover {
     controller;
     config;
     cursorPoint;
-    valueTab;
+    tooltips;
     constructor({ ctx, controller, config }) {
         this.ctx = ctx;
         this.controller = controller;
         this.config = config;
         this.cursorPoint = this.config.cursorPoint;
-        this.valueTab = this.config.valueTab;
+        this.tooltips = this.config.tooltips;
     }
     _mouseMove(event) {
         this.cursorPoint = {
             pointX: event.offsetX,
             pointY: event.offsetY
         };
-        this.valueTab.isOpen = false;
+        this.tooltips.name.title = null;
+        this.tooltips.value.title = null;
+        this.tooltips.label.title = null;
         this._updateConfig();
     }
     _mouseLeave(event) {
@@ -25,7 +27,9 @@ class CursorHover {
             pointX: event.offsetX,
             pointY: event.offsetY
         };
-        this.valueTab.isOpen = false;
+        this.tooltips.name.title = null;
+        this.tooltips.value.title = null;
+        this.tooltips.label.title = null;
         this._updateConfig();
     }
     _updateConfig() {
@@ -34,11 +38,12 @@ class CursorHover {
         const pointsPath = state.getState().pointsPath;
         pointsPath.forEach(pointPath => {
             if (this.ctx.isPointInPath(pointPath.path, this.cursorPoint.pointX, this.cursorPoint.pointY)) {
-                this.valueTab.isOpen = true;
-                this.valueTab.value = pointPath.value;
+                this.tooltips.value.title = pointPath.value;
+                this.tooltips.label.title = pointPath.label;
+                this.tooltips.name.title = pointPath.name;
             }
         });
-        this.config.update({ cursorPoint: this.cursorPoint, isCursorArea, valueTab: this.valueTab });
+        this.config.update({ cursorPoint: this.cursorPoint, isCursorArea, tooltips: this.tooltips });
         this.controller.clear();
         this.controller.update(this.config);
     }

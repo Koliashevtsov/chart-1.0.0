@@ -40,8 +40,12 @@ const defaultGridOpt = {
 const defaultSizes = {
     verticalAxisWidth: 80,
     horizontalAxisHeight: 40,
+    nameTabWidth: 120,
+    nameTabHeight: 25,
     valueTabWidth: 80,
-    valueTabHeight: 25
+    valueTabHeight: 25,
+    labelTabWidth: 80,
+    labelTabHeight: 25
 };
 const basePoint = {
     pointX: 0,
