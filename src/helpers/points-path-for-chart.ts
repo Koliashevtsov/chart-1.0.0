@@ -1,6 +1,7 @@
 import { Point, TPointPath } from '../types';
 
 export const pointsPathForChart = (
+    name: string | null,
     data: string[],
     labels: string[], 
     basePoint: Point, 
@@ -15,7 +16,7 @@ export const pointsPathForChart = (
         data.forEach((value, index) => {
             const path: TPointPath = {
                 path: new Path2D(),
-                name: 'set in points-for',
+                name,
                 value: value,
                 label: labels[index],
                 coordinates: {
