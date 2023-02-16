@@ -22,9 +22,9 @@ class CursorHover implements CustomEventListener {
             pointX: event.offsetX,
             pointY: event.offsetY
         }
-        this.tooltips.name.isOpen = false;
-        this.tooltips.value.isOpen = false;
-        this.tooltips.label.isOpen = false;
+        this.tooltips.name.title = null;
+        this.tooltips.value.title = null;
+        this.tooltips.label.title = null;
         
         this._updateConfig()
     }
@@ -34,9 +34,9 @@ class CursorHover implements CustomEventListener {
             pointX: event.offsetX,
             pointY: event.offsetY
         }
-        this.tooltips.name.isOpen = false;
-        this.tooltips.value.isOpen = false;
-        this.tooltips.label.isOpen = false;
+        this.tooltips.name.title = null;
+        this.tooltips.value.title = null;
+        this.tooltips.label.title = null;
         
         this._updateConfig()
     }
@@ -47,11 +47,6 @@ class CursorHover implements CustomEventListener {
         const pointsPath = state.getState().pointsPath;
         pointsPath.forEach(pointPath => {
             if(this.ctx.isPointInPath(pointPath.path, this.cursorPoint.pointX, this.cursorPoint.pointY)){
-                
-                this.tooltips.name.isOpen = true;
-                this.tooltips.value.isOpen = true;
-                this.tooltips.label.isOpen = true;
-
                 this.tooltips.value.title = pointPath.value;
                 this.tooltips.label.title = pointPath.label;
                 this.tooltips.name.title = pointPath.name;
