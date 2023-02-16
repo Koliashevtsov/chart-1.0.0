@@ -1,20 +1,20 @@
 import state from '../../state/state';
 
-import { CustomEventListener, ListenerProps, TController, TConfig, Point, TValueTab } from '../../types';
+import { CustomEventListener, ListenerProps, TController, TConfig, Point, TTooltips } from '../../types';
 
 class CursorHover implements CustomEventListener {
     ctx: CanvasRenderingContext2D;
     controller: TController;
     config: TConfig;
     cursorPoint: Point;
-    valueTab: TValueTab;
+    tooltips: TTooltips;
 
     constructor({ctx, controller, config}: ListenerProps){
         this.ctx = ctx;
         this.controller = controller;
         this.config = config;
         this.cursorPoint = this.config.cursorPoint;
-        this.valueTab = this.config.valueTab;
+        this.tooltips = this.config.tooltips;
     }
 
     private _mouseMove(event: MouseEvent){
@@ -22,7 +22,9 @@ class CursorHover implements CustomEventListener {
             pointX: event.offsetX,
             pointY: event.offsetY
         }
-        this.valueTab.isOpen = false
+        this.tooltips.name.isOpen = false;
+        this.tooltips.value.isOpen = false;
+        this.tooltips.label.isOpen = false;
         
         this._updateConfig()
     }
@@ -32,7 +34,9 @@ class CursorHover implements CustomEventListener {
             pointX: event.offsetX,
             pointY: event.offsetY
         }
-        this.valueTab.isOpen = false;
+        this.tooltips.name.isOpen = false;
+        this.tooltips.value.isOpen = false;
+        this.tooltips.label.isOpen = false;
         
         this._updateConfig()
     }
@@ -43,12 +47,16 @@ class CursorHover implements CustomEventListener {
         const pointsPath = state.getState().pointsPath;
         pointsPath.forEach(pointPath => {
             if(this.ctx.isPointInPath(pointPath.path, this.cursorPoint.pointX, this.cursorPoint.pointY)){
-                this.valueTab.isOpen = true;
-                this.valueTab.value = pointPath.value
+                
+                this.tooltips.name.isOpen = true;
+                this.tooltips.value.isOpen = true;
+                this.tooltips.label.isOpen = true;
+
+                this.tooltips.value.title = pointPath.value;
             }
         })
 
-        this.config.update({ cursorPoint: this.cursorPoint, isCursorArea, valueTab: this.valueTab })
+        this.config.update({ cursorPoint: this.cursorPoint, isCursorArea, tooltips: this.tooltips })
         
         this.controller.clear();
         this.controller.update(this.config)
