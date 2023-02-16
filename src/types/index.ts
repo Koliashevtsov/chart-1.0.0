@@ -2,12 +2,17 @@ import { Observable } from '../utils';
 
 // types
 type Dataset = {
-    data: Array<string>;
+    data: string[];
+}
+
+type ExtendedDataset = Dataset & {
+    color: string;
+    name: string;
 }
 
 type Data = {
-    datasets: Array<Dataset>;
-    labels: Array<string>;
+    datasets: Dataset[] | ExtendedDataset[];
+    labels: string[];
 }
 type TStyle = {
     backgroundColor?: Color | string,
@@ -207,6 +212,7 @@ enum Color {
 
 export {
     Dataset,
+    ExtendedDataset,
     Data,
     DefOptions,
     TDefGridOpt,
