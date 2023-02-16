@@ -179,7 +179,8 @@ export class Drawing {
             // get points for each dataset
             
             const pointsPath = pointsPathForChart(
-                dataset.data, 
+                dataset.data,
+                this.data.labels, 
                 this.basePoint, 
                 this.height, 
                 this.gridOpt.verticalStep, 
@@ -267,7 +268,7 @@ export class Drawing {
         this.ctx.lineTo(right.pointX, right.pointY);
         this.ctx.stroke();
         this.ctx.restore();
-        // valueTab
+        // value tooltip
         if(this.tooltips.value.isOpen){
             const x = right.pointX;
             const y = right.pointY - (this.tooltips.value.height / 2)
@@ -285,6 +286,46 @@ export class Drawing {
             this.ctx.textBaseline = 'middle';
             this.ctx.fillStyle = this.options.styles.cursor.color;
             this.ctx.fillText(this.tooltips.value.title, x + 20, right.pointY);
+            this.ctx.restore()
+        }
+        // label tooltip
+        if(this.tooltips.label.isOpen){
+            const x = bottom.pointX - (this.tooltips.label.width / 2);
+            const y = bottom.pointY;
+            // background
+            this.ctx.save()
+            this.ctx.beginPath()
+            this.ctx.fillStyle = this.options.styles.cursor.backgroundColor;
+            this.ctx.fillRect(x, y, this.tooltips.label.width, this.tooltips.label.height);
+            this.ctx.restore()
+            // text
+            this.ctx.save()
+            this.ctx.beginPath()
+            this.ctx.font = this.options.styles.cursor.font;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillStyle = this.options.styles.cursor.color;
+            this.ctx.fillText(this.tooltips.label.title, x + (this.tooltips.label.width / 2), bottom.pointY + (this.tooltips.label.height / 2));
+            this.ctx.restore()
+        }
+        // line name tooltip
+        if(this.tooltips.name.isOpen){
+            const x = this.cursorPoint.pointX + 10;
+            const y = this.cursorPoint.pointY - this.tooltips.name.height - 10;
+            // background
+            this.ctx.save()
+            this.ctx.beginPath()
+            this.ctx.fillStyle = this.options.styles.cursor.backgroundColor;
+            this.ctx.fillRect(x, y, this.tooltips.name.width, this.tooltips.name.height);
+            this.ctx.restore()
+            // text
+            this.ctx.save()
+            this.ctx.beginPath()
+            this.ctx.font = this.options.styles.cursor.font;
+            this.ctx.textAlign = 'center';
+            this.ctx.textBaseline = 'middle';
+            this.ctx.fillStyle = this.options.styles.cursor.color;
+            this.ctx.fillText(this.tooltips.name.title, x + (this.tooltips.name.width / 2), y + this.tooltips.name.height / 2);
             this.ctx.restore()
         }
     }
