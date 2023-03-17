@@ -1,16 +1,18 @@
-import { CustomEventListener, ListenerProps } from '../types';
+import { CustomEventHandler, InitHandlerProps } from '../types';
 
-import Pan from './pan/pan';
 import CursorHover from './cursor-hover/cursor-hover';
 
 class EventHandler {
-    listeners: Array<CustomEventListener>
+    listeners: Array<CustomEventHandler>
 
-    constructor({ ctx, controller, config }: ListenerProps){
+    constructor(){
         this.listeners = [
-            new Pan({ctx, controller, config}),
-            new CursorHover({ctx, controller, config})
+            new CursorHover()
         ]
+    }
+
+    initialize({ controller, config }: InitHandlerProps){
+        this.listeners.forEach(listener => listener.initialize({ controller, config }))
     }
 
     bindEvents(){

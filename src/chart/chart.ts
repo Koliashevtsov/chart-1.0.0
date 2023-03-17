@@ -17,7 +17,7 @@ class Chart {
     }
 
     init(settings: InitSettings){
-        const { data, options } = settings;
+        const { data, options, plugins } = settings;
         
         if(data.datasets.length > 0){
             data.datasets.forEach((dataset: Dataset) => {
@@ -33,7 +33,7 @@ class Chart {
             })
         }
         
-        this.core = new Core({ctx: this.ctx, data, inputOptions: options})
+        this.core = new Core({ctx: this.ctx, data, inputOptions: options, inputPlugins: plugins})
 
         const chartArea = new ChartArea();
         const labelsArea = new LabelsArea();

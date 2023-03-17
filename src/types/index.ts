@@ -63,24 +63,32 @@ type InputOptions = {
         cursor?: TStyle;
     };
 }
+type HorizontalScrollingInputProp = {
+    scrolling: number
+}
+type InputPlugin = {
+    id: string,
+    prop: HorizontalScrollingInputProp
+}
 
 type InitSettings = {
     data: Data,
-    options?: InputOptions
+    options?: InputOptions,
+    plugins?: InputPlugin[]
 }
 type TObserver = {
     id: string;
-    initialize: (config: TConfig) => void;
-    update: (config: TConfig) => void;
+    initialize: (config: IConfig) => void;
+    update: (config: IConfig) => void;
     render: () => void;
     clear: () => void;
 }
 type TController = {
     observable: Observable;
     add: (area: TObserver) => void;
-    initialize: (config: TConfig) => void;
+    initialize: (config: IConfig) => void;
     render: () => void;
-    update: (config: TConfig) => void;
+    update: (config: IConfig) => void;
     clear: () => void;
 }
 type TooltipTab = {
@@ -95,14 +103,35 @@ type TTooltips = {
 }
 type NotifyFull = {
     message: Message;
-    config: TConfig;
+    config: IConfig;
 }
+type CoreProps = {
+    ctx: CanvasRenderingContext2D;
+    data: Data;
+    inputOptions: InputOptions;
+    inputPlugins: InputPlugin[]
+};
 type ConfigProps = {
     ctx: CanvasRenderingContext2D;
     data: Data;
     inputOptions: InputOptions;
 };
-type TConfig = {
+type IPluginProps = HorizontalScrollingInputProp; // will added union
+
+interface IPlugin {
+    id: string;
+    props: IPluginProps;
+    config: IConfig;
+    eventHandler : CustomEventHandler | null
+    init: (props: IPluginProps, config: IConfig) => void;
+    getConfig: () => IConfig;
+}
+interface IPlugins {
+    registeredPlugins: IPlugin[]
+    config: IConfig;
+    getConfig: () => IConfig
+}
+type IConfig = {
     ctx: CanvasRenderingContext2D;
     data: Data;
     options: Options;
@@ -189,14 +218,14 @@ type Couples = {
     from: Point;
     to: Point;
 }
-type CustomEventListener = {
+type CustomEventHandler = {
+    initialize: (props: InitHandlerProps) => void;
     bindEvents: () => void;
     unbindEvents: () => void;
 }
-type ListenerProps = {
-    ctx: CanvasRenderingContext2D;
+type InitHandlerProps = {
     controller: TController;
-    config: TConfig;
+    config: IConfig;
 }
 type PanConfUpd = {
     offset: Offset;
@@ -206,6 +235,20 @@ type HoverConfUpd = {
     cursorPoint: Point;
     isCursorArea: boolean;
     tooltips: TTooltips;
+}
+type HorScrolPlugUpd = {
+    data: Data;
+    areasSizes: ASizes;
+    offset: Offset;
+    areasPoints: APoints;
+    gridOpt: GridOpt
+}
+
+type HorScrolPlugOptions = {
+    originalConfig: IConfig;
+    startIdx: number;
+    finishIdx: number;
+    labelsStep: number;
 }
 
 // enums
@@ -231,11 +274,16 @@ export {
     TDefGridOpt,
     Options,
     InputOptions,
+    InputPlugin,
     InitSettings,
     TObserver,
+    CoreProps,
     ConfigProps,
-    TConfig,
+    IConfig,
     TController,
+    IPlugins,
+    IPlugin,
+    IPluginProps,
     TPointPath,
     TState,
     TTooltips,
@@ -252,8 +300,10 @@ export {
     Message,
     Color,
     NotifyFull,
-    CustomEventListener,
-    ListenerProps,
+    CustomEventHandler,
+    InitHandlerProps,
     PanConfUpd,
-    HoverConfUpd
+    HoverConfUpd,
+    HorScrolPlugUpd,
+    HorScrolPlugOptions
 }

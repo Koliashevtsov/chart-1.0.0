@@ -1,6 +1,8 @@
 import { pointsPathForChart } from '../../src/helpers';
 
 describe('Generate points paths', () => {
+    const name = 'Chart1'
+    const labels = ['Monday', 'Tuesday', 'Wednesday']
     const data = ['43', '51', '73']
     const basePoint = {pointX: 0, pointY: 0}
     const areaHeight = 400
@@ -9,7 +11,7 @@ describe('Generate points paths', () => {
     const absOffsetY = 40
 
     it('Should have coordinates as expected', () => {
-        const paths = pointsPathForChart(data, basePoint, areaHeight, step, scale, absOffsetY);
+        const paths = pointsPathForChart(name, data, labels, basePoint, areaHeight, step, scale, absOffsetY);
         const coordinates = [
             paths[0].coordinates,
             paths[1].coordinates,

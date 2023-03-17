@@ -1,18 +1,26 @@
 import state from '../../state/state';
 
-import { CustomEventListener, ListenerProps, TController, TConfig, Point, TTooltips } from '../../types';
+import { CustomEventHandler, InitHandlerProps, TController, IConfig, Point, TTooltips } from '../../types';
 
-class CursorHover implements CustomEventListener {
+class CursorHover implements CustomEventHandler {
     ctx: CanvasRenderingContext2D;
     controller: TController;
-    config: TConfig;
+    config: IConfig;
     cursorPoint: Point;
     tooltips: TTooltips;
 
-    constructor({ctx, controller, config}: ListenerProps){
-        this.ctx = ctx;
+    constructor(){
+        this.ctx = null;
+        this.controller = null;
+        this.config = null;
+        this.cursorPoint = {pointX: 0, pointY: 0};
+        this.tooltips = null
+    }
+
+    initialize({ controller, config }: InitHandlerProps){
         this.controller = controller;
         this.config = config;
+        this.ctx = config.ctx;
         this.cursorPoint = this.config.cursorPoint;
         this.tooltips = this.config.tooltips;
     }

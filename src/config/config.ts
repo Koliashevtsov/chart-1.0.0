@@ -21,19 +21,20 @@ import {
     Offset, 
     Options, 
     Point, 
-    TConfig, 
+    IConfig, 
     ConfigProps, 
     TDefSizes,
     PanConfUpd,
     HoverConfUpd,
     TDefGridOpt,
     TTooltips,
-    DefOptions
+    DefOptions,
+    HorScrolPlugUpd
 } from '../types';
 
 
 
-class Config implements TConfig{
+class Config implements IConfig {
     _config
     ctx: CanvasRenderingContext2D;
     data: Data;
@@ -59,7 +60,7 @@ class Config implements TConfig{
         const _options = this._getOptions(ctx, data, defOptions, inputOptions);
         const _basePoint = Object.freeze(basePoint);
         const _clientRect = _ctx.canvas.getBoundingClientRect();
-        const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes, _data, _options);
+        const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes);
         const _offset = this._scrollToFinishOffset(_areasSizes, baseOffset);
         const _areasPoints = this._getAreasPoints(_basePoint, _offset, _clientRect, defaultSizes, _areasSizes);
         const _gridOpt = this._getGridOpt(_areasSizes.chart.height, _areasSizes.chart.width, data, defaultGridOpt);
@@ -98,7 +99,13 @@ class Config implements TConfig{
         this.tooltips = this._config.tooltips;
     }
 
-    update(updater: PanConfUpd | HoverConfUpd){
+    update(updater: PanConfUpd | HoverConfUpd | HorScrolPlugUpd){
+        
+        if('offset' in updater){
+            console.log('UPDATER, ', updater.offset.distanceX);
+            
+        }
+        
         this._config = { ...this._config, ...updater };
         this._unzipProps();
     }
@@ -125,31 +132,17 @@ class Config implements TConfig{
         return opts;
     }
 
-    private _getAreasSizes(clientRect: DOMRect, defaultSizes: TDefSizes, data: Data, options: Options) {
-        let chartWidth;
-        let chartHeight;
-        let labelsWidth;
+    private _getAreasSizes(clientRect: DOMRect, defaultSizes: TDefSizes) {
+        const chartWidth = clientRect.width - defaultSizes.verticalAxisWidth;
+        const chartHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
+        const labelsWidth = chartWidth;
         const labelsHeight = defaultSizes.horizontalAxisHeight;
         const valuesWidth = defaultSizes.verticalAxisWidth;
         const valuesHeight = clientRect.height;
-        const whiteWidth = clientRect.width - defaultSizes.verticalAxisWidth;
-        const whiteHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
+        const whiteWidth = chartWidth;
+        const whiteHeight = chartHeight;
         const cursorAreaWidth = whiteWidth;
         const cursorAreaHeight = whiteHeight;
-
-        if(!options.horizontalScrolling){
-            // chart area
-            chartWidth = clientRect.width - defaultSizes.verticalAxisWidth;
-            chartHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
-            // labels area
-            labelsWidth = chartWidth;
-        } else {
-            // chart area
-            chartHeight = clientRect.height - defaultSizes.horizontalAxisHeight;
-            chartWidth = options.horizontalScrolling.labelsStep * (data.labels.length - 1);
-            // labels area
-            labelsWidth = chartWidth;
-        }
 
         return {
             chart: {
@@ -226,14 +219,6 @@ class Config implements TConfig{
         }
     }
 
-    private _getValueTab(width: number, height: number){
-        return {
-            isOpen: false,
-            title: '',
-            width,
-            height
-        }
-    }
     private _getTooltips(def: TDefSizes): TTooltips{
         return {
             name: {

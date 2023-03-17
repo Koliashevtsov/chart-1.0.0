@@ -39,5 +39,6 @@ const options: InputOptions = {
 const chart = new Chart({context});
 chart.init({
     data: data,
-    options: options
+    options: options,
+    plugins: [{id: 'horizontal-scrolling', prop: {scrolling: 100}}]
 });

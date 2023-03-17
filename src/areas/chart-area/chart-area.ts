@@ -1,7 +1,7 @@
 import { Drawing } from '../../drawing';
 import state  from '../../state/state';
 
-import { TObserver, TConfig} from '../../types';
+import { TObserver, IConfig} from '../../types';
 
 export class ChartArea implements TObserver {
     id: string;
@@ -26,7 +26,7 @@ export class ChartArea implements TObserver {
         this.drawing.clear()
     }
 
-    initialize(config: TConfig){
+    initialize(config: IConfig){
         this._createDrawing(config);
     }
 
@@ -34,12 +34,12 @@ export class ChartArea implements TObserver {
         this._draw()
     }
 
-    update(config: TConfig){
+    update(config: IConfig){
         this._createDrawing(config);
         this.render()
     }
 
-    private _createDrawing(config: TConfig){
+    private _createDrawing(config: IConfig){
         this.drawing = new Drawing({
             ctx: config.ctx, 
             data: config.data, 

@@ -1,6 +1,6 @@
 import { Drawing } from '../../drawing';
 
-import { TObserver, TConfig } from '../../types';
+import { TObserver, IConfig } from '../../types';
 
 // white area exist in order to get base chart offset and can be used as axes borders
 export class WhiteArea implements TObserver{
@@ -20,7 +20,7 @@ export class WhiteArea implements TObserver{
         this.drawing.clear()
     }
 
-    initialize(config: TConfig){
+    initialize(config: IConfig){
         this._createDrawing(config);
     }
 
@@ -28,12 +28,12 @@ export class WhiteArea implements TObserver{
         this._draw()
     }
 
-    update(config: TConfig){
+    update(config: IConfig){
         this._createDrawing(config);
         this.render();
     }
 
-    private _createDrawing(config: TConfig){
+    private _createDrawing(config: IConfig){
         this.drawing = new Drawing({
             ctx: config.ctx, 
             data: config.data, 

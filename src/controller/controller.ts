@@ -1,6 +1,6 @@
 import { Observable } from '../utils';
 
-import { TObserver, Message, TConfig } from '../types';
+import { TObserver, Message, IConfig } from '../types';
 
 class Controller {
     observable: Observable
@@ -13,7 +13,7 @@ class Controller {
         this.observable.subscribe(area);
     }
 
-    initialize(config: TConfig){
+    initialize(config: IConfig){
         this.observable.notify({message: Message.INITIALIZE, config});
     }
 
@@ -21,7 +21,7 @@ class Controller {
         this.observable.notify({message: Message.RENDER, config: null});
     }
 
-    update(config: TConfig){
+    update(config: IConfig){
         this.observable.notify({message: Message.UPDATE, config});
     }
 

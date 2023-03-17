@@ -1,20 +1,22 @@
 import Config from '../config';
 import Controller from '../controller';
+import Plugins from '../plugins';
 
 import  EventHandler  from '../handlers';
 
-import { TObserver, ConfigProps, TController } from '../types';
-
+import { TObserver, CoreProps, TController, IConfig, IPlugins } from '../types';
 
 class Core {
     controller: TController;
-    config: Config;
+    config: IConfig;
+    plugins: IPlugins;
     eventHandler: EventHandler;
 
-    constructor({ctx, data, inputOptions}: ConfigProps){
+    constructor({ctx, data, inputOptions, inputPlugins}: CoreProps){
         this.controller = new Controller()
-        this.config = new Config({ctx, data, inputOptions})
-        this.eventHandler = new EventHandler({ctx, controller: this.controller, config: this.config})
+        this.plugins  = new Plugins(inputPlugins, new Config({ctx, data, inputOptions}))
+        this.config = this.plugins.getConfig();
+        this.eventHandler = new EventHandler()
     }
 
     register(area: TObserver){
@@ -22,7 +24,12 @@ class Core {
     }
 
     private _initialize(){
+        // add plugins event handler to main EventHandler
+        this.plugins.registeredPlugins.forEach(plugin => this.eventHandler.listeners.push(plugin.eventHandler))
+        // init all event handlers and bind it
+        this.eventHandler.initialize({ controller: this.controller, config: this.config })
         this.eventHandler.bindEvents();
+        
         this.controller.initialize(this.config);
     }
 
