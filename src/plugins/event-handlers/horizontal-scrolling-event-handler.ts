@@ -79,20 +79,16 @@ class HorizontalScrollingEventHandler implements CustomEventHandler {
     }
 
     private _getOffset (diffX: number) {
-        console.log(diffX);
-        
         let offsetX = this.offset.distanceX + diffX;
         
         // if it is left range of labels and offset bigger set offset to 0
         if(this.pluginOptions.labelsOffset == 0 && offsetX > this.leftBoundary){
-            console.log('stop!!!!!!!!!!! LEFT', offsetX, this.pluginOptions.labelsOffset);
             offsetX = this.leftBoundary
         }
         // if it is right range of labels and offset smaller set offset to right range
         if((this.pluginOptions.originalConfig.data.labels.length - 1) * this.pluginOptions.labelsStep -
             this.pluginOptions.labelsOffset - this.config.areasSizes.chart.width == 0 && 
             offsetX < this.rightBoundary){
-                console.log('stop!!!!!!!!!!!!!!!!!!! RIGHT', offsetX, this.pluginOptions.labelsOffset);
             offsetX = this.rightBoundary
         }
 
@@ -107,9 +103,6 @@ class HorizontalScrollingEventHandler implements CustomEventHandler {
         } else if (offsetX < this.rightBoundary) {
             this._updateConfigNewLabels(SCROLL_DIRECTION.RIGHT);
         } else {
-            console.log('offset before SMALL update', this.offset.distanceX);
-            console.log('rightBoundary', this.rightBoundary);
-            
             this._updateConfigSameLabels()
         }
     }
@@ -117,14 +110,10 @@ class HorizontalScrollingEventHandler implements CustomEventHandler {
     private _resize(direction: string){
         // rewrite offset by hand because one grig step was offset
         if(direction === 'left'){
-            console.log('resize direct LEFT', this.offset.distanceX);
-            
             this.offset.distanceX = -this.pluginOptions.labelsStep;
             this.pluginOptions.labelsOffset -= this.pluginOptions.labelsStep;
         }
         if(direction === 'right'){
-            console.log('resize direction RIGHT');
-            
             this.offset.distanceX = this.offset.distanceX + this.pluginOptions.labelsStep;
             this.pluginOptions.labelsOffset += this.pluginOptions.labelsStep;
         }
@@ -145,8 +134,7 @@ class HorizontalScrollingEventHandler implements CustomEventHandler {
             this.pluginOptions.labelsStep
         )
         // rewrite data slice
-        const data = getDataSlice(this.pluginOptions.originalConfig.data, startIdx, finishIdx)
-            console.log('offset before BIG update', this.offset.distanceX);
+        const data = getDataSlice(this.pluginOptions.originalConfig.data, startIdx, finishIdx);
             
         return updatedConfigProps(
             this.pluginOptions.originalConfig, 

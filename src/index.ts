@@ -4,15 +4,6 @@ import { InputOptions, Data } from './types';
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const context = canvas.getContext('2d');
 
-// type Dataset = {
-//     data: Array<string>;
-// }
-
-// type Data = {
-//     datasets: Array<Dataset>;
-//     labels: Array<string> ;
-// }
-
 const data: Data = {
     datasets: [
         // {data: ['20', '10', '18', '0', '20', '25', '92', '30', '45', '55', '60', '20']},
@@ -27,7 +18,6 @@ const data: Data = {
 };
 
 const options: InputOptions = {
-    horizontalScrolling: { labelsStep: 80 },
     styles: {
         chart: {
             colors: ['#176ba0', '#7d3a71', '#de542c']

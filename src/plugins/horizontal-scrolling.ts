@@ -46,7 +46,6 @@ class HorizontalScrolling implements IPlugin {
         const spaceBetweenLabels = this.props.scrolling;
 
         const { width, labelsCount } = initChartAreaWidth(spaceBetweenLabels, clientWidth);
-        console.log(labelsCount);
         
         // calculate new offset
         const offset = {...this.config.offset, distanceX: clientWidth - width};
@@ -59,7 +58,6 @@ class HorizontalScrolling implements IPlugin {
         )
         // rewrite data slice
         const data = getDataSlice(this.config.data, startIdx, finishIdx)
-        console.log(data.labels);
         
         // get updated props
         const updated = updatedConfigProps(this.config, data, offset, width, this.config.areasSizes.chart.height)

@@ -1,7 +1,6 @@
 import { DefOptions, Color } from '../../types';
 
 const defaultChartOptions: DefOptions = {
-    horizontalScrolling: false,
     styles: {
         chart: {
             backgroundColor: Color.White,

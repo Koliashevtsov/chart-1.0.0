@@ -41,7 +41,6 @@ type TState = {
     pointsPath: Array<TPointPath>
 }
 type DefOptions = {
-    horizontalScrolling: false;
     styles: TStyles;
 }
 type TDefGridOpt = {
@@ -49,11 +48,9 @@ type TDefGridOpt = {
 }
 
 type Options = {
-    horizontalScrolling: {labelsStep: number} | false;
     styles: TStyles;
 }
 type InputOptions = {
-    horizontalScrolling?: {labelsStep: number};
     styles?: {
         chart?: TStyle;
         grid?: TStyle;
