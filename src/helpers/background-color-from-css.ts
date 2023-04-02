@@ -1,5 +1,7 @@
 export const backgroundColorFromCss = (element: HTMLElement): string | null => {
-    
+    if(!element){
+        return null
+    }
     if(element.tagName === 'BODY'){
         return null
     }

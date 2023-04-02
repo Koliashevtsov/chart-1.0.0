@@ -1,7 +1,14 @@
+import { getDataSlice, getIdxsSlice, resizedChartAreaWidth, updatedConfigProps } from '../helpers';
+
 import { 
-    CustomEventHandler, IConfig, InitHandlerProps, TController, Point, APoints, Offset, HorScrolPlugOptions, HorScrolPlugUpd 
+    CustomEventHandler, IConfig, InitHandlerProps, TController, 
+    Point, APoints, Offset, HorScrolPlugOptions
 } from '../../types';
-import { resizesConfigBase, resizesConfigOffseting } from '../helpers';
+
+const SCROLL_DIRECTION = {
+    LEFT: 'left',
+    RIGHT: 'right'
+}
 
 class HorizontalScrollingEventHandler implements CustomEventHandler {
     pluginOptions: HorScrolPlugOptions;
@@ -67,86 +74,99 @@ class HorizontalScrollingEventHandler implements CustomEventHandler {
     }
 
     private _handleOffset(diffX: number){
-
         this._getOffset(diffX)
-        this._updateConfid();
-
-        // adjust offset if beyond range
-        // if(offsetX > LEFT_PAN_RANGE){
-        //     offsetX = LEFT_PAN_RANGE
-        //     console.log('offset when LEFT_RANGE', this.offset.distanceX);
-            
-        //     this._watchLeftRange(offsetX)
-        // } else if(offsetX < RIGHT_PAN_RANGE){
-        //     offsetX = RIGHT_PAN_RANGE
-        //     this.offset.distanceX = offsetX
-        // } else {
-        //     console.log('offsetX when no range', offsetX);
-        //     this._updateConfigSameLabels(offsetX)
-        // }
-        
+        this._updateConfig();
     }
 
     private _getOffset (diffX: number) {
-        console.log('get_Offet this, ', this);
+        console.log(diffX);
         
         let offsetX = this.offset.distanceX + diffX;
-        // adjust offset if beyond range
-        if(offsetX > this.leftBoundary) {
+        
+        // if it is left range of labels and offset bigger set offset to 0
+        if(this.pluginOptions.labelsOffset == 0 && offsetX > this.leftBoundary){
+            console.log('stop!!!!!!!!!!! LEFT', offsetX, this.pluginOptions.labelsOffset);
             offsetX = this.leftBoundary
-        } 
-        if (offsetX < this.rightBoundary) {
-            console.log('hello');
-            
-            // offsetX = this.rightBoundary
         }
+        // if it is right range of labels and offset smaller set offset to right range
+        if((this.pluginOptions.originalConfig.data.labels.length - 1) * this.pluginOptions.labelsStep -
+            this.pluginOptions.labelsOffset - this.config.areasSizes.chart.width == 0 && 
+            offsetX < this.rightBoundary){
+                console.log('stop!!!!!!!!!!!!!!!!!!! RIGHT', offsetX, this.pluginOptions.labelsOffset);
+            offsetX = this.rightBoundary
+        }
+
         this.offset.distanceX = offsetX 
     }
 
-    private _updateConfid () {
+    private _updateConfig () {
         const offsetX = this.offset.distanceX;
-        console.log('see offsetX in offset and in config', this.offset.distanceX, this.config.offset.distanceX);
         
-        if(offsetX === this.leftBoundary) {
-            // pan to left boundry
-            this._scrollBeyondLeft()
-        } else if (offsetX === this.rightBoundary) {
-            // pan to right boundry
+        if(offsetX > this.leftBoundary) {
+            this._updateConfigNewLabels(SCROLL_DIRECTION.LEFT);
+        } else if (offsetX < this.rightBoundary) {
+            this._updateConfigNewLabels(SCROLL_DIRECTION.RIGHT);
         } else {
-            // pan to left or to right does not touch boundry
+            console.log('offset before SMALL update', this.offset.distanceX);
+            console.log('rightBoundary', this.rightBoundary);
+            
             this._updateConfigSameLabels()
         }
     }
 
-    private _scrollBeyondLeft(){
-        if(this.pluginOptions.startIdx === 0){
-            this._updateConfigSameLabels();
-        } else {
-            this.offset.distanceX = -100 - 1
-            this.pluginOptions.startIdx -= 1
-            this.pluginOptions.finishIdx -= 1;
-            this._updateConfigNewLabels();
+    private _resize(direction: string){
+        // rewrite offset by hand because one grig step was offset
+        if(direction === 'left'){
+            console.log('resize direct LEFT', this.offset.distanceX);
+            
+            this.offset.distanceX = -this.pluginOptions.labelsStep;
+            this.pluginOptions.labelsOffset -= this.pluginOptions.labelsStep;
         }
+        if(direction === 'right'){
+            console.log('resize direction RIGHT');
+            
+            this.offset.distanceX = this.offset.distanceX + this.pluginOptions.labelsStep;
+            this.pluginOptions.labelsOffset += this.pluginOptions.labelsStep;
+        }
+        
+        const { width, labelsCount } = resizedChartAreaWidth(
+            this.pluginOptions.labelsStep, 
+            this.config.areasSizes.white.width, 
+            this.offset.distanceX
+        )
+        
+        // rewrite right boundary
+        this.rightBoundary = this.config.areasSizes.white.width - width;
+        // calculate idxs
+        const [ startIdx, finishIdx ] = getIdxsSlice(
+            this.pluginOptions.originalConfig.data, 
+            this.pluginOptions.labelsOffset, 
+            labelsCount,
+            this.pluginOptions.labelsStep
+        )
+        // rewrite data slice
+        const data = getDataSlice(this.pluginOptions.originalConfig.data, startIdx, finishIdx)
+            console.log('offset before BIG update', this.offset.distanceX);
+            
+        return updatedConfigProps(
+            this.pluginOptions.originalConfig, 
+            data, 
+            this.offset, 
+            width, 
+            this.config.areasSizes.chart.height
+        );
     }
 
-    private _updateConfigNewLabels(){
-        console.log('UPDATE_NEW_LABELS', this.config.offset.distanceX);
+    private _updateConfigNewLabels(direction: string){
+        const updated = this._resize(direction)
         
-        const { originalConfig, startIdx, finishIdx, labelsStep } = this.pluginOptions;
-        const updatedConfigProps = resizesConfigOffseting(originalConfig, this.offset, startIdx, finishIdx, labelsStep);
-        console.log('a', updatedConfigProps.areasPoints.chart.pointX);
-        
-        this.config.update(updatedConfigProps)
-        console.log('x', this.config.offset.distanceX);
-        console.log('xx', this.offset.distanceX);
+        this.config.update(updated)
 
         this.controller.clear()
         this.controller.update(this.config)
     }
 
     private _updateConfigSameLabels(){
-        console.log('UPDATE_SAME_LABELS', this.config.offset.distanceX);
-        
         const areasPoints = this.config.areasPoints;
         // overload areas points with offset
         const updatedPoints: APoints = {

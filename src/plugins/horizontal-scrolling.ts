@@ -1,6 +1,6 @@
 import HorizontalScrollingEventHandler from './event-handlers/horizontal-scrolling-event-handler';
 
-import { getSliceIdxs, resizesConfigBase } from './helpers';
+import { getDataSlice, getIdxsSlice, getLabelsOffset, initChartAreaWidth, updatedConfigProps } from './helpers';
 
 import { CustomEventHandler, HorScrolPlugOptions, IConfig, IPlugin, IPluginProps } from '../types';
 
@@ -23,23 +23,48 @@ class HorizontalScrolling implements IPlugin {
         this.props = props;
         this.config = config;
 
-        const labels = this.config.data.labels;
         const clientWidth = this.config.areasSizes.white.width;
         const spaceBetweenLabels = this.props.scrolling;
+
+        const { width } = initChartAreaWidth(spaceBetweenLabels, clientWidth)
         
         this.pluginOptions = {
             originalConfig: { ...this.config },
-            startIdx: getSliceIdxs(labels, clientWidth, spaceBetweenLabels)[0],
-            finishIdx: getSliceIdxs(labels, clientWidth, spaceBetweenLabels)[1],
+            labelsOffset: getLabelsOffset(this.config.data.labels, spaceBetweenLabels, width),
             labelsStep: spaceBetweenLabels
         }
         this.eventHandler = new HorizontalScrollingEventHandler(this.pluginOptions)
     }
 
     private _updateConfig(){
-        // update config
-        const updatedConfigProps = resizesConfigBase(this.pluginOptions.originalConfig, this.pluginOptions.startIdx, this.pluginOptions.finishIdx, this.props.scrolling)
-        this.config.update(updatedConfigProps)
+        const updated = this._resize()
+        this.config.update(updated)
+    }
+
+    private _resize(){
+        const clientWidth = this.config.areasSizes.white.width;
+        const spaceBetweenLabels = this.props.scrolling;
+
+        const { width, labelsCount } = initChartAreaWidth(spaceBetweenLabels, clientWidth);
+        console.log(labelsCount);
+        
+        // calculate new offset
+        const offset = {...this.config.offset, distanceX: clientWidth - width};
+        // calculate idxs
+        const [ startIdx, finishIdx ] = getIdxsSlice(
+            this.config.data, 
+            this.pluginOptions.labelsOffset, 
+            labelsCount,
+            this.pluginOptions.labelsStep
+        )
+        // rewrite data slice
+        const data = getDataSlice(this.config.data, startIdx, finishIdx)
+        console.log(data.labels);
+        
+        // get updated props
+        const updated = updatedConfigProps(this.config, data, offset, width, this.config.areasSizes.chart.height)
+
+        return updated
     }
 
     getConfig(){

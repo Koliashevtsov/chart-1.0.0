@@ -246,9 +246,8 @@ type HorScrolPlugUpd = {
 
 type HorScrolPlugOptions = {
     originalConfig: IConfig;
-    startIdx: number;
-    finishIdx: number;
     labelsStep: number;
+    labelsOffset: number;
 }
 
 // enums

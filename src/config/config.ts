@@ -61,7 +61,7 @@ class Config implements IConfig {
         const _basePoint = Object.freeze(basePoint);
         const _clientRect = _ctx.canvas.getBoundingClientRect();
         const _areasSizes = this._getAreasSizes(_clientRect, defaultSizes);
-        const _offset = this._scrollToFinishOffset(_areasSizes, baseOffset);
+        const _offset = baseOffset;
         const _areasPoints = this._getAreasPoints(_basePoint, _offset, _clientRect, defaultSizes, _areasSizes);
         const _gridOpt = this._getGridOpt(_areasSizes.chart.height, _areasSizes.chart.width, data, defaultGridOpt);
         const _cursorPoint = baseCursorPoint;
@@ -100,12 +100,6 @@ class Config implements IConfig {
     }
 
     update(updater: PanConfUpd | HoverConfUpd | HorScrolPlugUpd){
-        
-        if('offset' in updater){
-            console.log('UPDATER, ', updater.offset.distanceX);
-            
-        }
-        
         this._config = { ...this._config, ...updater };
         this._unzipProps();
     }
@@ -237,14 +231,6 @@ class Config implements IConfig {
                 height: def.labelTabHeight
             }
         }
-    }
-
-    private _scrollToFinishOffset(areasSizes: ASizes, baseOffset: Offset){
-        const offset: Offset = {
-            distanceX: areasSizes.white.width - areasSizes.chart.width,
-            distanceY: baseOffset.distanceY
-        }
-        return offset;
     }
 }
 
