@@ -1,7 +1,6 @@
 import { Data } from '../../types';
 
 export const getDataSlice = (originalData: Data, startIdx: number, finishIdx: number) => {
-    console.log('startIdx =>', startIdx, 'finishIdx', finishIdx);
     
     const datasets = originalData.datasets.map((dataset) => {
         if('color' in dataset){

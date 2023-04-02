@@ -13,8 +13,6 @@ export const getGridOpt = (height: number, width: number, data: Data, defaultGri
     const horizontalStep = height / (horizontalLinesCount - 1);
     const verticalLinesCount = data.labels.length;
     const verticalStep = width / (verticalLinesCount - 1);
-    console.log('in grid ====>>>>>>>>>>>>>>>', width, verticalLinesCount - 1, verticalStep);
-    
     
     return {
         absoluteValues,

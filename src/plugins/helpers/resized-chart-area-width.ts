@@ -11,8 +11,6 @@ export const resizedChartAreaWidth = (labelsStep: number, clientWidth: number, o
         }
     }
 
-    
-
     while(offsetX + (countSpaces * labelsStep) < clientWidth){
         countSpaces += 1
     }
