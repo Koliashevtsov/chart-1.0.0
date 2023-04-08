@@ -14,7 +14,7 @@ class Core {
 
     constructor({ctx, data, inputOptions, inputPlugins}: CoreProps){
         this.controller = new Controller()
-        this.plugins  = new Plugins(inputPlugins, new Config({ctx, data, inputOptions}))
+        this.plugins  = new Plugins(inputPlugins, new Config(), {ctx, data, inputOptions})
         this.config = this.plugins.getConfig();
         this.eventHandler = new EventHandler()
     }
@@ -25,7 +25,10 @@ class Core {
 
     private _initialize(){
         // add plugins event handler to main EventHandler
-        this.plugins.registeredPlugins.forEach(plugin => this.eventHandler.listeners.push(plugin.eventHandler))
+        this.plugins.registeredPlugins.forEach(plugin => {
+            // if plugin has eventHandler 
+            if(plugin.eventHandler) this.eventHandler.listeners.push(plugin.eventHandler)
+        })
         // init all event handlers and bind it
         this.eventHandler.initialize({ controller: this.controller, config: this.config })
         this.eventHandler.bindEvents();

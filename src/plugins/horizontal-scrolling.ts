@@ -2,12 +2,12 @@ import HorizontalScrollingEventHandler from './event-handlers/horizontal-scrolli
 
 import { getDataSlice, getIdxsSlice, getLabelsOffset, initChartAreaWidth, updatedConfigProps } from './helpers';
 
-import { CustomEventHandler, HorScrolPlugOptions, IConfig, IPlugin, IPluginProps } from '../types';
+import { CustomEventHandler, HorScrolPlugOptions, IConfig, IPlugin, HorizontalScrollingInputProp } from '../types';
 
 class HorizontalScrolling implements IPlugin {
     id: string;
     config: IConfig;
-    props: IPluginProps;
+    props: HorizontalScrollingInputProp;
     eventHandler: CustomEventHandler;
     pluginOptions: HorScrolPlugOptions
 
@@ -19,7 +19,7 @@ class HorizontalScrolling implements IPlugin {
         this.pluginOptions = null;
     }
 
-    init(props: IPluginProps, config: IConfig){
+    init(props: HorizontalScrollingInputProp, config: IConfig){
         this.props = props;
         this.config = config;
 

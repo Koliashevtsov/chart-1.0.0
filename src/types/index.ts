@@ -63,15 +63,19 @@ type InputOptions = {
 type HorizontalScrollingInputProp = {
     scrolling: number
 }
+type DateTimeLabelsInputProp = {
+    startDate: string;
+    finishDate: string;
+}
 type InputPlugin = {
-    id: string,
-    prop: HorizontalScrollingInputProp
+    id: string;
+    prop: HorizontalScrollingInputProp | DateTimeLabelsInputProp;
 }
 
 type InitSettings = {
-    data: Data,
-    options?: InputOptions,
-    plugins?: InputPlugin[]
+    data: Data;
+    options?: InputOptions;
+    plugins?: InputPlugin[];
 }
 type TObserver = {
     id: string;
@@ -113,13 +117,13 @@ type ConfigProps = {
     data: Data;
     inputOptions: InputOptions;
 };
-type IPluginProps = HorizontalScrollingInputProp; // will added union
+type IPluginProps = HorizontalScrollingInputProp | DateTimeLabelsInputProp; 
 
 interface IPlugin {
     id: string;
     props: IPluginProps;
     config: IConfig;
-    eventHandler : CustomEventHandler | null
+    eventHandler?: CustomEventHandler | null
     init: (props: IPluginProps, config: IConfig) => void;
     getConfig: () => IConfig;
 }
@@ -128,7 +132,7 @@ interface IPlugins {
     config: IConfig;
     getConfig: () => IConfig
 }
-type IConfig = {
+type PrivateConfig = {
     ctx: CanvasRenderingContext2D;
     data: Data;
     options: Options;
@@ -141,7 +145,22 @@ type IConfig = {
     cursorPoint: Point;
     isCursorArea: boolean;
     tooltips: TTooltips;
-    update: (updater: PanConfUpd | HoverConfUpd) => void;
+}
+interface IConfig {
+    ctx: CanvasRenderingContext2D;
+    data: Data;
+    options: Options;
+    basePoint: Point;
+    clientRect: ClientRectType;
+    areasSizes: ASizes;
+    offset: Offset;
+    areasPoints: APoints;
+    gridOpt: GridOpt;
+    cursorPoint: Point;
+    isCursorArea: boolean;
+    tooltips: TTooltips;
+    update: (updater: HoverConfUpd | HorScrolPlugUpd) => void;
+    initialize: (props: ConfigProps) => void;
 }
 type Point = {
     pointX: number;
@@ -224,21 +243,17 @@ type InitHandlerProps = {
     controller: TController;
     config: IConfig;
 }
-type PanConfUpd = {
-    offset: Offset;
-    areasPoints: APoints
-}
 type HoverConfUpd = {
     cursorPoint: Point;
     isCursorArea: boolean;
     tooltips: TTooltips;
 }
 type HorScrolPlugUpd = {
-    data: Data;
-    areasSizes: ASizes;
     offset: Offset;
     areasPoints: APoints;
-    gridOpt: GridOpt
+    data?: Data;
+    areasSizes?: ASizes;
+    gridOpt?: GridOpt
 }
 
 type HorScrolPlugOptions = {
@@ -271,10 +286,13 @@ export {
     Options,
     InputOptions,
     InputPlugin,
+    HorizontalScrollingInputProp,
+    DateTimeLabelsInputProp,
     InitSettings,
     TObserver,
     CoreProps,
     ConfigProps,
+    PrivateConfig,
     IConfig,
     TController,
     IPlugins,
@@ -298,7 +316,6 @@ export {
     NotifyFull,
     CustomEventHandler,
     InitHandlerProps,
-    PanConfUpd,
     HoverConfUpd,
     HorScrolPlugUpd,
     HorScrolPlugOptions

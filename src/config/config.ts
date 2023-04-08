@@ -21,10 +21,10 @@ import {
     Offset, 
     Options, 
     Point, 
-    IConfig, 
+    IConfig,
+    PrivateConfig, 
     ConfigProps, 
     TDefSizes,
-    PanConfUpd,
     HoverConfUpd,
     TDefGridOpt,
     TTooltips,
@@ -37,7 +37,7 @@ import {
 
 
 class Config implements IConfig {
-    _config
+    _config: PrivateConfig;
     ctx: CanvasRenderingContext2D;
     data: Data;
     options: Options;
@@ -51,7 +51,11 @@ class Config implements IConfig {
     isCursorArea: boolean;
     tooltips: TTooltips;
 
-    constructor({ctx, data, inputOptions}: ConfigProps){
+    constructor(){
+        this._config = null
+    }
+
+    initialize({ctx, data, inputOptions}: ConfigProps){
         this._config = this._initConfig({ctx, data, inputOptions});
         this._unzipProps();
     }
@@ -101,7 +105,7 @@ class Config implements IConfig {
         this.tooltips = this._config.tooltips;
     }
 
-    update(updater: PanConfUpd | HoverConfUpd | HorScrolPlugUpd){
+    update(updater: HoverConfUpd | HorScrolPlugUpd){
         this._config = { ...this._config, ...updater };
         this._unzipProps();
     }
