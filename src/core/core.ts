@@ -4,7 +4,8 @@ import Plugins from '../plugins';
 
 import  EventHandler  from '../handlers';
 
-import { TObserver, CoreProps, TController, IConfig, IPlugins } from '../types';
+import { TObserver, CoreProps, TController, IConfig, IPlugins, ConfigProps } from '../types';
+import { EPluginMode } from '../plugins/common';
 
 class Core {
     controller: TController;
@@ -14,8 +15,8 @@ class Core {
 
     constructor({ctx, data, inputOptions, inputPlugins}: CoreProps){
         this.controller = new Controller()
-        this.plugins  = new Plugins(inputPlugins, new Config(), {ctx, data, inputOptions})
-        this.config = this.plugins.getConfig();
+        this.config = new Config();
+        this.plugins  = new Plugins(inputPlugins, this.config, {ctx, data, inputOptions})
         this.eventHandler = new EventHandler()
     }
 
@@ -24,15 +25,21 @@ class Core {
     }
 
     private _initialize(){
+        // plugins
+        const configProps = this.plugins.initialize(EPluginMode.BeforeConfigInit) as ConfigProps;
+        this.config.initialize(configProps)
+        this.plugins.initialize(EPluginMode.AfterConfigInit);
+
         // add plugins event handler to main EventHandler
-        this.plugins.registeredPlugins.forEach(plugin => {
+        this.plugins.afterConfigInitPlugins.forEach(plugin => {
             // if plugin has eventHandler 
             if(plugin.eventHandler) this.eventHandler.listeners.push(plugin.eventHandler)
         })
+        // event handler
         // init all event handlers and bind it
         this.eventHandler.initialize({ controller: this.controller, config: this.config })
         this.eventHandler.bindEvents();
-        
+        // controller
         this.controller.initialize(this.config);
     }
 

@@ -9,7 +9,7 @@ import {
     baseCursorPoint
 } from '../common/';
 
-import { absValues, backgroundColorFromCss, randomColors } from '../helpers';
+import { absValues, backgroundColorFromCss, randomColors, equalizeDataToLabels } from '../helpers';
 
 import { 
     APoints, 
@@ -30,11 +30,7 @@ import {
     TTooltips,
     DefOptions,
     HorScrolPlugUpd,
-    Dataset,
-    ExtendedDataset
 } from '../types';
-
-
 
 class Config implements IConfig {
     _config: PrivateConfig;
@@ -62,7 +58,7 @@ class Config implements IConfig {
 
     private _initConfig({ctx, data, inputOptions}: ConfigProps){
         const _ctx = ctx;
-        const _data = this._getData(data);
+        const _data = equalizeDataToLabels(data);
         const _options = this._getOptions(ctx, data, defOptions, inputOptions);
         const _basePoint = Object.freeze(basePoint);
         const _clientRect = _ctx.canvas.getBoundingClientRect();
@@ -108,36 +104,6 @@ class Config implements IConfig {
     update(updater: HoverConfUpd | HorScrolPlugUpd){
         this._config = { ...this._config, ...updater };
         this._unzipProps();
-    }
-
-    private _getData(data: Data) {
-        // check if labels count equal to each datasets data count, if no then equalize
-        const { datasets, labels } = data;
-        const validatedDatasets: Dataset[] | ExtendedDataset[] = datasets.map(dataset => {
-            if(dataset.data.length === labels.length) return dataset
-
-            if(dataset.data.length < labels.length){
-                const count = labels.length - dataset.data.length;
-                // push empty string count times
-                for(let i = 0; i < count; i++){
-                    dataset.data.push('')
-                }
-                return dataset
-            }
-
-            if(dataset.data.length > labels.length){
-                const data: string[] = dataset.data.slice(0, labels.length)
-                return {
-                    ...dataset,
-                    data
-                }
-            }
-        })
-
-        return {
-            datasets: validatedDatasets,
-            labels
-        }
     }
 
     private _getOptions(ctx: CanvasRenderingContext2D, data: Data, defOptions: DefOptions, options?: InputOptions): Options {

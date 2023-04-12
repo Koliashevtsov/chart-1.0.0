@@ -30,11 +30,12 @@ const chart = new Chart({context});
 chart.init({
     data: data,
     options: options,
-    // plugins: [
-    //     {id: 'horizontal-scrolling', prop: {scrolling: 100}},
-    //     {id: 'date-time-labels', prop: {
-    //         startDate: '',
-    //         finishDate: ''
-    //     }}
-    // ]
+    plugins: [
+        {id: 'horizontal-scrolling', prop: {scrolling: 100}},
+        {id: 'date-time-labels', prop: {
+            startDate: '2023-01-12T18:55:28',
+            finishDate: '2023-12-12T18:56:28',
+            step: 86400000
+        }}
+    ]
 });

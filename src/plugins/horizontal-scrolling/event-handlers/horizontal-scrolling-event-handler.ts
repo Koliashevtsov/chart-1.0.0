@@ -3,7 +3,7 @@ import { getDataSlice, getIdxsSlice, resizedChartAreaWidth, updatedConfigProps }
 import { 
     CustomEventHandler, IConfig, InitHandlerProps, TController, 
     Point, APoints, Offset, HorScrolPlugOptions
-} from '../../types';
+} from '../../../types';
 
 const SCROLL_DIRECTION = {
     LEFT: 'left',

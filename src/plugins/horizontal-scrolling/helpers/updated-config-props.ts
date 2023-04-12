@@ -1,9 +1,9 @@
 import * as lodash from 'lodash';
 
-import { absValues } from '../../helpers';
-import { defaultGridOpt } from '../../common';
+import { absValues } from '../../../helpers';
+import { defaultGridOpt } from '../../../common';
 
-import { Data, IConfig, Offset, TDefGridOpt } from '../../types';
+import { Data, IConfig, Offset, TDefGridOpt } from '../../../types';
 
 export const getGridOpt = (height: number, width: number, data: Data, defaultGridOpt: TDefGridOpt) => {   
     const absoluteValues = absValues(data.datasets, defaultGridOpt.yScale);

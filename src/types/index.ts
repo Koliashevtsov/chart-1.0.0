@@ -64,8 +64,9 @@ type HorizontalScrollingInputProp = {
     scrolling: number
 }
 type DateTimeLabelsInputProp = {
-    startDate: string;
-    finishDate: string;
+    startDate: Date | string;
+    finishDate: Date | string;
+    step: number;
 }
 type InputPlugin = {
     id: string;
@@ -117,20 +118,32 @@ type ConfigProps = {
     data: Data;
     inputOptions: InputOptions;
 };
-type IPluginProps = HorizontalScrollingInputProp | DateTimeLabelsInputProp; 
 
-interface IPlugin {
+interface IBeforeConfigInitPlugin {
     id: string;
-    props: IPluginProps;
-    config: IConfig;
-    eventHandler?: CustomEventHandler | null
-    init: (props: IPluginProps, config: IConfig) => void;
-    getConfig: () => IConfig;
+    mode: string;
+    props: DateTimeLabelsInputProp;
+    configProps: ConfigProps;
+    init: (pluginProps: DateTimeLabelsInputProp, configProps: ConfigProps) => void;
+    getConfigProps: () => ConfigProps;
 }
-interface IPlugins {
-    registeredPlugins: IPlugin[]
+interface IAfterConfigInitPlugin {
+    id: string;
+    mode: string;
+    props: HorizontalScrollingInputProp;
     config: IConfig;
-    getConfig: () => IConfig
+    pluginOptions?: HorScrolPlugOptions;
+    eventHandler?: CustomEventHandler;
+    init: (props: HorizontalScrollingInputProp, config: IConfig) => void;
+    getConfig: () => IConfig;
+} 
+interface IPlugins {
+    inputPlugins: InputPlugin[]
+    config: IConfig;
+    configProps: ConfigProps;
+    beforeConfigInitPlugins: IBeforeConfigInitPlugin[];
+    afterConfigInitPlugins: IAfterConfigInitPlugin[]
+    initialize: (mode: string) => ConfigProps | IConfig;
 }
 type PrivateConfig = {
     ctx: CanvasRenderingContext2D;
@@ -296,8 +309,8 @@ export {
     IConfig,
     TController,
     IPlugins,
-    IPlugin,
-    IPluginProps,
+    IBeforeConfigInitPlugin,
+    IAfterConfigInitPlugin,
     TPointPath,
     TState,
     TTooltips,
