@@ -1,8 +1,13 @@
-export const getDateLabels = (firstLabel: Date, lastLabel: Date, step: number) => {
-    const milisecondsStep = step;
+import { parseDateStep } from './parse-date-step';
+
+export const getDateLabels = (firstLabel: Date, lastLabel: Date, step: string) => {
+    const { multiplier, template } = parseDateStep(step); 
+    console.log(multiplier, template);
+    
+    const milisecondsStep = multiplier;
     const firstLabelInMiliseconds = new Date(firstLabel).getTime();
     const lastLabelInMiliseconds = new Date(lastLabel).getTime();
-    const labelsCount = (lastLabelInMiliseconds - firstLabelInMiliseconds) / step + 1;
+    const labelsCount = (lastLabelInMiliseconds - firstLabelInMiliseconds) / Number(step) + 1;
     const updated = [firstLabelInMiliseconds];
 
     for(let i = 0; i < labelsCount - 2; i++){

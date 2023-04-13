@@ -35,7 +35,7 @@ chart.init({
         {id: 'date-time-labels', prop: {
             startDate: '2023-01-12T18:55:28',
             finishDate: '2023-12-12T18:56:28',
-            step: 86400000
+            step: '86400000s'
         }}
     ]
 });

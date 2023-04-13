@@ -66,7 +66,7 @@ type HorizontalScrollingInputProp = {
 type DateTimeLabelsInputProp = {
     startDate: Date | string;
     finishDate: Date | string;
-    step: number;
+    step: string;
 }
 type InputPlugin = {
     id: string;
