@@ -28,6 +28,13 @@ class HorizontalScrolling implements IAfterConfigInitPlugin {
         const clientWidth = this.config.areasSizes.white.width;
         const spaceBetweenLabels = this.props.scrolling;
 
+        // if  original labels fit to client width do cancel plugin
+        const allLabelsWidth = config.data.labels.length * props.scrolling;
+        if(allLabelsWidth <= clientWidth){
+            this.pluginOptions = null;
+            return
+        }
+
         const { width } = initChartAreaWidth(spaceBetweenLabels, clientWidth)
         
         this.pluginOptions = {
@@ -68,7 +75,11 @@ class HorizontalScrolling implements IAfterConfigInitPlugin {
     }
 
     getConfig(){
-        //update config 
+        // if plugin has been canceled
+        if(!this.pluginOptions){
+            return this.config
+        }
+        // or update config
         this._updateConfig()
         // and retun it
         return this.config
