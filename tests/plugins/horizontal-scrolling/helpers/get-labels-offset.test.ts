@@ -1,4 +1,4 @@
-import { getLabelsOffset } from '../../../src/plugins/helpers';
+import { getLabelsOffset } from '../../../../src/plugins/horizontal-scrolling/helpers';
 
 const labels = ['Jan', 'Fab', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 

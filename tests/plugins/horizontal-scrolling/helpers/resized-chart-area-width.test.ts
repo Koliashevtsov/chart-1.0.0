@@ -1,4 +1,4 @@
-import { resizedChartAreaWidth } from '../../../src/plugins/helpers';
+import { resizedChartAreaWidth } from '../../../../src/plugins/horizontal-scrolling/helpers';
 
 describe('Calculate new chart area width', () => {
     it('Should return width bigger than clientArea width if offset minus', () => {

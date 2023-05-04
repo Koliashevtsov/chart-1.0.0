@@ -1,4 +1,4 @@
-import { getIdxsSlice } from '../../../src/plugins/helpers'
+import { getIdxsSlice } from '../../../../src/plugins/horizontal-scrolling/helpers'
 
 describe('Get first and last indexes of labels which should be rendered from right to left', () => {
     it('Should be equal', () => {

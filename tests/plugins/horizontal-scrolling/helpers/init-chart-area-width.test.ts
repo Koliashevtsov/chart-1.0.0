@@ -1,4 +1,4 @@
-import { initChartAreaWidth } from '../../../src/plugins/helpers';
+import { initChartAreaWidth } from '../../../../src/plugins/horizontal-scrolling/helpers';
 
 describe('Calculate chartArea width', () => {
     it('Should return width bigger then clientArea width', () => {

@@ -1,4 +1,3 @@
-import { equalizeDataToLabels } from '../../helpers';
 import { IBeforeConfigInitPlugin, DateTimeLabelsInputProp, ConfigProps } from '../../types';
 import { getDateLabels, isValidDate } from './helpers';
 
@@ -22,7 +21,8 @@ class DateTimeLabels implements IBeforeConfigInitPlugin {
 
     private _customizeLabels() {
         const newLabels = this._getLabels()
-
+        console.log(newLabels);
+        
         // update labels
         this.configProps = {
             ...this.configProps,
@@ -36,11 +36,8 @@ class DateTimeLabels implements IBeforeConfigInitPlugin {
     private _getLabels(){
         const { startDate, finishDate, step } = this.props;
         
-        const firstLabel = new Date(startDate)
-        console.log(firstLabel);
-        
-        const lastLabel = new Date(finishDate)
-        console.log(lastLabel);
+        const firstLabel = new Date(startDate);
+        const lastLabel = new Date(finishDate);
 
         if(isValidDate(firstLabel) && isValidDate(lastLabel)){
             return getDateLabels(firstLabel, lastLabel, step)
@@ -51,8 +48,6 @@ class DateTimeLabels implements IBeforeConfigInitPlugin {
 
     getConfigProps() {
         this._customizeLabels()
-        console.log(this.configProps.data.labels);
-        
         return this.configProps
     }
 

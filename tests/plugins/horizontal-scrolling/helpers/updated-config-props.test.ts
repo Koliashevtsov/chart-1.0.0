@@ -6,11 +6,11 @@ import {
     getIdxsSlice, 
     initChartAreaWidth, 
     getLabelsOffset,
-    getGridOpt } from '../../../src/plugins/helpers';
+    getGridOpt } from '../../../../src/plugins/horizontal-scrolling/helpers';
 
-import Config from '../../../src/config';
+import Config from '../../../../src/config';
 
-import { defaultGridOpt } from '../../../src/common';
+import { defaultGridOpt } from '../../../../src/common';
 
 
 const canvas = document.createElement('canvas') as HTMLCanvasElement;
@@ -23,7 +23,8 @@ const labels = ['Jan', 'Fab', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 
 const dataForConfig = {datasets, labels};
 
-const originalConfig = new Config({ctx, data: dataForConfig, inputOptions: {}})
+const originalConfig = new Config();
+originalConfig.initialize({ctx, data: dataForConfig, inputOptions: {}})
 
 describe('Get props which will be updated in config', () => {
     it('Should return object as expected, when plugin applied', () => {

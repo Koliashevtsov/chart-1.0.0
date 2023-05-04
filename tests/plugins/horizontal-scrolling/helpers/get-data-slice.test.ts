@@ -1,4 +1,4 @@
-import { getDataSlice } from '../../../src/plugins/helpers';
+import { getDataSlice } from '../../../../src/plugins/horizontal-scrolling/helpers';
 
 describe('Get data slice by range indexes of all data', () => {
     it('Should return as expected', () => {

@@ -33,9 +33,9 @@ chart.init({
     plugins: [
         {id: 'horizontal-scrolling', prop: {scrolling: 100}},
         {id: 'date-time-labels', prop: {
-            startDate: '2023-01-12T18:55:28',
-            finishDate: '2023-12-12T18:56:28',
-            step: '86400000s'
+            startDate: '2023-01-12T18:50:28',
+            finishDate: '2023-12-12T18:50:28',
+            step: '1M'
         }}
     ]
 });

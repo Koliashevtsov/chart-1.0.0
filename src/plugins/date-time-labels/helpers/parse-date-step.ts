@@ -44,7 +44,7 @@ export const parseDateStep = (step: string) => {
         }
     })
 
-    const multiplier = numbers.join('')
+    const count = numbers.join('')
     const template = strings.join('')
     
     // validate template
@@ -55,7 +55,7 @@ export const parseDateStep = (step: string) => {
     }
 
     return {
-        multiplier,
+        count,
         template
     }
 }
