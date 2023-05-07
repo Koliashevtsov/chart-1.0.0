@@ -21,7 +21,7 @@ class HorizontalScrolling {
         const clientWidth = this.config.areasSizes.white.width;
         const spaceBetweenLabels = this.props.scrolling;
         // if  original labels fit to client width do cancel plugin
-        const allLabelsWidth = config.data.labels.length * props.scrolling;
+        const allLabelsWidth = (config.data.labels.length - 1) * props.scrolling;
         if (allLabelsWidth <= clientWidth) {
             this.pluginOptions = null;
             return;
