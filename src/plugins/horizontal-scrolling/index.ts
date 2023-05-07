@@ -29,7 +29,7 @@ class HorizontalScrolling implements IAfterConfigInitPlugin {
         const spaceBetweenLabels = this.props.scrolling;
 
         // if  original labels fit to client width do cancel plugin
-        const allLabelsWidth = config.data.labels.length * props.scrolling;
+        const allLabelsWidth = (config.data.labels.length - 1) * props.scrolling;
         if(allLabelsWidth <= clientWidth){
             this.pluginOptions = null;
             return
@@ -42,6 +42,7 @@ class HorizontalScrolling implements IAfterConfigInitPlugin {
             labelsOffset: getLabelsOffset(this.config.data.labels, spaceBetweenLabels, width),
             labelsStep: spaceBetweenLabels
         }
+
         this.eventHandler = new HorizontalScrollingEventHandler(this.pluginOptions)
     }
 
@@ -51,6 +52,7 @@ class HorizontalScrolling implements IAfterConfigInitPlugin {
     }
 
     private _resize(){
+        
         const clientWidth = this.config.areasSizes.white.width;
         const spaceBetweenLabels = this.props.scrolling;
 
