@@ -1,14 +1,15 @@
 {
-    "compilerOptions": {
-      "outDir": "./dist/",
-      "sourceMap": true,
-      "noImplicitAny": true,
-      "module": "es6",
-      "target": "ESNext",
-      "jsx": "react",
-      "allowJs": true,
-      "moduleResolution": "node",
-      "esModuleInterop": true
-    },
-    "include": ["src"]
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./dist/esm",
+    "sourceMap": true,
+    "noImplicitAny": true,
+    "module": "es6",
+    "target": "ESNext",
+    "jsx": "react",
+    "allowJs": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true
+  },
+  "include": ["src"]
 }

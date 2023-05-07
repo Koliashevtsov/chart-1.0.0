@@ -1,16 +1,20 @@
 {
-  "name": "chart-1.0.0",
-  "version": "1.0.0",
-  "description": "",
-  "private": true,
+  "name": "canvas-fin-chart",
+  "version": "1.0.9",
+  "description": "A canvas html5 chart library",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
-    "build": "webpack",
-    "start": "webpack-dev-server",
+    "build": "rm -rf dist/ && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module CommonJS --outDir dist/cjs",
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",

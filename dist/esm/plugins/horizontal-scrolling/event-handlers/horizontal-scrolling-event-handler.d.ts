@@ -1,0 +1,31 @@
+import { CustomEventHandler, IConfig, InitHandlerProps, TController, Point, Offset, HorScrolPlugOptions } from '../../../types';
+declare class HorizontalScrollingEventHandler implements CustomEventHandler {
+    pluginOptions: HorScrolPlugOptions;
+    controller: TController;
+    config: IConfig;
+    ctx: CanvasRenderingContext2D;
+    cursorPoint: Point;
+    drawing: boolean;
+    offset: Offset;
+    leftBoundary: number;
+    rightBoundary: number;
+    constructor(pluginOptions: HorScrolPlugOptions);
+    initialize({ controller, config }: InitHandlerProps): void;
+    bindEvents(): void;
+    unbindEvents(): void;
+    private _mouseDown;
+    private _mouseUp;
+    private _mouseMove;
+    private _handleOffset;
+    private _getOffset;
+    private _updateConfig;
+    private _resize;
+    private _updateConfigNewLabels;
+    private _updateConfigSameLabels;
+    private _mouseDownBinded;
+    private _mouseUpBinded;
+    private _mouseMoveBinded;
+    private _addEventListeners;
+    private _removeEventListeners;
+}
+export default HorizontalScrollingEventHandler;
