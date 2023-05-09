@@ -21,7 +21,6 @@ class DateTimeLabels implements IBeforeConfigInitPlugin {
 
     private _customizeLabels() {
         const newLabels = this._getLabels()
-        console.log(newLabels);
         
         // update labels
         this.configProps = {
