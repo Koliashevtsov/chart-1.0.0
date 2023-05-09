@@ -1,5 +1,5 @@
-import { Data, Dataset } from '../types';
+import { Data, Dataset, ExtendedDataset } from '../types';
 export declare const equalizeDataToLabels: (data: Data) => {
-    datasets: Dataset[];
+    datasets: Dataset[] | ExtendedDataset[];
     labels: string[];
 };

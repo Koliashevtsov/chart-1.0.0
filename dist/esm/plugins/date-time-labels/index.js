@@ -16,7 +16,6 @@ class DateTimeLabels {
     }
     _customizeLabels() {
         const newLabels = this._getLabels();
-        console.log(newLabels);
         // update labels
         this.configProps = {
             ...this.configProps,
